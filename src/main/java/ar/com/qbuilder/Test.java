@@ -1,4 +1,4 @@
-package com;
+package ar.com.qbuilder;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -56,7 +56,7 @@ import org.apache.spark.sql.types.DataTypes;
 import org.apache.spark.sql.types.StructField;
 import org.apache.spark.sql.types.StructType;
 
-import com.service.TestService;
+import ar.com.qbuilder.service.TestService;
 
 // $example off:programmatic_schema$
 import org.apache.spark.sql.AnalysisException;

@@ -1,4 +1,4 @@
-package com.service;
+package ar.com.qbuilder.service;
 
 import java.util.List;
 
