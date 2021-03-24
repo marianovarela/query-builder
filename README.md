@@ -1,0 +1,2 @@
+instalar hadoop
+instalar spark
