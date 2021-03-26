@@ -5,11 +5,15 @@ import java.util.List;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class TestService {
 
+	@Autowired
+	SparkService sparkService;
+	
 	public void test() {
-		SparkSession spark = SparkSession.builder().appName("Sp_LogistcRegression").master("local").getOrCreate();
+		SparkSession spark = sparkService.getOrCreate();
 		String query = "select * from prueba.post_blocks where id = 1";
 //		com.mysql.jdbc.Driver
 		Dataset<Row> jdbcDF = spark.read()
