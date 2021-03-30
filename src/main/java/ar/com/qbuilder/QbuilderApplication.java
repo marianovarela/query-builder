@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
 import ar.com.qbuilder.config.Config;
+import ar.com.qbuilder.service.QBuilder;
 import ar.com.qbuilder.service.TestService;
 
 @EnableAutoConfiguration
@@ -20,7 +21,11 @@ public class QbuilderApplication {
 		System.out.println((13 % 10));
 		System.out.println((13 % config.getArity()));
 		TestService service = new TestService();
-		service.test();
+//		service.test();
+		
+		QBuilder qbuilder = new QBuilder();
+		qbuilder.select("objects");
+		
 	}
 
 }

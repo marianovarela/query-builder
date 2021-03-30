@@ -7,12 +7,17 @@ import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import ar.com.qbuilder.domain.Query;
+import ar.com.qbuilder.domain.Selection;
+
 public class TestService {
 
 	@Autowired
 	SparkService sparkService;
 	
 	public void test() {
+	Selection q = new Selection();
+	q.getLala();
 		SparkSession spark = sparkService.getOrCreate();
 		String query = "select * from prueba.post_blocks where id = 1";
 //		com.mysql.jdbc.Driver
@@ -46,8 +51,6 @@ public class TestService {
 		joined.printSchema();
 		
 		spark.stop();
-				
-		
 	}
 
 }
