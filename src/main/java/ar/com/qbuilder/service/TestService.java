@@ -17,7 +17,8 @@ public class TestService {
 	
 	public void test() {
 	Selection q = new Selection();
-	q.getLala();
+	
+	
 		SparkSession spark = sparkService.getOrCreate();
 		String query = "select * from prueba.post_blocks where id = 1";
 //		com.mysql.jdbc.Driver

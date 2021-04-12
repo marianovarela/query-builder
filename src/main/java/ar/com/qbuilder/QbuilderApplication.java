@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
 import ar.com.qbuilder.config.Config;
+import ar.com.qbuilder.config.domain.Datasource;
 import ar.com.qbuilder.service.QBuilder;
 import ar.com.qbuilder.service.TestService;
 
@@ -17,14 +18,25 @@ public class QbuilderApplication {
 		ApplicationContext context = SpringApplication.run(QbuilderApplication.class, args);
 		Config config = context.getBean(Config.class);
 
+		System.out.println(config.getURL(0));
+		Datasource ds = null;
+		try {
+			ds = config.getDatasource(0);
+			System.out.println(ds.getDriver());
+			int n = 9;
+			System.out.println(n);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		System.out.println(config.getArity());
 		System.out.println((13 % 10));
 		System.out.println((13 % config.getArity()));
-		TestService service = new TestService();
+//		TestService service = new TestService();
 //		service.test();
 		
-		QBuilder qbuilder = new QBuilder();
-		qbuilder.select("objects");
+//		QBuilder qbuilder = new QBuilder();
+//		qbuilder.select("objects");
 		
 	}
 
