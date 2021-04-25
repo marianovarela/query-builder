@@ -52,7 +52,7 @@ public class QbuilderApplication {
 		Executor executor = context.getBean(Executor.class);
 //		Executor executor = new Executor(); 
 		Insertion insertion = new Insertion();
-		insertion.setId(123);
+		insertion.setId(143);
 		insertion.setTable("objects");
 		insertion.setType(10);
 		insertion.setObject("'{}'");

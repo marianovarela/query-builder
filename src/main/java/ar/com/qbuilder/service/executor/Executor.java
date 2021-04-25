@@ -12,7 +12,6 @@ public class Executor {
 	private InsertionExecutor insertionExecutor;
 	
 	public void execute(Insertion insertion) {
-		System.out.println("ya no soy mas un boludo");
 		insertionExecutor.execute(insertion);
 	}
 	
