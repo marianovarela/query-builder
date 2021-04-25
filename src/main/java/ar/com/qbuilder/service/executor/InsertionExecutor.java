@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ar.com.qbuilder.aspect.InsertValidator;
 import ar.com.qbuilder.config.domain.Datasource;
 import ar.com.qbuilder.domain.Insertion;
 import ar.com.qbuilder.helper.TaoSelector;
@@ -24,6 +25,7 @@ public class InsertionExecutor {
 	@Autowired
 	SparkService sparkService;
 	
+	@InsertValidator()
 	public void execute(Insertion insertion) {
 		// crea el string
 		long indexTao = taoSelector.selectTao(insertion.getId());

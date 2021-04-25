@@ -1,5 +1,6 @@
 package ar.com.qbuilder;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -52,7 +53,7 @@ public class QbuilderApplication {
 		Executor executor = context.getBean(Executor.class);
 //		Executor executor = new Executor(); 
 		Insertion insertion = new Insertion();
-		insertion.setId(143);
+		insertion.setId(153L);
 		insertion.setTable("objects");
 		insertion.setType(10);
 		insertion.setObject("'{}'");

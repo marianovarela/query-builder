@@ -7,17 +7,17 @@ import lombok.Setter;
 @Setter
 public class Insertion extends Query {
 
-	private long id;
+	private Long id;
 	
-	private int type;
+	private Integer type;
 	
 	private String table;
 	
 	private String object;
 	
-	private long leftId;
+	private Long leftId;
 	
-	private long rightId;
+	private Long rightId;
 	
 	public Insertion withObject(String object) {
 		this.object = object;

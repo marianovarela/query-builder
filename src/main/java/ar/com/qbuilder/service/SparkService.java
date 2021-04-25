@@ -1,6 +1,5 @@
 package ar.com.qbuilder.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -14,7 +13,6 @@ import org.apache.spark.sql.SparkSession;
 import org.springframework.stereotype.Component;
 
 import ar.com.qbuilder.config.domain.Datasource;
-import ar.com.qbuilder.helper.TaoSelector;
 
 @Component
 public class SparkService {
