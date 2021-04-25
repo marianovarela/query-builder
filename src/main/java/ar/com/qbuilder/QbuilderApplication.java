@@ -7,7 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
 import ar.com.qbuilder.config.Config;
+import ar.com.qbuilder.domain.Insertion;
 import ar.com.qbuilder.service.TestService;
+import ar.com.qbuilder.service.executor.Executor;
 
 @EnableAutoConfiguration
 @SpringBootApplication
@@ -16,13 +18,16 @@ public class QbuilderApplication {
 	@Autowired
 	TestService testService;
 	
+	@Autowired
+	Executor executor;
+	
 	public static void main(String[] args) {
 		ApplicationContext context = SpringApplication.run(QbuilderApplication.class, args);
 		Config config = context.getBean(Config.class);
 //		TestService service = new TestService();
 //		service.test();
 		TestService springBean = context.getBean(TestService.class);
-		springBean.test();
+//		springBean.test();
 		
 //		System.out.println(config.getURL(0));
 //		Datasource ds = null;
@@ -44,11 +49,14 @@ public class QbuilderApplication {
 //		QBuilder qbuilder = new QBuilder();
 //		qbuilder.select("objects");
 		
+		Executor executor = context.getBean(Executor.class);
 //		Executor executor = new Executor(); 
-//		int id = 123;
-//		Insertion insertion = new Insertion();
-//		insertion.withObject("objects", id, 10, null);
-//		executor.execute(insertion);
+		Insertion insertion = new Insertion();
+		insertion.setId(123);
+		insertion.setTable("objects");
+		insertion.setType(10);
+		insertion.setObject("'{}'");
+		executor.execute(insertion);
 	}
 
 }

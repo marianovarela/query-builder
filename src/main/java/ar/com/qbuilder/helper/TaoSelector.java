@@ -8,6 +8,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import ar.com.qbuilder.config.Config;
+import ar.com.qbuilder.config.domain.Datasource;
 
 @Service
 public class TaoSelector {
@@ -19,6 +20,16 @@ public class TaoSelector {
 	
 	public long selectTao(long id) {
 		return (id  % config.getArity());
+	}
+	
+	public Datasource getDatasource(long idTao) {
+		Datasource datasource = null;
+		try {
+			datasource = config.getDatasource(idTao);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return datasource;
 	}
 	
 	@PostConstruct

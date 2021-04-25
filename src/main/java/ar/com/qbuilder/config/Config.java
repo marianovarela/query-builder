@@ -22,15 +22,16 @@ public class Config {
 	
 	private int arity;
 	
-	public Datasource getDatasource(int nTao) throws Exception {
-		if(nTao > this.arity) {
+	public Datasource getDatasource(long idTao) throws Exception {
+		if(idTao > this.arity) {
 			throw new Exception("El tao ingresado no corresponde");
 		}else {
 			return new Datasource(
-				env.getProperty("tao" + nTao + ".url"),
-				env.getProperty("tao" + nTao + ".driver"),
-				env.getProperty("tao" + nTao + ".user"),
-				env.getProperty("tao" + nTao + ".password")
+				env.getProperty("tao" + idTao + ".url"),
+				env.getProperty("tao" + idTao + ".driver"),
+				env.getProperty("tao" + idTao + ".user"),
+				env.getProperty("tao" + idTao + ".password"),
+				env.getProperty("tao" + idTao + ".schema")
 			);
 		}
 	}

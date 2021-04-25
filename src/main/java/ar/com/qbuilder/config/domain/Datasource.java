@@ -15,11 +15,14 @@ public class Datasource {
 	
 	private String password;
 	
-	public Datasource(String url, String driver, String user, String password) {
+	private String schema;
+	
+	public Datasource(String url, String driver, String user, String password, String schema) {
 		this.url = url;
 		this.driver = driver;
 		this.user = user;
 		this.password = password;
+		this.schema = schema;
 	}
 	
 }

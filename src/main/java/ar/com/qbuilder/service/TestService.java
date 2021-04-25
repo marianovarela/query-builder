@@ -19,8 +19,6 @@ public class TestService {
 	SparkService sparkService;
 	
 	public void test() {
-	Selection q = new Selection();
-	
 		SparkSession spark = sparkService.getOrCreate();
 		String query = "select * from prueba.post_blocks where id = 1";
 		Dataset<Row> jdbcDF = spark.read()

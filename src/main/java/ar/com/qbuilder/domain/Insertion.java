@@ -7,29 +7,35 @@ import lombok.Setter;
 @Setter
 public class Insertion extends Query {
 
-	private InsertionType insertionType;
-	
 	private long id;
 	
 	private int type;
 	
-	private Object object;
+	private String table;
+	
+	private String object;
 	
 	private long leftId;
 	
 	private long rightId;
 	
-	
-	public Insertion withObject(String table, long id, int type, Object object) {
-		this.insertionType = InsertionType.Object;
-		this.id = id;
-		this.type = type;
+	public Insertion withObject(String object) {
 		this.object = object;
 		return this;
 	}
+	
+	public Insertion withId(long id) {
+		this.id = id;
+		return this;
+	}
+	
+	public Insertion withType(int type) {
+		this.type = type;
+		return this;
+	}
 
-	public Insertion withAssociation(String table, long leftId, int type, long rightId) {
-		//TODO
+	public Insertion withTable(String table) {
+		this.table = table;
 		return this;
 	}
 
