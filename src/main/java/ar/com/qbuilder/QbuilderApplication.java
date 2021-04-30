@@ -8,7 +8,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
 import ar.com.qbuilder.config.Config;
-import ar.com.qbuilder.domain.Insertion;
+import ar.com.qbuilder.domain.AssociationInsertion;
+import ar.com.qbuilder.domain.ObjectInsertion;
 import ar.com.qbuilder.service.TestService;
 import ar.com.qbuilder.service.executor.Executor;
 
@@ -25,39 +26,32 @@ public class QbuilderApplication {
 	public static void main(String[] args) {
 		ApplicationContext context = SpringApplication.run(QbuilderApplication.class, args);
 		Config config = context.getBean(Config.class);
-//		TestService service = new TestService();
-//		service.test();
 		TestService springBean = context.getBean(TestService.class);
-//		springBean.test();
-		
-//		System.out.println(config.getURL(0));
-//		Datasource ds = null;
-//		try {
-//			ds = config.getDatasource(0);
-//			System.out.println(ds.getDriver());
-//			int n = 9;
-//			System.out.println(n);
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		System.out.println(config.getArity());
-//		System.out.println((13 % 10));
-//		System.out.println((13 % config.getArity()));
-		
-		
-		
-//		QBuilder qbuilder = new QBuilder();
-//		qbuilder.select("objects");
-		
+				
 		Executor executor = context.getBean(Executor.class);
-//		Executor executor = new Executor(); 
-		Insertion insertion = new Insertion();
-		insertion.setId(153L);
+		
+		//ObjectInsertion query = makeInsertObject();
+		AssociationInsertion query = makeInsertAssociation();
+		executor.execute(query); 
+		
+	}
+
+	private static AssociationInsertion makeInsertAssociation() {
+		AssociationInsertion association = new AssociationInsertion();
+		association.setLeftId(122L);
+		association.setRightId(123L);
+		association.setType(10);
+		association.setTable("associations");
+		return association;
+	}
+
+	private static ObjectInsertion makeInsertObject() {
+		ObjectInsertion insertion = new ObjectInsertion();
+		insertion.setId(100203L);
 		insertion.setTable("objects");
 		insertion.setType(10);
 		insertion.setObject("'{}'");
-		executor.execute(insertion);
+		return insertion;
 	}
 
 }

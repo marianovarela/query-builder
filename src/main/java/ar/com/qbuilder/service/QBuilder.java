@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 import ar.com.qbuilder.config.domain.Datasource;
 import ar.com.qbuilder.domain.Deletion;
-import ar.com.qbuilder.domain.Insertion;
+import ar.com.qbuilder.domain.ObjectInsertion;
 import ar.com.qbuilder.domain.InsertionType;
 import ar.com.qbuilder.domain.Query;
 import ar.com.qbuilder.domain.Selection;
@@ -21,7 +21,7 @@ public class QBuilder {
 	@Autowired
 	private TaoSelector taoSelector;
 
-	public List<String> makeSentence(Insertion insertion) {
+	public List<String> makeSentence(ObjectInsertion insertion) {
 		List<String> sentences = new LinkedList<String>();
 		if(insertion.getObject() != null) {
 			String sentence = makeInsertObject(insertion);
@@ -34,7 +34,7 @@ public class QBuilder {
 		return sentences;
 	}
 
-	private String makeInsertObject(Insertion insertion) { 
+	private String makeInsertObject(ObjectInsertion insertion) { 
 		long indexTao = taoSelector.selectTao(insertion.getId());
 		Datasource datasource = taoSelector.getDatasource(indexTao);
 		String sentence = "INSERT INTO " + datasource.getSchema() + "." + insertion.getTable() + " (id, type, object) VALUES (" + insertion.getId() + 

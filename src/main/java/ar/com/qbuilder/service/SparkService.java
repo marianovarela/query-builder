@@ -13,6 +13,7 @@ import org.apache.spark.sql.SparkSession;
 import org.springframework.stereotype.Component;
 
 import ar.com.qbuilder.config.domain.Datasource;
+import ar.com.qbuilder.domain.Association;
 
 @Component
 public class SparkService {
@@ -40,7 +41,7 @@ public class SparkService {
 		}
 	}
 
-	public void write(Datasource datasource, String table, List<ar.com.qbuilder.domain.Object> objects) {
+	public void writeObject(Datasource datasource, String table, List<ar.com.qbuilder.domain.Object> objects) {
 		SparkSession spark = SparkSession.builder().appName("Sp_LogistcRegression").master("local").getOrCreate();
 		SQLContext sqlContext = spark.sqlContext();
 		JavaSparkContext jsc = new JavaSparkContext(spark.sparkContext());
@@ -50,6 +51,24 @@ public class SparkService {
 
         Properties properties = new java.util.Properties();
         objDf.write().mode(SaveMode.Append).jdbc("jdbc:mysql://192.168.5.143:3306/" + datasource.getSchema() + "?user=" 
+        		+ datasource.getUser() 
+        		+ "&password=" 
+        		+ datasource.getPassword(), 
+        		table, properties);
+        
+        
+	}
+
+	public void writeAssociation(Datasource datasource, String table, List<Association> list) {
+		SparkSession spark = SparkSession.builder().appName("Sp_LogistcRegression").master("local").getOrCreate();
+		SQLContext sqlContext = spark.sqlContext();
+		JavaSparkContext jsc = new JavaSparkContext(spark.sparkContext());
+		
+		JavaRDD<ar.com.qbuilder.domain.Association> associationRDD = jsc.parallelize(list);
+        Dataset<Row> associationDf = sqlContext.createDataFrame(associationRDD, ar.com.qbuilder.domain.Association.class);
+
+        Properties properties = new java.util.Properties();
+        associationDf.write().mode(SaveMode.Append).jdbc("jdbc:mysql://192.168.5.143:3306/" + datasource.getSchema() + "?user=" 
         		+ datasource.getUser() 
         		+ "&password=" 
         		+ datasource.getPassword(), 
