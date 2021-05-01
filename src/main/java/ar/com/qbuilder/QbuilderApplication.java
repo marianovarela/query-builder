@@ -38,9 +38,10 @@ public class QbuilderApplication {
 
 	private static AssociationInsertion makeInsertAssociation() {
 		AssociationInsertion association = new AssociationInsertion();
-		association.setLeftId(122L);
-		association.setRightId(123L);
+		association.withLeftId(152L);
+		association.setRightId(153L);
 		association.setType(10);
+		association.setInverseType(20);
 		association.setTable("associations");
 		return association;
 	}
