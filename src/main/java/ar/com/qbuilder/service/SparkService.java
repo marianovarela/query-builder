@@ -97,8 +97,8 @@ public class SparkService {
 		if(select.isCount()) {
 			return jdbcDF.count();
 		}
-		
-		return null;
+
+		return jdbcDF.collect();
 	}
 
 	private Dataset<Row> getDataFrame(Datasource datasource, Select select, SparkSession spark) {
@@ -114,7 +114,16 @@ public class SparkService {
 	}
 
 	private String buildFilter(SelectAssociation select) {
-		String filter = "left_id = " + select.getLeftId() + " and type = " + select.getType();
+		String filter = "";
+		if(select.getLeftId() != null) {
+			filter = filterBuilder.addFilter("left_id", select.getLeftId().toString(), filter);
+		}
+		if(select.getType() != null) {
+			filter = filterBuilder.addFilter("type", select.getType().toString(), filter);
+		}
+		if(select.getRightId() != null) {
+			filter = filterBuilder.addFilter("right_id", select.getRightId().toString(), filter);
+		}
 		return filter;
 	}
 

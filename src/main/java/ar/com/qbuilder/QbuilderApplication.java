@@ -39,11 +39,19 @@ public class QbuilderApplication {
 //		Selection query = new Selection("assocations");
 //		DeleteAssociation query = makeDeleteAssociation();
 //		SelectAssociation query = makeCountAssociation();
-		SelectObject query = makeSelectObject();
+//		SelectObject query = makeSelectObject();
+		SelectAssociation query = makeSelectAssociation();
 		Object result = executor.execute(query);
 		System.out.println(result);
 //		executor.execute(query); 
 		
+	}
+
+	private static SelectAssociation makeSelectAssociation() {
+		SelectAssociation query = new SelectAssociation();
+		query.setLeftId(152L);
+		query.setType(10);
+		return query;
 	}
 
 	private static SelectObject makeSelectObject() {
