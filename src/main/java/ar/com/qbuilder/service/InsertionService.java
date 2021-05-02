@@ -1,4 +1,4 @@
-package ar.com.qbuilder.service.executor;
+package ar.com.qbuilder.service;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -10,17 +10,12 @@ import org.springframework.stereotype.Service;
 import ar.com.qbuilder.aspect.InsertValidator;
 import ar.com.qbuilder.config.domain.Datasource;
 import ar.com.qbuilder.domain.Association;
-import ar.com.qbuilder.domain.AssociationInsertion;
-import ar.com.qbuilder.domain.ObjectInsertion;
+import ar.com.qbuilder.domain.InsertAssociation;
+import ar.com.qbuilder.domain.InsertObject;
 import ar.com.qbuilder.helper.TaoSelector;
-import ar.com.qbuilder.service.QBuilder;
-import ar.com.qbuilder.service.SparkService;
 
 @Service
-public class InsertionExecutor {
-
-	@Autowired
-	QBuilder qbuilder;
+public class InsertionService {
 
 	@Autowired
 	TaoSelector taoSelector;
@@ -29,14 +24,14 @@ public class InsertionExecutor {
 	SparkService sparkService;
 
 	@InsertValidator()
-	public void execute(ObjectInsertion insertion) {
+	public void execute(InsertObject insertion) {
 		long indexTao = taoSelector.selectTao(insertion.getId());
 		Datasource datasource = taoSelector.getDatasource(indexTao);
 		List<ar.com.qbuilder.domain.Object> list = makeListToInsert(insertion);
 		sparkService.writeObject(datasource, insertion.getTable(), list);
 	}
 
-	private List<ar.com.qbuilder.domain.Object> makeListToInsert(ObjectInsertion insertion) {
+	private List<ar.com.qbuilder.domain.Object> makeListToInsert(InsertObject insertion) {
 		List<ar.com.qbuilder.domain.Object> list = new ArrayList<>();
 		ar.com.qbuilder.domain.Object obj = new ar.com.qbuilder.domain.Object();
 		obj.setId(insertion.getId());
@@ -47,7 +42,8 @@ public class InsertionExecutor {
 		return list;
 	}
 
-	public void execute(AssociationInsertion insertion) {
+	@InsertValidator()
+	public void execute(InsertAssociation insertion) {
 		List<ar.com.qbuilder.domain.Association> list = makeListToInsert(insertion);
 
 		list.forEach((assoc) -> {
@@ -57,10 +53,9 @@ public class InsertionExecutor {
 			assocList.add(assoc);
 			sparkService.writeAssociation(datasource, insertion.getTable(), assocList);
 		});
-
 	}
 
-	private List<Association> makeListToInsert(AssociationInsertion insertion) {
+	private List<Association> makeListToInsert(InsertAssociation insertion) {
 		List<ar.com.qbuilder.domain.Association> list = new ArrayList<>();
 		ar.com.qbuilder.domain.Association association = new ar.com.qbuilder.domain.Association();
 		association.setLeft_id(insertion.getLeftId());

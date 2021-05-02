@@ -29,4 +29,8 @@ public class Selection extends Query{
 		return this;
 	}
 	
+	public long count() {
+		return 1;
+	}
+	
 }

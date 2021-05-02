@@ -8,8 +8,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
 import ar.com.qbuilder.config.Config;
-import ar.com.qbuilder.domain.AssociationInsertion;
-import ar.com.qbuilder.domain.ObjectInsertion;
+import ar.com.qbuilder.domain.DeleteAssociation;
+import ar.com.qbuilder.domain.InsertAssociation;
+import ar.com.qbuilder.domain.InsertObject;
+import ar.com.qbuilder.domain.Selection;
 import ar.com.qbuilder.service.TestService;
 import ar.com.qbuilder.service.executor.Executor;
 
@@ -30,24 +32,34 @@ public class QbuilderApplication {
 				
 		Executor executor = context.getBean(Executor.class);
 		
-		//ObjectInsertion query = makeInsertObject();
-		AssociationInsertion query = makeInsertAssociation();
+		//InsertObject query = makeInsertObject();
+		InsertAssociation query = makeInsertAssociation();
+//		Selection query = new Selection("assocations");
+//		DeleteAssociation query = makeDeleteAssociation();
 		executor.execute(query); 
 		
 	}
 
-	private static AssociationInsertion makeInsertAssociation() {
-		AssociationInsertion association = new AssociationInsertion();
+	private static DeleteAssociation makeDeleteAssociation() {
+		DeleteAssociation query = new DeleteAssociation();
+		query.setLeftId(152L);
+		query.setRightId(153L);
+		query.setType(10);
+		return query;
+	}
+
+	private static InsertAssociation makeInsertAssociation() {
+		InsertAssociation association = new InsertAssociation();
 		association.withLeftId(152L);
-		association.setRightId(153L);
+		association.setRightId(163L);
 		association.setType(10);
 		association.setInverseType(20);
 		association.setTable("associations");
 		return association;
 	}
 
-	private static ObjectInsertion makeInsertObject() {
-		ObjectInsertion insertion = new ObjectInsertion();
+	private static InsertObject makeInsertObject() {
+		InsertObject insertion = new InsertObject();
 		insertion.setId(100203L);
 		insertion.setTable("objects");
 		insertion.setType(10);

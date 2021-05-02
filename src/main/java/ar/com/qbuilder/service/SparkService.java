@@ -22,19 +22,14 @@ public class SparkService {
 		SparkSession spark = SparkSession.builder().appName("Sp_LogistcRegression").master("local").getOrCreate();
 		return spark;
 	}
-	
+
 	public void run(String query, String table) {
 		SparkSession spark = SparkSession.builder().appName("Sp_LogistcRegression").master("local").getOrCreate();
 //		String query = "select * from prueba.post_blocks where id = 1";
-		Dataset<Row> jdbcDF = spark.read()
-				  .format("jdbc")
-				  .option("url", "jdbc:mysql://192.168.6.250:13317")
-				  .option("driver", "com.mysql.jdbc.Driver")
-				  .option("dbtable", "prueba.processed_blocks")
-				  .option("user", "root")
-				  .option("password", "root")
-				  .load();
-		
+		Dataset<Row> jdbcDF = spark.read().format("jdbc").option("url", "jdbc:mysql://192.168.6.250:13317")
+				.option("driver", "com.mysql.jdbc.Driver").option("dbtable", "prueba.processed_blocks")
+				.option("user", "root").option("password", "root").load();
+
 		List<Row> rows = jdbcDF.collectAsList();
 		for (Row row : rows) {
 			System.out.println(row.toString());
@@ -45,34 +40,43 @@ public class SparkService {
 		SparkSession spark = SparkSession.builder().appName("Sp_LogistcRegression").master("local").getOrCreate();
 		SQLContext sqlContext = spark.sqlContext();
 		JavaSparkContext jsc = new JavaSparkContext(spark.sparkContext());
-		
-		JavaRDD<ar.com.qbuilder.domain.Object> objRDD = jsc.parallelize(objects);
-        Dataset<Row> objDf = sqlContext.createDataFrame(objRDD, ar.com.qbuilder.domain.Object.class);
 
-        Properties properties = new java.util.Properties();
-        objDf.write().mode(SaveMode.Append).jdbc("jdbc:mysql://192.168.5.143:3306/" + datasource.getSchema() + "?user=" 
-        		+ datasource.getUser() 
-        		+ "&password=" 
-        		+ datasource.getPassword(), 
-        		table, properties);
-        
-        
+		JavaRDD<ar.com.qbuilder.domain.Object> objRDD = jsc.parallelize(objects);
+		Dataset<Row> objDf = sqlContext.createDataFrame(objRDD, ar.com.qbuilder.domain.Object.class);
+
+		Properties properties = new java.util.Properties();
+		objDf.write().mode(SaveMode.Append).jdbc("jdbc:mysql://192.168.5.143:3306/" + datasource.getSchema() + "?user="
+				+ datasource.getUser() + "&password=" + datasource.getPassword(), table, properties);
+
 	}
 
 	public void writeAssociation(Datasource datasource, String table, List<Association> list) {
 		SparkSession spark = SparkSession.builder().appName("Sp_LogistcRegression").master("local").getOrCreate();
 		SQLContext sqlContext = spark.sqlContext();
 		JavaSparkContext jsc = new JavaSparkContext(spark.sparkContext());
-		
-		JavaRDD<ar.com.qbuilder.domain.Association> associationRDD = jsc.parallelize(list);
-        Dataset<Row> associationDf = sqlContext.createDataFrame(associationRDD, ar.com.qbuilder.domain.Association.class);
 
-        Properties properties = new java.util.Properties();
-        associationDf.write().mode(SaveMode.Append).jdbc("jdbc:mysql://192.168.5.143:3306/" + datasource.getSchema() + "?user=" 
-        		+ datasource.getUser() 
-        		+ "&password=" 
-        		+ datasource.getPassword(), 
-        		table, properties);
+		JavaRDD<ar.com.qbuilder.domain.Association> associationRDD = jsc.parallelize(list);
+		Dataset<Row> associationDf = sqlContext.createDataFrame(associationRDD,
+				ar.com.qbuilder.domain.Association.class);
+
+		Properties properties = new java.util.Properties();
+		associationDf.write().mode(SaveMode.Append).jdbc("jdbc:mysql://192.168.5.143:3306/" + datasource.getSchema()
+				+ "?user=" + datasource.getUser() + "&password=" + datasource.getPassword(), table, properties);
+	}
+
+	public void delete() {
+		SparkSession spark = this.getOrCreate();
+		SQLContext sqlContext = spark.sqlContext();
+		
+		Properties connectionProperties = new Properties();
+	    connectionProperties.put("user", "root");
+	    connectionProperties.put("password", "root");
+
+	    Dataset<Row> jdbcDF2 = spark.read()
+	              .jdbc("jdbc:mysql://192.168.5.143:3306/" + "tao2"
+	  				+ "?user=" + "root" + "&password=" + "root", "associations", connectionProperties);
+		jdbcDF2.createOrReplaceTempView("associations");
+		sqlContext.sql("DELETE FROM associations WHERE left_id = 152 and type = 10 and right_id = 153;");
 	}
 
 }

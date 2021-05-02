@@ -5,18 +5,18 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ObjectInsertion extends Query {
+public class InsertObject extends Query {
 
 	private Long id;
 	
 	private String object;
 	
-	public ObjectInsertion withObject(String object) {
+	public InsertObject withObject(String object) {
 		this.object = object;
 		return this;
 	}
 	
-	public ObjectInsertion withId(long id) {
+	public InsertObject withId(long id) {
 		this.id = id;
 		return this;
 	}

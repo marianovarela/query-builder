@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class AssociationInsertion extends Query{
+public class InsertAssociation extends Query{
 
 	private Long leftId;
 	
@@ -13,17 +13,17 @@ public class AssociationInsertion extends Query{
 	
 	private Integer inverseType;
 	
-	public AssociationInsertion withLeftId(Long leftId) {
+	public InsertAssociation withLeftId(Long leftId) {
 		this.leftId = leftId;
 		return this;
 	}
 	
-	public AssociationInsertion withRightId(Long rightId) {
+	public InsertAssociation withRightId(Long rightId) {
 		this.rightId = rightId;
 		return this;
 	}
 	
-	public AssociationInsertion withInverseType(Integer inverseType) {
+	public InsertAssociation withInverseType(Integer inverseType) {
 		this.inverseType = inverseType;
 		return this;
 	}
