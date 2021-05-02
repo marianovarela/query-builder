@@ -11,7 +11,8 @@ import ar.com.qbuilder.config.Config;
 import ar.com.qbuilder.domain.DeleteAssociation;
 import ar.com.qbuilder.domain.InsertAssociation;
 import ar.com.qbuilder.domain.InsertObject;
-import ar.com.qbuilder.domain.Selection;
+import ar.com.qbuilder.domain.Select;
+import ar.com.qbuilder.domain.SelectAssociation;
 import ar.com.qbuilder.service.TestService;
 import ar.com.qbuilder.service.executor.Executor;
 
@@ -33,11 +34,23 @@ public class QbuilderApplication {
 		Executor executor = context.getBean(Executor.class);
 		
 		//InsertObject query = makeInsertObject();
-		InsertAssociation query = makeInsertAssociation();
+//		InsertAssociation query = makeInsertAssociation();
 //		Selection query = new Selection("assocations");
 //		DeleteAssociation query = makeDeleteAssociation();
-		executor.execute(query); 
+		SelectAssociation query = makeCountAssociation();
+		Object result = executor.execute(query);
+		System.out.println((long) result);
+//		executor.execute(query); 
 		
+	}
+
+	private static SelectAssociation makeCountAssociation() {
+		SelectAssociation query = new SelectAssociation();
+		query.setLeftId(152L);
+		query.setRightId(153L);
+		query.setType(10);
+		query.withCount();
+		return query;
 	}
 
 	private static DeleteAssociation makeDeleteAssociation() {

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import ar.com.qbuilder.config.domain.Datasource;
 import ar.com.qbuilder.domain.Association;
+import ar.com.qbuilder.domain.SelectAssociation;
 
 @Component
 public class SparkService {
@@ -77,6 +78,32 @@ public class SparkService {
 	  				+ "?user=" + "root" + "&password=" + "root", "associations", connectionProperties);
 		jdbcDF2.createOrReplaceTempView("associations");
 		sqlContext.sql("DELETE FROM associations WHERE left_id = 152 and type = 10 and right_id = 153;");
+	}
+
+	public Object execute(Datasource datasource, SelectAssociation select) {
+		SparkSession spark = this.getOrCreate();
+		Dataset<Row> jdbcDF = spark.read()
+				  .format("jdbc")
+				  .option("url", datasource.getUrl())
+				  .option("driver", datasource.getDriver())
+				  .option("dbtable", datasource.getSchema() + "." + select.getTable())
+				  .option("user", datasource.getUser())
+				  .option("password", datasource.getPassword())
+				  .load();
+		
+		String filter = buildFilter(select);
+		
+		jdbcDF = jdbcDF.filter(filter);
+		if(select.isCount()) {
+			return jdbcDF.count();
+		}
+		
+		return null;
+	}
+
+	private String buildFilter(SelectAssociation select) {
+		String filter = "left_id = " + select.getLeftId() + " and type = " + select.getType();
+		return filter;
 	}
 
 }
