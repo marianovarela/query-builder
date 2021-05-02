@@ -27,7 +27,7 @@ public class InsertValidatorAspect {
     	
         if(obj instanceof InsertObject) {
     		InsertObject insertion = (InsertObject) joinPoint.getArgs()[0];
-    		if(insertion.getId() == null && insertion.getObject() == null) {
+    		if(insertion.getId() == null && insertion.getData() == null) {
             	throw new BusinessException(MessageUtils.INSERT_PARAMETERS_ARE_INCORRECT);
             }
     	}else if(obj instanceof InsertAssociation){

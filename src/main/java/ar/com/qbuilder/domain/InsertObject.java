@@ -9,10 +9,10 @@ public class InsertObject extends Query {
 
 	private Long id;
 	
-	private String object;
+	private String data;
 	
 	public InsertObject withObject(String object) {
-		this.object = object;
+		this.data = object;
 		return this;
 	}
 	

@@ -10,15 +10,22 @@ import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SQLContext;
 import org.apache.spark.sql.SaveMode;
 import org.apache.spark.sql.SparkSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import ar.com.qbuilder.config.domain.Datasource;
 import ar.com.qbuilder.domain.Association;
+import ar.com.qbuilder.domain.Select;
 import ar.com.qbuilder.domain.SelectAssociation;
+import ar.com.qbuilder.domain.SelectObject;
+import ar.com.qbuilder.helper.FilterBuilder;
 
 @Component
 public class SparkService {
 
+	@Autowired
+	private FilterBuilder filterBuilder;
+	
 	public SparkSession getOrCreate() {
 		SparkSession spark = SparkSession.builder().appName("Sp_LogistcRegression").master("local").getOrCreate();
 		return spark;
@@ -82,14 +89,7 @@ public class SparkService {
 
 	public Object execute(Datasource datasource, SelectAssociation select) {
 		SparkSession spark = this.getOrCreate();
-		Dataset<Row> jdbcDF = spark.read()
-				  .format("jdbc")
-				  .option("url", datasource.getUrl())
-				  .option("driver", datasource.getDriver())
-				  .option("dbtable", datasource.getSchema() + "." + select.getTable())
-				  .option("user", datasource.getUser())
-				  .option("password", datasource.getPassword())
-				  .load();
+		Dataset<Row> jdbcDF = getDataFrame(datasource, select, spark);
 		
 		String filter = buildFilter(select);
 		
@@ -101,9 +101,43 @@ public class SparkService {
 		return null;
 	}
 
+	private Dataset<Row> getDataFrame(Datasource datasource, Select select, SparkSession spark) {
+		Dataset<Row> jdbcDF = spark.read()
+				  .format("jdbc")
+				  .option("url", datasource.getUrl())
+				  .option("driver", datasource.getDriver())
+				  .option("dbtable", datasource.getSchema() + "." + select.getTable())
+				  .option("user", datasource.getUser())
+				  .option("password", datasource.getPassword())
+				  .load();
+		return jdbcDF;
+	}
+
 	private String buildFilter(SelectAssociation select) {
 		String filter = "left_id = " + select.getLeftId() + " and type = " + select.getType();
 		return filter;
+	}
+
+	private String buildFilter(SelectObject select) {
+		String filter = "";
+		if(select.getId() != null) {
+			filter = filterBuilder.addFilter("id", select.getId().toString(), filter);
+		}
+		return filter;
+	}
+
+	public Object execute(Datasource datasource, SelectObject select) {
+		SparkSession spark = this.getOrCreate();
+		Dataset<Row> jdbcDF = getDataFrame(datasource, select, spark);
+		
+		String filter = buildFilter(select);
+		
+		jdbcDF = jdbcDF.filter(filter);
+		if(select.isCount()) {
+			return jdbcDF.count();
+		}
+				
+		return jdbcDF.collect();
 	}
 
 }

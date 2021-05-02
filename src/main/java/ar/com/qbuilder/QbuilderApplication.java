@@ -13,6 +13,7 @@ import ar.com.qbuilder.domain.InsertAssociation;
 import ar.com.qbuilder.domain.InsertObject;
 import ar.com.qbuilder.domain.Select;
 import ar.com.qbuilder.domain.SelectAssociation;
+import ar.com.qbuilder.domain.SelectObject;
 import ar.com.qbuilder.service.TestService;
 import ar.com.qbuilder.service.executor.Executor;
 
@@ -37,11 +38,18 @@ public class QbuilderApplication {
 //		InsertAssociation query = makeInsertAssociation();
 //		Selection query = new Selection("assocations");
 //		DeleteAssociation query = makeDeleteAssociation();
-		SelectAssociation query = makeCountAssociation();
+//		SelectAssociation query = makeCountAssociation();
+		SelectObject query = makeSelectObject();
 		Object result = executor.execute(query);
-		System.out.println((long) result);
+		System.out.println(result);
 //		executor.execute(query); 
 		
+	}
+
+	private static SelectObject makeSelectObject() {
+		SelectObject select = new SelectObject();
+		select.setId(3L);
+		return select;
 	}
 
 	private static SelectAssociation makeCountAssociation() {
@@ -76,7 +84,7 @@ public class QbuilderApplication {
 		insertion.setId(100203L);
 		insertion.setTable("objects");
 		insertion.setType(10);
-		insertion.setObject("'{}'");
+		insertion.setData("'{}'");
 		return insertion;
 	}
 

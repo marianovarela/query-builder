@@ -35,7 +35,7 @@ public class InsertionService {
 		List<ar.com.qbuilder.domain.Object> list = new ArrayList<>();
 		ar.com.qbuilder.domain.Object obj = new ar.com.qbuilder.domain.Object();
 		obj.setId(insertion.getId());
-		obj.setData(insertion.getObject());
+		obj.setData(insertion.getData());
 		obj.setType(insertion.getType());
 		list.add(obj);
 
