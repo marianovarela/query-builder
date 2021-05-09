@@ -24,9 +24,6 @@ import ar.com.qbuilder.service.executor.Executor;
 public class QbuilderApplication {
 
 	@Autowired
-	TestService testService;
-	
-	@Autowired
 	Executor executor;
 	
 	public static void main(String[] args) {
@@ -53,9 +50,10 @@ public class QbuilderApplication {
 
 	private static UpdateAssociation makeUpdateAssociation() {
 		UpdateAssociation association = new UpdateAssociation();
-		association.withLeftId(152L);
-		association.setRightId(163L);
-		association.setType(18);
+		association.setLeftId(152L);
+		association.setRightId(164L);
+		association.setType(22);
+		association.setNewType(23);
 		association.setTable("associations");
 		return association;
 	}

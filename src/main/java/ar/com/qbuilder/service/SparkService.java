@@ -126,8 +126,9 @@ public class SparkService {
 		if(select.isCount()) {
 			return jdbcDF.count();
 		}
-
-		return jdbcDF.collect();
+		
+		Object result = (Object) jdbcDF.collect(); 
+		return result;
 	}
 
 	private Dataset<Row> getDataFrame(Datasource datasource, Select select, SparkSession spark) {

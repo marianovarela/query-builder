@@ -7,11 +7,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ar.com.qbuilder.aspect.InsertValidator;
+import ar.com.qbuilder.aspect.UpdateAssociationValidator;
 import ar.com.qbuilder.config.domain.Datasource;
 import ar.com.qbuilder.domain.Association;
-import ar.com.qbuilder.domain.InsertAssociation;
-import ar.com.qbuilder.domain.InsertObject;
 import ar.com.qbuilder.domain.UpdateAssociation;
 import ar.com.qbuilder.domain.UpdateObject;
 import ar.com.qbuilder.helper.TaoSelector;
@@ -46,6 +44,7 @@ public class UpdationService {
 		return list;
 	}
 
+	@UpdateAssociationValidator
 	public Object execute(UpdateAssociation updation) {
 		Association assoc = makeListToUpdate(updation);
 		long indexTao = taoSelector.selectTao(assoc.getLeft_id());
@@ -60,7 +59,7 @@ public class UpdationService {
 		ar.com.qbuilder.domain.Association association = new ar.com.qbuilder.domain.Association();
 		association.setLeft_id(updation.getLeftId());
 		association.setRight_id(updation.getRightId());
-		association.setType(updation.getType());
+		association.setType(updation.getNewType());
 		return association;
 	}
 
