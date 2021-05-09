@@ -83,7 +83,21 @@ public class SparkService {
 				ar.com.qbuilder.domain.Association.class);
 
 		Properties properties = new java.util.Properties();
-		associationDf.write().mode(SaveMode.Append).jdbc("jdbc:mysql://192.168.5.143:3306/" + datasource.getSchema()
+		associationDf.write().mode(SaveMode.Append).jdbc(datasource.getUrl() + "/" + datasource.getSchema()
+				+ "?user=" + datasource.getUser() + "&password=" + datasource.getPassword(), table, properties);
+	}
+	
+	public void updateAssociation(Datasource datasource, String table, List<Association> list) {
+		SparkSession spark = SparkSession.builder().appName("Sp_LogistcRegression").master("local").getOrCreate();
+		SQLContext sqlContext = spark.sqlContext();
+		JavaSparkContext jsc = new JavaSparkContext(spark.sparkContext());
+
+		JavaRDD<ar.com.qbuilder.domain.Association> associationRDD = jsc.parallelize(list);
+		Dataset<Row> associationDf = sqlContext.createDataFrame(associationRDD,
+				ar.com.qbuilder.domain.Association.class);
+
+		Properties properties = new java.util.Properties();
+		associationDf.write().mode(SaveMode.Overwrite).jdbc(datasource.getUrl() + "/" + datasource.getSchema()
 				+ "?user=" + datasource.getUser() + "&password=" + datasource.getPassword(), table, properties);
 	}
 

@@ -12,6 +12,7 @@ import ar.com.qbuilder.config.domain.Datasource;
 import ar.com.qbuilder.domain.Association;
 import ar.com.qbuilder.domain.InsertAssociation;
 import ar.com.qbuilder.domain.InsertObject;
+import ar.com.qbuilder.domain.UpdateAssociation;
 import ar.com.qbuilder.domain.UpdateObject;
 import ar.com.qbuilder.helper.TaoSelector;
 
@@ -43,6 +44,24 @@ public class UpdationService {
 		list.add(obj);
 
 		return list;
+	}
+
+	public Object execute(UpdateAssociation updation) {
+		Association assoc = makeListToUpdate(updation);
+		long indexTao = taoSelector.selectTao(assoc.getLeft_id());
+		Datasource datasource = taoSelector.getDatasource(indexTao);
+		List<Association> assocList = new LinkedList<Association>();
+		assocList.add(assoc);
+		sparkService.updateAssociation(datasource, updation.getTable(), assocList);
+		return null;
+	}
+
+	private Association makeListToUpdate(UpdateAssociation updation) {
+		ar.com.qbuilder.domain.Association association = new ar.com.qbuilder.domain.Association();
+		association.setLeft_id(updation.getLeftId());
+		association.setRight_id(updation.getRightId());
+		association.setType(updation.getType());
+		return association;
 	}
 
 }

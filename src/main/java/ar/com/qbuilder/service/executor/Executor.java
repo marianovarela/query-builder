@@ -8,6 +8,7 @@ import ar.com.qbuilder.domain.InsertAssociation;
 import ar.com.qbuilder.domain.InsertObject;
 import ar.com.qbuilder.domain.SelectAssociation;
 import ar.com.qbuilder.domain.SelectObject;
+import ar.com.qbuilder.domain.UpdateAssociation;
 import ar.com.qbuilder.domain.UpdateObject;
 import ar.com.qbuilder.service.DeletionService;
 import ar.com.qbuilder.service.InsertionService;
@@ -50,6 +51,10 @@ public class Executor {
 	}
 
 	public Object execute(UpdateObject query) {
+		return updationService.execute(query);
+	}
+
+	public Object execute(UpdateAssociation query) {
 		return updationService.execute(query);
 	}
 	
