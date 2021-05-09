@@ -57,6 +57,21 @@ public class SparkService {
 				+ datasource.getUser() + "&password=" + datasource.getPassword(), table, properties);
 
 	}
+	
+	public Object updateObject(Datasource datasource, String table, List<ar.com.qbuilder.domain.Object> objects) {
+		SparkSession spark = SparkSession.builder().appName("Sp_LogistcRegression").master("local").getOrCreate();
+		SQLContext sqlContext = spark.sqlContext();
+		JavaSparkContext jsc = new JavaSparkContext(spark.sparkContext());
+
+		JavaRDD<ar.com.qbuilder.domain.Object> objRDD = jsc.parallelize(objects);
+		Dataset<Row> objDf = sqlContext.createDataFrame(objRDD, ar.com.qbuilder.domain.Object.class);
+
+		Properties properties = new java.util.Properties();
+		objDf.write().mode(SaveMode.Overwrite).jdbc(datasource.getUrl() + "/" + datasource.getSchema() + "?user="
+				+ datasource.getUser() + "&password=" + datasource.getPassword(), table, properties);
+		
+		return null;
+	}
 
 	public void writeAssociation(Datasource datasource, String table, List<Association> list) {
 		SparkSession spark = SparkSession.builder().appName("Sp_LogistcRegression").master("local").getOrCreate();

@@ -4,6 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class Updation extends Query{
+public class Update extends Query{
 
 }

@@ -14,6 +14,7 @@ import ar.com.qbuilder.domain.InsertObject;
 import ar.com.qbuilder.domain.Select;
 import ar.com.qbuilder.domain.SelectAssociation;
 import ar.com.qbuilder.domain.SelectObject;
+import ar.com.qbuilder.domain.UpdateObject;
 import ar.com.qbuilder.service.TestService;
 import ar.com.qbuilder.service.executor.Executor;
 
@@ -35,16 +36,26 @@ public class QbuilderApplication {
 		Executor executor = context.getBean(Executor.class);
 		
 		//InsertObject query = makeInsertObject();
+		UpdateObject query = makeUpdateObject();
 //		InsertAssociation query = makeInsertAssociation();
 //		Selection query = new Selection("assocations");
 //		DeleteAssociation query = makeDeleteAssociation();
 //		SelectAssociation query = makeCountAssociation();
 //		SelectObject query = makeSelectObject();
-		SelectAssociation query = makeSelectAssociation();
-		Object result = executor.execute(query);
-		System.out.println(result);
-//		executor.execute(query); 
+//		SelectAssociation query = makeSelectAssociation();
+//		Object result = executor.execute(query);
+//		System.out.println(result);
+		executor.execute(query); 
 		
+	}
+
+	private static UpdateObject makeUpdateObject() {
+		UpdateObject updation = new UpdateObject();
+		updation.setId(100203L);
+		updation.setTable("objects");
+		updation.setType(10);
+		updation.setData("'{'id': 'algun id'}'");
+		return updation;
 	}
 
 	private static SelectAssociation makeSelectAssociation() {

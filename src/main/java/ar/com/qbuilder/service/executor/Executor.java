@@ -6,18 +6,22 @@ import org.springframework.stereotype.Service;
 import ar.com.qbuilder.domain.DeleteAssociation;
 import ar.com.qbuilder.domain.InsertAssociation;
 import ar.com.qbuilder.domain.InsertObject;
-import ar.com.qbuilder.domain.Select;
 import ar.com.qbuilder.domain.SelectAssociation;
 import ar.com.qbuilder.domain.SelectObject;
+import ar.com.qbuilder.domain.UpdateObject;
 import ar.com.qbuilder.service.DeletionService;
 import ar.com.qbuilder.service.InsertionService;
 import ar.com.qbuilder.service.SelectionService;
+import ar.com.qbuilder.service.UpdationService;
 
 @Service
 public class Executor {
 
 	@Autowired 
 	private InsertionService insertionService;
+	
+	@Autowired 
+	private UpdationService updationService;
 	
 	@Autowired 
 	private SelectionService selectionService;
@@ -43,6 +47,10 @@ public class Executor {
 
 	public Object execute(SelectObject query) {
 		return selectionService.execute(query);
+	}
+
+	public Object execute(UpdateObject query) {
+		return updationService.execute(query);
 	}
 	
 }
