@@ -1,6 +1,9 @@
 package ar.com.qbuilder;
 
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -14,6 +17,7 @@ import ar.com.qbuilder.domain.InsertObject;
 import ar.com.qbuilder.domain.Select;
 import ar.com.qbuilder.domain.SelectAssociation;
 import ar.com.qbuilder.domain.SelectObject;
+import ar.com.qbuilder.domain.TimeRange;
 import ar.com.qbuilder.domain.UpdateAssociation;
 import ar.com.qbuilder.domain.UpdateObject;
 import ar.com.qbuilder.service.TestService;
@@ -35,17 +39,30 @@ public class QbuilderApplication {
 		
 //		InsertObject query = makeInsertObject();
 //		UpdateObject query = makeUpdateObject();
-		UpdateAssociation query = makeUpdateAssociation();
+//		UpdateAssociation query = makeUpdateAssociation();
 //		InsertAssociation query = makeInsertAssociation();
 //		Selection query = new Selection("assocations");
 //		DeleteAssociation query = makeDeleteAssociation();
 //		SelectAssociation query = makeCountAssociation();
+		SelectAssociation query = makeRangeAssociation();
 //		SelectObject query = makeSelectObject();
 //		SelectAssociation query = makeSelectAssociation();
 //		Object result = executor.execute(query);
 //		System.out.println(result);
 		executor.execute(query); 
 		
+	}
+
+	private static SelectAssociation makeRangeAssociation() {
+		SelectAssociation query = new SelectAssociation();
+		query.setLeftId(152L);
+		query.setType(23);
+		query.setLimit(2L);
+		TimeRange range = new TimeRange();
+		range.setLow(Date.valueOf("2020-01-05"));
+		range.setHigh(Date.valueOf("2022-01-05"));
+		query.setTimeRange(range);
+		return query;
 	}
 
 	private static UpdateAssociation makeUpdateAssociation() {

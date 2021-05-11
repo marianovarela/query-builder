@@ -123,6 +123,7 @@ public class SparkService {
 		String filter = buildFilter(select);
 		
 		jdbcDF = jdbcDF.filter(filter);
+//		jdbcDF = jdbcDF.filter("created >= 2020");
 		if(select.isCount()) {
 			return jdbcDF.count();
 		}
@@ -154,6 +155,11 @@ public class SparkService {
 		if(select.getRightId() != null) {
 			filter = filterBuilder.addFilter("right_id", select.getRightId().toString(), filter);
 		}
+		//time range filter
+		if(select.getTimeRange() != null) {
+			filter = filterBuilder.addTimeRange("created", select.getTimeRange(), filter);
+		}
+		
 		return filter;
 	}
 
