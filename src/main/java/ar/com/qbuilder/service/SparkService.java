@@ -128,6 +128,10 @@ public class SparkService {
 			return jdbcDF.count();
 		}
 		
+		if(select.getLimit() != null) {
+			jdbcDF = jdbcDF.limit(select.getLimit());
+		}
+		
 		Object result = (Object) jdbcDF.collect(); 
 		return result;
 	}

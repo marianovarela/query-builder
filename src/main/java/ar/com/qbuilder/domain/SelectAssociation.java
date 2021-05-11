@@ -12,7 +12,7 @@ public class SelectAssociation extends Select{
 	
 	private String table = "associations";
 	
-	private Long limit;
+	private Integer limit;
 	
 	private TimeRange timeRange;
 	

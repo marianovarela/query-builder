@@ -57,7 +57,7 @@ public class QbuilderApplication {
 		SelectAssociation query = new SelectAssociation();
 		query.setLeftId(152L);
 		query.setType(23);
-		query.setLimit(2L);
+		query.setLimit(1);
 		TimeRange range = new TimeRange();
 		range.setLow(Date.valueOf("2020-01-05"));
 		range.setHigh(Date.valueOf("2022-01-05"));
