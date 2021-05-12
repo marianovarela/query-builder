@@ -16,6 +16,8 @@ public class SelectAssociation extends Select{
 	
 	private TimeRange timeRange;
 	
+	private Range range;
+	
 	public SelectAssociation(String table) {
 		super(table);
 	}

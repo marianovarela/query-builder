@@ -1,5 +1,6 @@
 package ar.com.qbuilder.service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
@@ -123,7 +124,6 @@ public class SparkService {
 		String filter = buildFilter(select);
 		
 		jdbcDF = jdbcDF.filter(filter);
-//		jdbcDF = jdbcDF.filter("created >= 2020");
 		if(select.isCount()) {
 			return jdbcDF.count();
 		}
@@ -132,7 +132,11 @@ public class SparkService {
 			jdbcDF = jdbcDF.limit(select.getLimit());
 		}
 		
-		Object result = (Object) jdbcDF.collect(); 
+		Row[] result = (Row[]) jdbcDF.collect(); 
+
+		if(select.getRange() != null) {
+			result = Arrays.copyOfRange(result, select.getRange().getPosition(), select.getRange().getPosition() +select.getRange().getLimit()); 
+		}
 		return result;
 	}
 

@@ -14,6 +14,7 @@ import ar.com.qbuilder.config.Config;
 import ar.com.qbuilder.domain.DeleteAssociation;
 import ar.com.qbuilder.domain.InsertAssociation;
 import ar.com.qbuilder.domain.InsertObject;
+import ar.com.qbuilder.domain.Range;
 import ar.com.qbuilder.domain.Select;
 import ar.com.qbuilder.domain.SelectAssociation;
 import ar.com.qbuilder.domain.SelectObject;
@@ -44,6 +45,7 @@ public class QbuilderApplication {
 //		Selection query = new Selection("assocations");
 //		DeleteAssociation query = makeDeleteAssociation();
 //		SelectAssociation query = makeCountAssociation();
+//		SelectAssociation query = makeTimeRangeAssociation();
 		SelectAssociation query = makeRangeAssociation();
 //		SelectObject query = makeSelectObject();
 //		SelectAssociation query = makeSelectAssociation();
@@ -52,8 +54,8 @@ public class QbuilderApplication {
 		executor.execute(query); 
 		
 	}
-
-	private static SelectAssociation makeRangeAssociation() {
+	
+	private static SelectAssociation makeTimeRangeAssociation() {
 		SelectAssociation query = new SelectAssociation();
 		query.setLeftId(152L);
 		query.setType(23);
@@ -62,6 +64,17 @@ public class QbuilderApplication {
 		range.setLow(Date.valueOf("2020-01-05"));
 		range.setHigh(Date.valueOf("2022-01-05"));
 		query.setTimeRange(range);
+		return query;
+	}
+	
+	private static SelectAssociation makeRangeAssociation() {
+		SelectAssociation query = new SelectAssociation();
+		query.setLeftId(152L);
+		query.setType(23);
+		Range range = new Range();
+		range.setPosition(2);
+		range.setLimit(4);
+		query.setRange(range);
 		return query;
 	}
 
