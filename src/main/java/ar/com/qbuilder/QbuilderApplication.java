@@ -3,6 +3,8 @@ package ar.com.qbuilder;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -38,15 +40,17 @@ public class QbuilderApplication {
 				
 		Executor executor = context.getBean(Executor.class);
 		
+		Map<Integer, Integer> keys = makeInitialKeys();
+		executor.setKeys(keys);
 //		InsertObject query = makeInsertObject();
 //		UpdateObject query = makeUpdateObject();
 //		UpdateAssociation query = makeUpdateAssociation();
-//		InsertAssociation query = makeInsertAssociation();
+		InsertAssociation query = makeInsertAssociation();
 //		Selection query = new Selection("assocations");
 //		DeleteAssociation query = makeDeleteAssociation();
 //		SelectAssociation query = makeCountAssociation();
 //		SelectAssociation query = makeTimeRangeAssociation();
-		SelectAssociation query = makeRangeAssociation();
+//		SelectAssociation query = makeRangeAssociation();
 //		SelectObject query = makeSelectObject();
 //		SelectAssociation query = makeSelectAssociation();
 //		Object result = executor.execute(query);
@@ -55,6 +59,16 @@ public class QbuilderApplication {
 		
 	}
 	
+	private static Map<Integer, Integer> makeInitialKeys() {
+		Map<Integer, Integer> keys = new HashMap<Integer, Integer>();
+		keys.put(1, 2);
+		keys.put(2, 1);
+		keys.put(4, 5);
+		keys.put(5, 4);
+		
+		return keys;
+	}
+
 	private static SelectAssociation makeTimeRangeAssociation() {
 		SelectAssociation query = new SelectAssociation();
 		query.setLeftId(152L);

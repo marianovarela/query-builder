@@ -1,5 +1,7 @@
 package ar.com.qbuilder.service.executor;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +12,7 @@ import ar.com.qbuilder.domain.SelectAssociation;
 import ar.com.qbuilder.domain.SelectObject;
 import ar.com.qbuilder.domain.UpdateAssociation;
 import ar.com.qbuilder.domain.UpdateObject;
+import ar.com.qbuilder.helper.AssociationKeys;
 import ar.com.qbuilder.service.DeletionService;
 import ar.com.qbuilder.service.InsertionService;
 import ar.com.qbuilder.service.SelectionService;
@@ -29,6 +32,9 @@ public class Executor {
 	
 	@Autowired 
 	private DeletionService deletionService;
+	
+	@Autowired
+	private AssociationKeys associationKeys;
 	
 	public void execute(InsertObject insertion) {
 		insertionService.execute(insertion);
@@ -56,6 +62,10 @@ public class Executor {
 
 	public Object execute(UpdateAssociation query) {
 		return updationService.execute(query);
+	}
+
+	public void setKeys(Map<Integer, Integer> keys) {
+		associationKeys.keys = keys;
 	}
 	
 }

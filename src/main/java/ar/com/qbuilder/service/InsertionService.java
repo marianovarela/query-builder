@@ -12,6 +12,7 @@ import ar.com.qbuilder.config.domain.Datasource;
 import ar.com.qbuilder.domain.Association;
 import ar.com.qbuilder.domain.InsertAssociation;
 import ar.com.qbuilder.domain.InsertObject;
+import ar.com.qbuilder.helper.AssociationKeys;
 import ar.com.qbuilder.helper.TaoSelector;
 
 @Service
@@ -22,6 +23,9 @@ public class InsertionService {
 
 	@Autowired
 	SparkService sparkService;
+	
+	@Autowired
+	AssociationKeys associationKeys;
 
 	@InsertValidator()
 	public void execute(InsertObject insertion) {
@@ -45,6 +49,8 @@ public class InsertionService {
 	@InsertValidator()
 	public void execute(InsertAssociation insertion) {
 		List<ar.com.qbuilder.domain.Association> list = makeListToInsert(insertion);
+		
+		this.updateAssociationKeys(insertion.getType(), insertion.getInverseType());
 
 		list.forEach((assoc) -> {
 			long indexTao = taoSelector.selectTao(assoc.getLeft_id());
@@ -54,20 +60,30 @@ public class InsertionService {
 			sparkService.writeAssociation(datasource, insertion.getTable(), assocList);
 		});
 	}
+	
+	private void updateAssociationKeys(Integer type, Integer inverseType) {
+		this.associationKeys.keys.put(type, inverseType);
+		this.associationKeys.keys.put(inverseType, type);
+	}
 
 	private List<Association> makeListToInsert(InsertAssociation insertion) {
 		List<ar.com.qbuilder.domain.Association> list = new ArrayList<>();
+		
+		//atype
 		ar.com.qbuilder.domain.Association association = new ar.com.qbuilder.domain.Association();
 		association.setLeft_id(insertion.getLeftId());
 		association.setRight_id(insertion.getRightId());
 		association.setType(insertion.getType());
 		list.add(association);
 
-		ar.com.qbuilder.domain.Association associationInverse = new ar.com.qbuilder.domain.Association();
-		associationInverse.setLeft_id(insertion.getRightId());
-		associationInverse.setRight_id(insertion.getLeftId());
-		associationInverse.setType(insertion.getInverseType());
-		list.add(associationInverse);
+		//inverse
+		if(insertion.getInverseType() != null) {
+			ar.com.qbuilder.domain.Association associationInverse = new ar.com.qbuilder.domain.Association();
+			associationInverse.setLeft_id(insertion.getRightId());
+			associationInverse.setRight_id(insertion.getLeftId());
+			associationInverse.setType(insertion.getInverseType());
+			list.add(associationInverse);
+		}
 
 		return list;
 	}
