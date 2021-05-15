@@ -56,7 +56,6 @@ public class QbuilderApplication {
 //		Object result = executor.execute(query);
 //		System.out.println(result);
 		executor.execute(query); 
-		
 	}
 	
 	private static Map<Integer, Integer> makeInitialKeys() {
