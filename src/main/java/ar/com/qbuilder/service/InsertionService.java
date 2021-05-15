@@ -63,7 +63,9 @@ public class InsertionService {
 	
 	private void updateAssociationKeys(Integer type, Integer inverseType) {
 		this.associationKeys.keys.put(type, inverseType);
-		this.associationKeys.keys.put(inverseType, type);
+		if(inverseType != null) {
+			this.associationKeys.keys.put(inverseType, type);
+		}
 	}
 
 	private List<Association> makeListToInsert(InsertAssociation insertion) {

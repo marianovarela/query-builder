@@ -45,7 +45,8 @@ public class QbuilderApplication {
 //		InsertObject query = makeInsertObject();
 //		UpdateObject query = makeUpdateObject();
 //		UpdateAssociation query = makeUpdateAssociation();
-		InsertAssociation query = makeInsertAssociation();
+//		InsertAssociation query = makeInsertAssociationWithInverse();
+		InsertAssociation query = makeInsertAssociationWithoutInverse();
 //		Selection query = new Selection("assocations");
 //		DeleteAssociation query = makeDeleteAssociation();
 //		SelectAssociation query = makeCountAssociation();
@@ -140,12 +141,21 @@ public class QbuilderApplication {
 		return query;
 	}
 
-	private static InsertAssociation makeInsertAssociation() {
+	private static InsertAssociation makeInsertAssociationWithInverse() {
 		InsertAssociation association = new InsertAssociation();
 		association.withLeftId(152L);
 		association.setRightId(203L);
 		association.setType(10);
 		association.setInverseType(20);
+		association.setTable("associations");
+		return association;
+	}
+	
+	private static InsertAssociation makeInsertAssociationWithoutInverse() {
+		InsertAssociation association = new InsertAssociation();
+		association.withLeftId(302L);
+		association.setRightId(203L);
+		association.setType(10);
 		association.setTable("associations");
 		return association;
 	}
