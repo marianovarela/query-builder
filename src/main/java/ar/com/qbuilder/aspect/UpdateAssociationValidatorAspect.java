@@ -1,7 +1,5 @@
 package ar.com.qbuilder.aspect;
 
-import java.util.List;
-
 import org.apache.spark.sql.Row;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;

@@ -153,7 +153,7 @@ public class QbuilderApplication {
 	
 	private static InsertAssociation makeInsertAssociationWithoutInverse() {
 		InsertAssociation association = new InsertAssociation();
-		association.withLeftId(302L);
+		association.withLeftId(312L);
 		association.setRightId(203L);
 		association.setType(10);
 		association.setTable("associations");

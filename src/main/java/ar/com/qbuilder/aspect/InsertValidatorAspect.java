@@ -1,16 +1,21 @@
 package ar.com.qbuilder.aspect;
 
+import org.apache.spark.sql.Row;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import ar.com.qbuilder.config.domain.Datasource;
 import ar.com.qbuilder.domain.InsertAssociation;
 import ar.com.qbuilder.domain.InsertObject;
 import ar.com.qbuilder.domain.Query;
+import ar.com.qbuilder.domain.SelectAssociation;
 import ar.com.qbuilder.exception.BusinessException;
 import ar.com.qbuilder.helper.AssociationKeys;
+import ar.com.qbuilder.helper.TaoSelector;
+import ar.com.qbuilder.service.SparkService;
 import ar.com.qbuilder.utils.MessageUtils;
 
 @Aspect
@@ -19,6 +24,12 @@ public class InsertValidatorAspect {
 	
 	@Autowired
 	private AssociationKeys associationKeys;
+	
+	@Autowired
+	private SparkService sparkService;
+
+	@Autowired
+	private TaoSelector taoSelector;
 
     @Before(value = "@annotation(ar.com.qbuilder.aspect.InsertValidator)")
     public void getInsertionParameters(JoinPoint joinPoint) { 
@@ -41,10 +52,36 @@ public class InsertValidatorAspect {
             	throw new BusinessException(MessageUtils.INSERT_PARAMETERS_ARE_INCORRECT);
             }
     		this.validAssociationKey(insertion.getType(), insertion.getInverseType());
+    		this.existAssociation(insertion.getLeftId(), insertion.getRightId(), insertion.getType(), insertion.getInverseType());
     	}
     }
     
-  //valid if the association exists and if it exists valid if it is the same, if it is not the same it will throw exception.
+    private void existAssociation(Long leftId, Long rightId, Integer type, Integer inverseType) {
+		Row[] result = this.getAssociation(leftId, rightId, type, inverseType);
+    	if(result.length > 0) {
+    		throw new BusinessException(MessageUtils.ASSOCIATION_ALREADY_EXIST);
+    	}	
+    	if(inverseType != null) {
+    		Row[] inverseResult = this.getAssociation(leftId, rightId, type, inverseType);
+        	if(inverseResult.length > 0) {
+        		throw new BusinessException(MessageUtils.ASSOCIATION_ALREADY_EXIST);
+        	}	
+    	}
+	}
+     
+	private Row[] getAssociation(Long leftId, Long rightId, Integer type, Integer inverseType) {
+		SelectAssociation select = new SelectAssociation();
+    	select.setLeftId(leftId);
+    	select.setRightId(rightId);
+    	select.setType(type);
+    	
+    	long indexTao = taoSelector.selectTao(select.getLeftId());
+		Datasource datasource = taoSelector.getDatasource(indexTao);
+		Row[] result = (Row[]) sparkService.execute(datasource, select);
+		return result;
+	}
+
+	//valid if the association exists and if it exists valid if it is the same, if it is not the same it will throw exception.
   	private void validAssociationKey(Integer type, Integer inverseType) {
   		if(this.associationKeys.keys.containsKey(type)) {
   			Integer retrievedInverseType = this.associationKeys.keys.get(type);
