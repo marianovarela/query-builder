@@ -12,6 +12,7 @@ import ar.com.qbuilder.config.domain.Datasource;
 import ar.com.qbuilder.domain.Association;
 import ar.com.qbuilder.domain.UpdateAssociation;
 import ar.com.qbuilder.domain.UpdateObject;
+import ar.com.qbuilder.helper.ResultBuilder;
 import ar.com.qbuilder.helper.TaoSelector;
 
 @Service
@@ -29,7 +30,7 @@ public class UpdationService {
 		Datasource datasource = taoSelector.getDatasource(indexTao);
 		List<ar.com.qbuilder.domain.Object> list = makeListToInsert(update);
 		Object result = sparkService.updateObject(datasource, update.getTable(), list);
-		return result; 
+		return ResultBuilder.buildSuccess(); 
 	}
 
 	private List<ar.com.qbuilder.domain.Object> makeListToInsert(UpdateObject updation) {
@@ -52,7 +53,7 @@ public class UpdationService {
 		List<Association> assocList = new LinkedList<Association>();
 		assocList.add(assoc);
 		sparkService.updateAssociation(datasource, updation.getTable(), assocList);
-		return null;
+		return ResultBuilder.buildSuccess();
 	}
 
 	private Association makeListToUpdate(UpdateAssociation updation) {

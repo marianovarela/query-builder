@@ -12,7 +12,9 @@ import ar.com.qbuilder.config.domain.Datasource;
 import ar.com.qbuilder.domain.Association;
 import ar.com.qbuilder.domain.InsertAssociation;
 import ar.com.qbuilder.domain.InsertObject;
+import ar.com.qbuilder.domain.Result;
 import ar.com.qbuilder.helper.AssociationKeys;
+import ar.com.qbuilder.helper.ResultBuilder;
 import ar.com.qbuilder.helper.TaoSelector;
 
 @Service
@@ -28,11 +30,12 @@ public class InsertionService {
 	AssociationKeys associationKeys;
 
 	@InsertValidator()
-	public void execute(InsertObject insertion) {
+	public Result execute(InsertObject insertion) {
 		long indexTao = taoSelector.selectTao(insertion.getId());
 		Datasource datasource = taoSelector.getDatasource(indexTao);
 		List<ar.com.qbuilder.domain.Object> list = makeListToInsert(insertion);
 		sparkService.writeObject(datasource, insertion.getTable(), list);
+		return ResultBuilder.buildSuccess();
 	}
 
 	private List<ar.com.qbuilder.domain.Object> makeListToInsert(InsertObject insertion) {
@@ -47,7 +50,7 @@ public class InsertionService {
 	}
 
 	@InsertValidator()
-	public void execute(InsertAssociation insertion) {
+	public Result execute(InsertAssociation insertion) {
 		List<ar.com.qbuilder.domain.Association> list = makeListToInsert(insertion);
 		
 		this.updateAssociationKeys(insertion.getType(), insertion.getInverseType());
@@ -59,6 +62,7 @@ public class InsertionService {
 			assocList.add(assoc);
 			sparkService.writeAssociation(datasource, insertion.getTable(), assocList);
 		});
+		return ResultBuilder.buildSuccess();
 	}
 	
 	private void updateAssociationKeys(Integer type, Integer inverseType) {
