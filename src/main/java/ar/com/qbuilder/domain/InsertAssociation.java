@@ -13,6 +13,8 @@ public class InsertAssociation extends Query{
 	
 	private Integer inverseType;
 	
+	private String data;
+	
 	public InsertAssociation withLeftId(Long leftId) {
 		this.leftId = leftId;
 		return this;

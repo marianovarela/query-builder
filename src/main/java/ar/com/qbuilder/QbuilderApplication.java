@@ -44,13 +44,13 @@ public class QbuilderApplication {
 		executor.setKeys(keys);
 //		InsertObject query = makeInsertObject();
 //		UpdateObject query = makeUpdateObject();
-		UpdateAssociation query = makeUpdateAssociationWithInverse();
+//		UpdateAssociation query = makeUpdateAssociationWithInverse();
 //		InsertAssociation query = makeInsertAssociationWithInverse();
 //		InsertAssociation query = makeInsertAssociationWithoutInverse();
 //		Selection query = new Selection("assocations");
 //		DeleteAssociation query = makeDeleteAssociation();
 //		SelectAssociation query = makeCountAssociation();
-//		SelectAssociation query = makeTimeRangeAssociation();
+		SelectAssociation query = makeTimeRangeAssociation();
 //		SelectAssociation query = makeRangeAssociation();
 //		SelectObject query = makeSelectObject();
 //		SelectAssociation query = makeSelectAssociation();
@@ -75,8 +75,8 @@ public class QbuilderApplication {
 		query.setType(23);
 		query.setLimit(1);
 		TimeRange range = new TimeRange();
-		range.setLow(Date.valueOf("2020-01-05"));
-		range.setHigh(Date.valueOf("2022-01-05"));
+		range.setLow(10L);
+		range.setHigh(15L);
 		query.setTimeRange(range);
 		return query;
 	}
@@ -97,7 +97,8 @@ public class QbuilderApplication {
 		association.setLeftId(152L);
 		association.setRightId(164L);
 		association.setType(22);
-		association.setNewType(23);
+		association.setTime(1L);
+		association.setData("{field: 1}");
 		association.setTable("associations");
 		return association;
 	}
@@ -107,7 +108,7 @@ public class QbuilderApplication {
 		association.setLeftId(152L);
 		association.setRightId(164L);
 		association.setType(22);
-		association.setNewType(23);
+		association.setData("{field: 1}");
 		association.setTable("associations");
 		return association;
 	}
@@ -157,6 +158,7 @@ public class QbuilderApplication {
 		association.setRightId(203L);
 		association.setType(10);
 		association.setInverseType(20);
+		association.setData("{}");
 		association.setTable("associations");
 		return association;
 	}
@@ -166,6 +168,7 @@ public class QbuilderApplication {
 		association.withLeftId(312L);
 		association.setRightId(203L);
 		association.setType(10);
+		association.setData("{}");
 		association.setTable("associations");
 		return association;
 	}

@@ -11,6 +11,8 @@ public class UpdateAssociation extends Query{
 	
 	private Long rightId;
 	
-	private Integer newType;
+	private String data;
+	
+	private Long time;
 	
 }

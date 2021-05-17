@@ -13,5 +13,7 @@ public class Association implements Serializable{
 	private long left_id;
 	private long right_id;
 	private long type;
+	private long time;
+	private String data;
 	
 }

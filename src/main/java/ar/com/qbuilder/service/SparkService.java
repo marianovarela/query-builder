@@ -11,21 +11,30 @@ import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SQLContext;
 import org.apache.spark.sql.SaveMode;
 import org.apache.spark.sql.SparkSession;
+import org.hibernate.Hibernate;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import ar.com.qbuilder.config.domain.Datasource;
 import ar.com.qbuilder.domain.Association;
+import ar.com.qbuilder.domain.DeleteAssociation;
 import ar.com.qbuilder.domain.Select;
 import ar.com.qbuilder.domain.SelectAssociation;
 import ar.com.qbuilder.domain.SelectObject;
 import ar.com.qbuilder.helper.FilterBuilder;
+import ar.com.qbuilder.utils.HibernateUtil;
 
 @Component
 public class SparkService {
 
 	@Autowired
 	private FilterBuilder filterBuilder;
+	
+	@Autowired
+	private HibernateUtil hibernateUtil;
 	
 	public SparkSession getOrCreate() {
 		SparkSession spark = SparkSession.builder().appName("Sp_LogistcRegression").master("local").getOrCreate();
@@ -102,19 +111,15 @@ public class SparkService {
 				+ "?user=" + datasource.getUser() + "&password=" + datasource.getPassword(), table, properties);
 	}
 
-	public void delete() {
-		SparkSession spark = this.getOrCreate();
-		SQLContext sqlContext = spark.sqlContext();
-		
-		Properties connectionProperties = new Properties();
-	    connectionProperties.put("user", "root");
-	    connectionProperties.put("password", "root");
-
-	    Dataset<Row> jdbcDF2 = spark.read()
-	              .jdbc("jdbc:mysql://192.168.5.143:3306/" + "tao2"
-	  				+ "?user=" + "root" + "&password=" + "root", "associations", connectionProperties);
-		jdbcDF2.createOrReplaceTempView("associations");
-		sqlContext.sql("DELETE FROM associations WHERE left_id = 152 and type = 10 and right_id = 153;");
+	public void delete(Datasource datasource, DeleteAssociation delete) {
+		SessionFactory sessionFactory = hibernateUtil.getSessionFactory(datasource);
+		Session session = sessionFactory.getCurrentSession();
+		session.beginTransaction();
+		String sql = String.format("DELETE FROM association where left_id = '%s' and right_id = %s and type = %s;", 
+				delete.getLeftId(), delete.getType(), delete.getRightId());
+		session.createSQLQuery(sql).executeUpdate();
+		session.getTransaction().commit();
+		session.close();
 	}
 
 	public Object execute(Datasource datasource, SelectAssociation select) {
@@ -165,7 +170,7 @@ public class SparkService {
 		}
 		//time range filter
 		if(select.getTimeRange() != null) {
-			filter = filterBuilder.addTimeRange("created", select.getTimeRange(), filter);
+			filter = filterBuilder.addTimeRange("time", select.getTimeRange(), filter);
 		}
 		
 		return filter;

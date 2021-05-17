@@ -11,4 +11,8 @@ public class AssociationKeys {
 	// here are saved the types and their inverses if they exist
 	public Map<Integer, Integer> keys = new HashMap<Integer, Integer>();
 	
+	public Integer getInverse(Integer type) {
+		return this.keys.get(type);
+	}
+	
 }
