@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import ar.com.qbuilder.config.domain.Datasource;
 import ar.com.qbuilder.domain.DeleteAssociation;
+import ar.com.qbuilder.domain.DeleteObject;
 import ar.com.qbuilder.helper.AssociationKeys;
 import ar.com.qbuilder.helper.TaoSelector;
 
@@ -39,6 +40,12 @@ public class DeletionService {
 		inverse.setRightId(delete.getLeftId());
 		inverse.setType(associationKeys.getInverse(delete.getType()));
 		return inverse;
+	}
+
+	public void execute(DeleteObject delete) {
+		long indexTao = taoSelector.selectTao(delete.getId());
+		Datasource datasource = taoSelector.getDatasource(indexTao);
+		sparkService.delete(datasource, delete);
 	}
 	
 }

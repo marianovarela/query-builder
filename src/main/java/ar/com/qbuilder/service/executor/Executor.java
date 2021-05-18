@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ar.com.qbuilder.domain.DeleteAssociation;
+import ar.com.qbuilder.domain.DeleteObject;
 import ar.com.qbuilder.domain.InsertAssociation;
 import ar.com.qbuilder.domain.InsertObject;
 import ar.com.qbuilder.domain.SelectAssociation;
@@ -52,6 +53,11 @@ public class Executor {
 		deletionService.execute(query);
 	}
 
+	public void execute(DeleteObject query) {
+		deletionService.execute(query);
+		
+	}
+
 	public Object execute(SelectObject query) {
 		return selectionService.execute(query);
 	}
@@ -67,5 +73,5 @@ public class Executor {
 	public void setKeys(Map<Integer, Integer> keys) {
 		associationKeys.keys = keys;
 	}
-	
+
 }

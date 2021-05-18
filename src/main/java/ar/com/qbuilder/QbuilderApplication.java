@@ -14,6 +14,7 @@ import org.springframework.context.ApplicationContext;
 
 import ar.com.qbuilder.config.Config;
 import ar.com.qbuilder.domain.DeleteAssociation;
+import ar.com.qbuilder.domain.DeleteObject;
 import ar.com.qbuilder.domain.InsertAssociation;
 import ar.com.qbuilder.domain.InsertObject;
 import ar.com.qbuilder.domain.Range;
@@ -48,7 +49,8 @@ public class QbuilderApplication {
 //		InsertAssociation query = makeInsertAssociationWithInverse();
 //		InsertAssociation query = makeInsertAssociationWithoutInverse();
 //		Selection query = new Selection("assocations");
-		DeleteAssociation query = makeDeleteAssociation();
+//		DeleteAssociation query = makeDeleteAssociation();
+		DeleteObject query = makeDeleteObject();
 //		SelectAssociation query = makeCountAssociation();
 //		SelectAssociation query = makeTimeRangeAssociation();
 //		SelectAssociation query = makeRangeAssociation();
@@ -144,6 +146,12 @@ public class QbuilderApplication {
 		return query;
 	}
 
+	private static DeleteObject makeDeleteObject() {
+		DeleteObject delete = new DeleteObject();
+		delete.setId(100203);
+		return delete;
+	}
+	
 	private static DeleteAssociation makeDeleteAssociation() {
 		DeleteAssociation query = new DeleteAssociation();
 		query.setLeftId(302L);
