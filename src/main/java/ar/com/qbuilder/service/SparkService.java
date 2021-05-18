@@ -113,10 +113,10 @@ public class SparkService {
 
 	public void delete(Datasource datasource, DeleteAssociation delete) {
 		SessionFactory sessionFactory = hibernateUtil.getSessionFactory(datasource);
-		Session session = sessionFactory.getCurrentSession();
+		Session session = sessionFactory.openSession();
 		session.beginTransaction();
-		String sql = String.format("DELETE FROM association where left_id = '%s' and right_id = %s and type = %s;", 
-				delete.getLeftId(), delete.getType(), delete.getRightId());
+		String sql = String.format("DELETE FROM associations where left_id = '%s' and right_id = %s and type = %s;", 
+				delete.getLeftId(), delete.getRightId(), delete.getType());
 		session.createSQLQuery(sql).executeUpdate();
 		session.getTransaction().commit();
 		session.close();

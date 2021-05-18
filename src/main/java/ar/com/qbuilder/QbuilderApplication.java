@@ -48,9 +48,9 @@ public class QbuilderApplication {
 //		InsertAssociation query = makeInsertAssociationWithInverse();
 //		InsertAssociation query = makeInsertAssociationWithoutInverse();
 //		Selection query = new Selection("assocations");
-//		DeleteAssociation query = makeDeleteAssociation();
+		DeleteAssociation query = makeDeleteAssociation();
 //		SelectAssociation query = makeCountAssociation();
-		SelectAssociation query = makeTimeRangeAssociation();
+//		SelectAssociation query = makeTimeRangeAssociation();
 //		SelectAssociation query = makeRangeAssociation();
 //		SelectObject query = makeSelectObject();
 //		SelectAssociation query = makeSelectAssociation();
@@ -146,8 +146,8 @@ public class QbuilderApplication {
 
 	private static DeleteAssociation makeDeleteAssociation() {
 		DeleteAssociation query = new DeleteAssociation();
-		query.setLeftId(152L);
-		query.setRightId(153L);
+		query.setLeftId(302L);
+		query.setRightId(203L);
 		query.setType(10);
 		return query;
 	}
