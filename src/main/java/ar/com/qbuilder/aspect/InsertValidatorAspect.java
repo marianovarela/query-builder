@@ -85,7 +85,7 @@ public class InsertValidatorAspect {
   	private void validAssociationKey(Integer type, Integer inverseType) {
   		if(this.associationKeys.keys.containsKey(type)) {
   			Integer retrievedInverseType = this.associationKeys.keys.get(type);
-  			if(inverseType != retrievedInverseType) {
+  			if(!inverseType.equals(retrievedInverseType)) {
   				throw new BusinessException(MessageUtils.INVERSE_TYPE_ALREADY_EXISTS_AND_ITS_DIFFERENT);
   			}
   		}

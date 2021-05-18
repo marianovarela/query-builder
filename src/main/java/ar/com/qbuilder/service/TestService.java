@@ -17,12 +17,12 @@ public class TestService {
 	public void test() {
 		SparkSession spark = sparkService.getOrCreate();
 		Dataset<Row> jdbcDF = spark.read()
-				  .format("jdbc")
-				  .option("url", "jdbc:mysql://192.168.6.250:13317")
-				  .option("driver", "com.mysql.jdbc.Driver")
-				  .option("dbtable", "prueba.processed_blocks")
-				  .option("user", "root")
-				  .option("password", "root")
+//				  .format("jdbc")
+//				  .option("url", "jdbc:mysql://192.168.6.250:13317")
+//				  .option("driver", "com.mysql.jdbc.Driver")
+//				  .option("dbtable", "prueba.processed_blocks")
+//				  .option("user", "root")
+//				  .option("password", "root")
 				  .load();
 		
 		List<Row> rows = jdbcDF.collectAsList();
