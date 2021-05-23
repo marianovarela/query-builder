@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import ar.com.qbuilder.aspect.UpdateAssociationValidator;
 import ar.com.qbuilder.config.domain.Datasource;
 import ar.com.qbuilder.domain.Association;
+import ar.com.qbuilder.domain.Result;
 import ar.com.qbuilder.domain.UpdateAssociation;
 import ar.com.qbuilder.domain.UpdateObject;
 import ar.com.qbuilder.helper.AssociationKeys;
@@ -28,7 +29,7 @@ public class UpdationService {
 	@Autowired
 	AssociationKeys associationKeys;
 
-	public Object execute(UpdateObject update) {
+	public Result execute(UpdateObject update) {
 		// TODO Esto se repite en insertionservice
 		long indexTao = taoSelector.selectTao(update.getId());
 		Datasource datasource = taoSelector.getDatasource(indexTao);
@@ -50,7 +51,7 @@ public class UpdationService {
 	}
 
 	@UpdateAssociationValidator
-	public Object execute(UpdateAssociation updation) {
+	public Result execute(UpdateAssociation updation) {
 		updateAssociation(updation);
 		
 		// if inverse type not is null then update inverse type
