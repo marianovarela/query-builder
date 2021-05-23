@@ -2,12 +2,10 @@ package ar.com.qbuilder.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import ar.com.qbuilder.config.domain.Datasource;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -39,5 +37,5 @@ public class Config {
 	public String getURL(int nTao) {
 		return env.getProperty("tao" + nTao + ".url");
 	}
-
+	
 }

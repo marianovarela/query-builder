@@ -31,12 +31,12 @@ public class TestService {
 		}
 		
 		Dataset<Row> jdbcDF2 = spark.read()
-				  .format("jdbc")
-				  .option("url", "jdbc:mysql://192.168.6.250:13317")
-				  .option("driver", "com.mysql.jdbc.Driver")
-				  .option("dbtable", "prueba.processed_blocks")
-				  .option("user", "root")
-				  .option("password", "root")
+//				  .format("jdbc")
+//				  .option("url", "jdbc:mysql://192.168.6.250:13317")
+//				  .option("driver", "com.mysql.jdbc.Driver")
+//				  .option("dbtable", "prueba.processed_blocks")
+//				  .option("user", "root")
+//				  .option("password", "root")
 				  .load();
 		
 		Dataset<Row> joined = jdbcDF.join(jdbcDF2, jdbcDF.col("old_id").equalTo(jdbcDF2.col("old_id")), "inner");

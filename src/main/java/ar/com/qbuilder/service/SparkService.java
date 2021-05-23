@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
+import org.apache.spark.SparkContext;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.sql.Dataset;
@@ -41,26 +42,27 @@ public class SparkService {
 	}
 
 	public void writeObject(Datasource datasource, String table, List<ar.com.qbuilder.domain.Object> objects) {
-		try {
-			SparkSession spark = SparkSession.builder().appName("Sp_LogistcRegression").master("local").getOrCreate();
-			SQLContext sqlContext = spark.sqlContext();
-			JavaSparkContext jsc = new JavaSparkContext(spark.sparkContext());
-			
-			JavaRDD<ar.com.qbuilder.domain.Object> objRDD = jsc.parallelize(objects);
-			Dataset<Row> objDf = sqlContext.createDataFrame(objRDD, ar.com.qbuilder.domain.Object.class);
-			
-			Properties properties = new java.util.Properties();
-			objDf.write().mode(SaveMode.Append).jdbc(datasource.getUrl() + "/" + datasource.getSchema() + "?user="
-					+ datasource.getUser() + "&password=" + datasource.getPassword(), table, properties);
-		} catch(Exception  e) {
-			e.printStackTrace();
-		}
+		SparkSession spark = SparkSession.builder().appName("Sp_LogistcRegression").master("local").getOrCreate();
+		SQLContext sqlContext = spark.sqlContext();
+		SparkContext sparkContext = spark.sparkContext();
+		@SuppressWarnings("resource")
+		JavaSparkContext jsc = new JavaSparkContext(sparkContext);
+
+		JavaRDD<ar.com.qbuilder.domain.Object> objRDD = jsc.parallelize(objects);
+		Dataset<Row> objDf = sqlContext.createDataFrame(objRDD, ar.com.qbuilder.domain.Object.class);
+
+		Properties properties = new java.util.Properties();
+		objDf.write().mode(SaveMode.Append).jdbc(datasource.getUrl() + "/" + datasource.getSchema() + "?user="
+				+ datasource.getUser() + "&password=" + datasource.getPassword(), table, properties);
+
 	}
 
 	public Object updateObject(Datasource datasource, String table, List<ar.com.qbuilder.domain.Object> objects) {
 		SparkSession spark = SparkSession.builder().appName("Sp_LogistcRegression").master("local").getOrCreate();
 		SQLContext sqlContext = spark.sqlContext();
-		JavaSparkContext jsc = new JavaSparkContext(spark.sparkContext());
+		SparkContext sparkContext = spark.sparkContext();
+		@SuppressWarnings("resource")
+		JavaSparkContext jsc = new JavaSparkContext(sparkContext);
 
 		JavaRDD<ar.com.qbuilder.domain.Object> objRDD = jsc.parallelize(objects);
 		Dataset<Row> objDf = sqlContext.createDataFrame(objRDD, ar.com.qbuilder.domain.Object.class);
@@ -75,7 +77,9 @@ public class SparkService {
 	public void writeAssociation(Datasource datasource, String table, List<Association> list) {
 		SparkSession spark = SparkSession.builder().appName("Sp_LogistcRegression").master("local").getOrCreate();
 		SQLContext sqlContext = spark.sqlContext();
-		JavaSparkContext jsc = new JavaSparkContext(spark.sparkContext());
+		SparkContext sparkContext = spark.sparkContext();
+		@SuppressWarnings("resource")
+		JavaSparkContext jsc = new JavaSparkContext(sparkContext);
 
 		JavaRDD<ar.com.qbuilder.domain.Association> associationRDD = jsc.parallelize(list);
 		Dataset<Row> associationDf = sqlContext.createDataFrame(associationRDD,
@@ -89,7 +93,9 @@ public class SparkService {
 	public void updateAssociation(Datasource datasource, String table, List<Association> list) {
 		SparkSession spark = SparkSession.builder().appName("Sp_LogistcRegression").master("local").getOrCreate();
 		SQLContext sqlContext = spark.sqlContext();
-		JavaSparkContext jsc = new JavaSparkContext(spark.sparkContext());
+		SparkContext sparkContext = spark.sparkContext();
+		@SuppressWarnings("resource")
+		JavaSparkContext jsc = new JavaSparkContext(sparkContext);
 
 		JavaRDD<ar.com.qbuilder.domain.Association> associationRDD = jsc.parallelize(list);
 		Dataset<Row> associationDf = sqlContext.createDataFrame(associationRDD,
