@@ -40,7 +40,6 @@ public class TestService {
 				  .load();
 		
 		Dataset<Row> joined = jdbcDF.join(jdbcDF2, jdbcDF.col("old_id").equalTo(jdbcDF2.col("old_id")), "inner");
-		long count = joined.count();
 		joined.show();
 		joined.printSchema();
 		

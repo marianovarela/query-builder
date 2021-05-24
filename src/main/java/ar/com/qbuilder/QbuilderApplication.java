@@ -1,8 +1,6 @@
 package ar.com.qbuilder;
 
 
-import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,7 +16,6 @@ import ar.com.qbuilder.domain.DeleteObject;
 import ar.com.qbuilder.domain.InsertAssociation;
 import ar.com.qbuilder.domain.InsertObject;
 import ar.com.qbuilder.domain.Range;
-import ar.com.qbuilder.domain.Select;
 import ar.com.qbuilder.domain.SelectAssociation;
 import ar.com.qbuilder.domain.SelectObject;
 import ar.com.qbuilder.domain.TimeRange;
