@@ -11,12 +11,14 @@ import ar.com.qbuilder.domain.InsertAssociation;
 import ar.com.qbuilder.domain.InsertObject;
 import ar.com.qbuilder.domain.Result;
 import ar.com.qbuilder.domain.SelectAssociation;
+import ar.com.qbuilder.domain.SelectCustom;
 import ar.com.qbuilder.domain.SelectObject;
 import ar.com.qbuilder.domain.UpdateAssociation;
 import ar.com.qbuilder.domain.UpdateObject;
 import ar.com.qbuilder.helper.AssociationKeys;
 import ar.com.qbuilder.service.DeletionService;
 import ar.com.qbuilder.service.InsertionService;
+import ar.com.qbuilder.service.SelectionCustomService;
 import ar.com.qbuilder.service.SelectionService;
 import ar.com.qbuilder.service.UpdationService;
 
@@ -34,6 +36,9 @@ public class Executor {
 	
 	@Autowired 
 	private DeletionService deletionService;
+	
+	@Autowired 
+	private SelectionCustomService selectionCustomService;
 	
 	@Autowired
 	private AssociationKeys associationKeys;
@@ -73,6 +78,11 @@ public class Executor {
 
 	public void setKeys(Map<Integer, Integer> keys) {
 		associationKeys.keys = keys;
+	}
+
+	public Object execute(SelectCustom query) {
+		return selectionCustomService.execute(query);
+		
 	}
 
 }

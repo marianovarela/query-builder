@@ -2,6 +2,8 @@ package ar.com.qbuilder;
 
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,13 +13,18 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
 import ar.com.qbuilder.config.Config;
+import ar.com.qbuilder.domain.Condition;
 import ar.com.qbuilder.domain.DeleteAssociation;
 import ar.com.qbuilder.domain.DeleteObject;
+import ar.com.qbuilder.domain.Entity;
 import ar.com.qbuilder.domain.InsertAssociation;
 import ar.com.qbuilder.domain.InsertObject;
+import ar.com.qbuilder.domain.LogicOperator;
 import ar.com.qbuilder.domain.Range;
 import ar.com.qbuilder.domain.SelectAssociation;
+import ar.com.qbuilder.domain.SelectCustom;
 import ar.com.qbuilder.domain.SelectObject;
+import ar.com.qbuilder.domain.ConditionSimple;
 import ar.com.qbuilder.domain.TimeRange;
 import ar.com.qbuilder.domain.UpdateAssociation;
 import ar.com.qbuilder.domain.UpdateObject;
@@ -47,7 +54,7 @@ public class QbuilderApplication {
 //		InsertAssociation query = makeInsertAssociationWithoutInverse();
 //		Selection query = new Selection("assocations");
 //		DeleteAssociation query = makeDeleteAssociation();
-		DeleteObject query = makeDeleteObject();
+//		DeleteObject query = makeDeleteObject();
 //		SelectAssociation query = makeCountAssociation();
 //		SelectAssociation query = makeTimeRangeAssociation();
 //		SelectAssociation query = makeRangeAssociation();
@@ -55,9 +62,27 @@ public class QbuilderApplication {
 //		SelectAssociation query = makeSelectAssociation();
 //		Object result = executor.execute(query);
 //		System.out.println(result);
+		SelectCustom query = makeSelectCustom();
 		executor.execute(query); 
 	}
 	
+	private static SelectCustom makeSelectCustom() {
+		SelectCustom query = new SelectCustom();
+		query.setEntity(Entity.Objects);
+		List<Condition> conditions = new LinkedList<Condition>();
+		Condition firstCondition = new ConditionSimple();
+		firstCondition.setLogicOperator(LogicOperator.AND);
+		Condition secondCondition = new ConditionSimple();
+		secondCondition.setLogicOperator(LogicOperator.AND);
+		Condition thirdCondition = new ConditionSimple();
+		thirdCondition.setLogicOperator(LogicOperator.OR);
+		conditions.add(firstCondition);
+		conditions.add(secondCondition);
+		conditions.add(thirdCondition);
+		query.setCondition(conditions);
+		return query;
+	}
+
 	private static Map<Integer, Integer> makeInitialKeys() {
 		Map<Integer, Integer> keys = new HashMap<Integer, Integer>();
 		keys.put(1, 2);

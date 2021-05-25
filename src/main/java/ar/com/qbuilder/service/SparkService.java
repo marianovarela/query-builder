@@ -172,7 +172,7 @@ public class SparkService {
 		return filter;
 	}
 
-	private String buildFilter(SelectObject select) {
+	private String buildFilterById(SelectObject select) {
 		String filter = "";
 		if (select.getId() != null) {
 			filter = filterBuilder.addFilter("id", select.getId().toString(), filter);
@@ -184,7 +184,7 @@ public class SparkService {
 		SparkSession spark = this.getOrCreate();
 		Dataset<Row> jdbcDF = getDataFrame(datasource, select, spark);
 
-		String filter = buildFilter(select);
+		String filter = buildFilterById(select);
 
 		jdbcDF = jdbcDF.filter(filter);
 		if (select.isCount()) {
