@@ -15,6 +15,8 @@ public class InsertAssociation extends Query{
 	
 	private String data;
 	
+	private static String table = "associations";
+	
 	public InsertAssociation withLeftId(Long leftId) {
 		this.leftId = leftId;
 		return this;

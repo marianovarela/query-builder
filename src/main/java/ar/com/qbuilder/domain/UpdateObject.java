@@ -11,6 +11,8 @@ public class UpdateObject extends Query {
 	
 	private String data;
 	
+	private static String table = "objects";
+	
 	public UpdateObject withObject(String object) {
 		this.data = object;
 		return this;

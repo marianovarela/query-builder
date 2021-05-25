@@ -98,7 +98,6 @@ public class QbuilderApplication {
 		association.setType(22);
 		association.setTime(1L);
 		association.setData("{field: 1}");
-		association.setTable("associations");
 		return association;
 	}
 
@@ -108,14 +107,12 @@ public class QbuilderApplication {
 		association.setRightId(164L);
 		association.setType(22);
 		association.setData("{field: 1}");
-		association.setTable("associations");
 		return association;
 	}
 	
 	private static UpdateObject makeUpdateObject() {
 		UpdateObject updation = new UpdateObject();
 		updation.setId(100203L);
-		updation.setTable("objects");
 		updation.setType(10);
 		updation.setData("'{'id': 'algun id'}'");
 		return updation;
@@ -174,17 +171,15 @@ public class QbuilderApplication {
 		association.setRightId(203L);
 		association.setType(10);
 		association.setData("{}");
-		association.setTable("associations");
 		return association;
 	}
 
 	private static InsertObject makeInsertObject() {
 		InsertObject insertion = new InsertObject();
 		insertion.setId(100203L);
-		insertion.setTable("objects");
 		insertion.setType(10);
 		insertion.setData("'{}'");
 		return insertion;
 	}
-
+	
 }

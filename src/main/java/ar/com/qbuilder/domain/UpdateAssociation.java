@@ -15,4 +15,6 @@ public class UpdateAssociation extends Query{
 	
 	private Long time;
 	
+	private static String table = "associations";
+	
 }
