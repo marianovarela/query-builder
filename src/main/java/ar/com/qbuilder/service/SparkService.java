@@ -36,13 +36,17 @@ public class SparkService {
 	@Autowired
 	private HibernateUtil hibernateUtil;
 
+	private static String appName = "Sp_LogistcRegression";
+
+	private static String master = "local";
+
 	public SparkSession getOrCreate() {
-		SparkSession spark = SparkSession.builder().appName("Sp_LogistcRegression").master("local").getOrCreate();
+		SparkSession spark = SparkSession.builder().appName("Sp_LogistcRegression").master(master).getOrCreate();
 		return spark;
 	}
 
 	public void writeObject(Datasource datasource, String table, List<ar.com.qbuilder.domain.Object> objects) {
-		SparkSession spark = SparkSession.builder().appName("Sp_LogistcRegression").master("local").getOrCreate();
+		SparkSession spark = SparkSession.builder().appName(appName).master(master).getOrCreate();
 		SQLContext sqlContext = spark.sqlContext();
 		SparkContext sparkContext = spark.sparkContext();
 		@SuppressWarnings("resource")
@@ -58,7 +62,7 @@ public class SparkService {
 	}
 
 	public Object updateObject(Datasource datasource, String table, List<ar.com.qbuilder.domain.Object> objects) {
-		SparkSession spark = SparkSession.builder().appName("Sp_LogistcRegression").master("local").getOrCreate();
+		SparkSession spark = SparkSession.builder().appName(appName).master(master).getOrCreate();
 		SQLContext sqlContext = spark.sqlContext();
 		SparkContext sparkContext = spark.sparkContext();
 		@SuppressWarnings("resource")
@@ -75,7 +79,7 @@ public class SparkService {
 	}
 
 	public void writeAssociation(Datasource datasource, String table, List<Association> list) {
-		SparkSession spark = SparkSession.builder().appName("Sp_LogistcRegression").master("local").getOrCreate();
+		SparkSession spark = SparkSession.builder().appName(appName).master(master).getOrCreate();
 		SQLContext sqlContext = spark.sqlContext();
 		SparkContext sparkContext = spark.sparkContext();
 		@SuppressWarnings("resource")
@@ -91,7 +95,7 @@ public class SparkService {
 	}
 
 	public void updateAssociation(Datasource datasource, String table, List<Association> list) {
-		SparkSession spark = SparkSession.builder().appName("Sp_LogistcRegression").master("local").getOrCreate();
+		SparkSession spark = SparkSession.builder().appName(appName).master(master).getOrCreate();
 		SQLContext sqlContext = spark.sqlContext();
 		SparkContext sparkContext = spark.sparkContext();
 		@SuppressWarnings("resource")
