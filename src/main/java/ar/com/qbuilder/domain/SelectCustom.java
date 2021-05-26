@@ -13,5 +13,5 @@ public class SelectCustom {
 	private Entity entity;
 	
 	// 	
-	private List<Condition> condition = new LinkedList<Condition>();
+	private List<Condition> conditions = new LinkedList<Condition>();
 }

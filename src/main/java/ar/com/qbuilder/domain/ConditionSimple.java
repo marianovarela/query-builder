@@ -6,8 +6,13 @@ import lombok.Setter;
 @Getter @Setter
 public class ConditionSimple extends Condition{
 
-	private Operator operator;
+	private String operator;
 	
 	// lo que tenga que comparar
+	private Entity entity;
+	
+	private String field;
+	
+	private String value;
 	
 }

@@ -7,11 +7,19 @@ import ar.com.qbuilder.domain.TimeRange;
 @Service
 public class FilterBuilder {
 	
-	public String addFilter(String field, String value, String filter) {
-		if(filter.isEmpty()) {
+	public String addFilter(String field, String value, String accumulatedfilter) {
+		if(accumulatedfilter.isEmpty()) {
 			return field + " = " + value;  
 		} else {
-			return filter + " and " + field + " = " + value; 
+			return accumulatedfilter + " and " + field + " = " + value; 
+		}
+	}
+	
+	public String addFilter(String field, String value, String operator, String accumulatedfilter) {
+		if(accumulatedfilter.isEmpty()) {
+			return field + " = " + value;  
+		} else {
+			return accumulatedfilter + " " + operator + " " + field + " = " + value; 
 		}
 	}
 
@@ -23,5 +31,5 @@ public class FilterBuilder {
 			return filter + " and " + condition; 
 		}
 	}
-	
+
 }

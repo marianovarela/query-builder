@@ -6,6 +6,6 @@ import lombok.Setter;
 @Getter @Setter
 public abstract class Condition {
 
-	private LogicOperator logicOperator;
+	protected LogicOperator logicOperator;
 	
 }

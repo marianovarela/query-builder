@@ -1,6 +1,9 @@
 package ar.com.qbuilder.service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
@@ -8,7 +11,10 @@ import org.apache.spark.SparkContext;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.sql.Dataset;
+import org.apache.spark.sql.Encoder;
+import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.Row;
+import org.apache.spark.sql.RowFactory;
 import org.apache.spark.sql.SQLContext;
 import org.apache.spark.sql.SaveMode;
 import org.apache.spark.sql.SparkSession;
@@ -19,13 +25,17 @@ import org.springframework.stereotype.Component;
 
 import ar.com.qbuilder.config.domain.Datasource;
 import ar.com.qbuilder.domain.Association;
+import ar.com.qbuilder.domain.Condition;
+import ar.com.qbuilder.domain.ConditionSimple;
+import ar.com.qbuilder.domain.ConditionTree;
 import ar.com.qbuilder.domain.DeleteAssociation;
 import ar.com.qbuilder.domain.DeleteObject;
-import ar.com.qbuilder.domain.Select;
 import ar.com.qbuilder.domain.SelectAssociation;
+import ar.com.qbuilder.domain.SelectCustom;
 import ar.com.qbuilder.domain.SelectObject;
 import ar.com.qbuilder.helper.FilterBuilder;
 import ar.com.qbuilder.utils.HibernateUtil;
+import scala.collection.Seq;
 
 @Component
 public class SparkService {
@@ -36,6 +46,8 @@ public class SparkService {
 	@Autowired
 	private HibernateUtil hibernateUtil;
 
+	private SQLContext sqlContext;
+
 	private static String appName = "Sp_LogistcRegression";
 
 	private static String master = "local";
@@ -43,6 +55,18 @@ public class SparkService {
 	public SparkSession getOrCreate() {
 		SparkSession spark = SparkSession.builder().appName("Sp_LogistcRegression").master(master).getOrCreate();
 		return spark;
+	}
+
+	public Dataset<Row> getEmptyDataSet() {
+		SparkSession spark = getOrCreate();
+		SQLContext sqlContext = spark.sqlContext();
+		SparkContext sparkContext = spark.sparkContext();
+		@SuppressWarnings("resource")
+		JavaSparkContext jsc = new JavaSparkContext(sparkContext);
+
+		JavaRDD<ar.com.qbuilder.domain.Object> objRDD = jsc.parallelize(new ArrayList<ar.com.qbuilder.domain.Object>());
+		Dataset<Row> objDf = sqlContext.createDataFrame(objRDD, ar.com.qbuilder.domain.Object.class);
+		return objDf;
 	}
 
 	public void writeObject(Datasource datasource, String table, List<ar.com.qbuilder.domain.Object> objects) {
@@ -123,7 +147,7 @@ public class SparkService {
 
 	public Object execute(Datasource datasource, SelectAssociation select) {
 		SparkSession spark = this.getOrCreate();
-		Dataset<Row> jdbcDF = getDataFrame(datasource, select, spark);
+		Dataset<Row> jdbcDF = getDataFrame(datasource, select.getTable(), spark);
 
 		String filter = buildFilter(select);
 
@@ -145,11 +169,13 @@ public class SparkService {
 		return result;
 	}
 
-	private Dataset<Row> getDataFrame(Datasource datasource, Select select, SparkSession spark) {
+	private Dataset<Row> getDataFrame(Datasource datasource, String table, SparkSession spark) {
 		Dataset<Row> jdbcDF = spark.read().format("jdbc").option("url", datasource.getUrl())
 				.option("driver", datasource.getDriver())
-				.option("dbtable", datasource.getSchema() + "." + select.getTable())
-				.option("user", datasource.getUser()).option("password", datasource.getPassword()).load();
+				.option("dbtable", datasource.getSchema() + "." + table)
+				.option("user", datasource.getUser())
+				.option("password", datasource.getPassword())
+				.load();
 		return jdbcDF;
 	}
 
@@ -172,6 +198,28 @@ public class SparkService {
 		return filter;
 	}
 
+	@SuppressWarnings("unchecked")
+	public Dataset<Row> execute(Datasource datasource, SelectCustom select) {
+		SparkSession spark = this.getOrCreate();
+		Dataset<Row> jdbcDF = getDataFrame(datasource, select.getEntity().value, spark);
+		String filter = buildFilter(select);
+		jdbcDF = jdbcDF.filter(filter);
+		return jdbcDF;
+	}
+
+	private String buildFilter(SelectCustom select) {
+		String filter = "";
+		for(Condition condition : select.getConditions()) {
+			if(condition instanceof ConditionSimple) {
+				ConditionSimple c = (ConditionSimple) condition;
+				filter = filterBuilder.addFilter(c.getField(), c.getValue(), c.getOperator(), filter);
+			}else if(condition instanceof ConditionTree) {
+				
+			}
+		}
+		return filter;
+	}
+
 	private String buildFilterById(SelectObject select) {
 		String filter = "";
 		if (select.getId() != null) {
@@ -182,7 +230,7 @@ public class SparkService {
 
 	public Object execute(Datasource datasource, SelectObject select) {
 		SparkSession spark = this.getOrCreate();
-		Dataset<Row> jdbcDF = getDataFrame(datasource, select, spark);
+		Dataset<Row> jdbcDF = getDataFrame(datasource, select.getTable(), spark);
 
 		String filter = buildFilterById(select);
 
@@ -203,5 +251,7 @@ public class SparkService {
 		session.getTransaction().commit();
 		session.close();
 	}
+
+
 
 }

@@ -14,6 +14,7 @@ import org.springframework.context.ApplicationContext;
 
 import ar.com.qbuilder.config.Config;
 import ar.com.qbuilder.domain.Condition;
+import ar.com.qbuilder.domain.ConditionSimple;
 import ar.com.qbuilder.domain.DeleteAssociation;
 import ar.com.qbuilder.domain.DeleteObject;
 import ar.com.qbuilder.domain.Entity;
@@ -24,7 +25,6 @@ import ar.com.qbuilder.domain.Range;
 import ar.com.qbuilder.domain.SelectAssociation;
 import ar.com.qbuilder.domain.SelectCustom;
 import ar.com.qbuilder.domain.SelectObject;
-import ar.com.qbuilder.domain.ConditionSimple;
 import ar.com.qbuilder.domain.TimeRange;
 import ar.com.qbuilder.domain.UpdateAssociation;
 import ar.com.qbuilder.domain.UpdateObject;
@@ -70,16 +70,15 @@ public class QbuilderApplication {
 		SelectCustom query = new SelectCustom();
 		query.setEntity(Entity.Objects);
 		List<Condition> conditions = new LinkedList<Condition>();
-		Condition firstCondition = new ConditionSimple();
+		
+		ConditionSimple firstCondition = new ConditionSimple();
 		firstCondition.setLogicOperator(LogicOperator.AND);
-		Condition secondCondition = new ConditionSimple();
-		secondCondition.setLogicOperator(LogicOperator.AND);
-		Condition thirdCondition = new ConditionSimple();
-		thirdCondition.setLogicOperator(LogicOperator.OR);
+		firstCondition.setOperator("=");
+		firstCondition.setField("type");
+		firstCondition.setValue("2");
 		conditions.add(firstCondition);
-		conditions.add(secondCondition);
-		conditions.add(thirdCondition);
-		query.setCondition(conditions);
+		
+		query.setConditions(conditions);
 		return query;
 	}
 

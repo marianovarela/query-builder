@@ -2,6 +2,8 @@ package ar.com.qbuilder.service.executor;
 
 import java.util.Map;
 
+import org.apache.spark.sql.Dataset;
+import org.apache.spark.sql.Row;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -80,9 +82,9 @@ public class Executor {
 		associationKeys.keys = keys;
 	}
 
-	public Object execute(SelectCustom query) {
-		return selectionCustomService.execute(query);
-		
+	public Row[] execute(SelectCustom query) {
+		Row[] result = (Row[]) selectionCustomService.execute(query); 
+		return result;
 	}
 
 }
