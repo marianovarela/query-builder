@@ -202,21 +202,48 @@ public class SparkService {
 	public Dataset<Row> execute(Datasource datasource, SelectCustom select) {
 		SparkSession spark = this.getOrCreate();
 		Dataset<Row> jdbcDF = getDataFrame(datasource, select.getEntity().value, spark);
-		String filter = buildFilter(select);
+		String filter = buildFilter(select.getCondition());
 		jdbcDF = jdbcDF.filter(filter);
 		return jdbcDF;
 	}
 
-	private String buildFilter(SelectCustom select) {
+	private String buildFilter(Condition condition) {
 		String filter = "";
-		for(Condition condition : select.getConditions()) {
-			if(condition instanceof ConditionSimple) {
-				ConditionSimple c = (ConditionSimple) condition;
-				filter = filterBuilder.addFilter(c.getField(), c.getValue(), c.getOperator(), filter);
-			}else if(condition instanceof ConditionTree) {
-				
+		if(condition instanceof ConditionSimple) {
+			ConditionSimple c = (ConditionSimple) condition;
+			filter = buildFilter(c, filter);
+		}else if(condition instanceof ConditionTree) {
+			ConditionTree tree = (ConditionTree) condition;
+			filter = buildFilter(tree, filter);
+		}
+		return filter;
+	}
+
+	private String buildFilter(ConditionTree tree, String filter) {
+		String conditionFilter = "(" + makeCondition(tree) + ")";
+		if(filter.isEmpty()) {
+			filter = conditionFilter;
+		} else {
+			filter = tree.getLogicOperator() + " " + conditionFilter;
+		}
+		return filter;
+	}
+
+	private String makeCondition(ConditionTree tree) {
+		String condition = "";
+		Condition initial = tree.getConditions().get(0);
+		condition = buildFilter(initial);
+		if(tree.getConditions().size() > 1) {
+			for (int i = 1; i < tree.getConditions().size(); i++) {
+				Condition childCondition = tree.getConditions().get(i);
+				condition += " " + childCondition.getLogicOperator() + " " + buildFilter(childCondition);
 			}
 		}
+		return condition;
+	}
+
+	private String buildFilter(ConditionSimple condition, String filter) {
+		filter = filterBuilder.addFilter(condition.getField(), condition.getValue(), condition.getOperator(), filter);
 		return filter;
 	}
 

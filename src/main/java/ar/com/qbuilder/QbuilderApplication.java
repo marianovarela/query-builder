@@ -15,6 +15,7 @@ import org.springframework.context.ApplicationContext;
 import ar.com.qbuilder.config.Config;
 import ar.com.qbuilder.domain.Condition;
 import ar.com.qbuilder.domain.ConditionSimple;
+import ar.com.qbuilder.domain.ConditionTree;
 import ar.com.qbuilder.domain.DeleteAssociation;
 import ar.com.qbuilder.domain.DeleteObject;
 import ar.com.qbuilder.domain.Entity;
@@ -69,16 +70,38 @@ public class QbuilderApplication {
 	private static SelectCustom makeSelectCustom() {
 		SelectCustom query = new SelectCustom();
 		query.setEntity(Entity.Objects);
-		List<Condition> conditions = new LinkedList<Condition>();
+		
+		ConditionTree tree = new ConditionTree();
+		
+		ConditionTree subTree = new ConditionTree();
+		subTree.setLogicOperator(LogicOperator.AND);
 		
 		ConditionSimple firstCondition = new ConditionSimple();
 		firstCondition.setLogicOperator(LogicOperator.AND);
 		firstCondition.setOperator("=");
 		firstCondition.setField("type");
 		firstCondition.setValue("2");
-		conditions.add(firstCondition);
 		
-		query.setConditions(conditions);
+		ConditionSimple secondCondition = new ConditionSimple();
+		secondCondition.setLogicOperator(LogicOperator.AND);
+		secondCondition.setOperator("=");
+		secondCondition.setField("type");
+		secondCondition.setValue("2");
+		
+		ConditionSimple thirdCondition = new ConditionSimple();
+		thirdCondition.setLogicOperator(LogicOperator.AND);
+		thirdCondition.setOperator("=");
+		thirdCondition.setField("type");
+		thirdCondition.setValue("2");
+		
+		subTree.getConditions().add(secondCondition);
+		subTree.getConditions().add(thirdCondition);
+		
+		tree.getConditions().add(firstCondition);
+		tree.getConditions().add(subTree);
+		
+		query.setCondition(tree);
+		
 		return query;
 	}
 
