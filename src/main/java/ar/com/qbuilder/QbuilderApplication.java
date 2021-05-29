@@ -2,8 +2,6 @@ package ar.com.qbuilder;
 
 
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +12,13 @@ import org.springframework.context.ApplicationContext;
 
 import ar.com.qbuilder.config.Config;
 import ar.com.qbuilder.domain.Condition;
-import ar.com.qbuilder.domain.ConditionSimple;
-import ar.com.qbuilder.domain.ConditionTree;
 import ar.com.qbuilder.domain.DeleteAssociation;
 import ar.com.qbuilder.domain.DeleteObject;
 import ar.com.qbuilder.domain.Entity;
 import ar.com.qbuilder.domain.InsertAssociation;
 import ar.com.qbuilder.domain.InsertObject;
+import ar.com.qbuilder.domain.Join;
+import ar.com.qbuilder.domain.JoinType;
 import ar.com.qbuilder.domain.LogicOperator;
 import ar.com.qbuilder.domain.Range;
 import ar.com.qbuilder.domain.SelectAssociation;
@@ -63,44 +61,30 @@ public class QbuilderApplication {
 //		SelectAssociation query = makeSelectAssociation();
 //		Object result = executor.execute(query);
 //		System.out.println(result);
-		SelectCustom query = makeSelectCustom();
-		executor.execute(query); 
+		SelectCustom from = makeSelectCustomFrom();
+		SelectCustom to = makeSelectCustomTo();
+		Join join = new Join();
+		join.setFrom(from);
+		join.setTo(to);
+		Condition condition = Condition.makeWithFirstTableAndSecondTable(LogicOperator.AND,"id", "id");
+		Condition condition2 = Condition.makeWithFirstTableAndValue(LogicOperator.AND, "id", "id");
+		Condition condition3 = Condition.makeWithSecondTableAndValue(LogicOperator.AND, "id", "id");
+		join.getJoinClause().add(condition);
+		join.setType(JoinType.INNER);
+		executor.execute(join); 
 	}
 	
-	private static SelectCustom makeSelectCustom() {
+	private static SelectCustom makeSelectCustomFrom() {
 		SelectCustom query = new SelectCustom();
 		query.setEntity(Entity.Objects);
+		query.setCondition("(type = 2)");
 		
-		ConditionTree tree = new ConditionTree();
-		
-		ConditionTree subTree = new ConditionTree();
-		subTree.setLogicOperator(LogicOperator.AND);
-		
-		ConditionSimple firstCondition = new ConditionSimple();
-		firstCondition.setLogicOperator(LogicOperator.AND);
-		firstCondition.setOperator("=");
-		firstCondition.setField("type");
-		firstCondition.setValue("2");
-		
-		ConditionSimple secondCondition = new ConditionSimple();
-		secondCondition.setLogicOperator(LogicOperator.AND);
-		secondCondition.setOperator("=");
-		secondCondition.setField("type");
-		secondCondition.setValue("2");
-		
-		ConditionSimple thirdCondition = new ConditionSimple();
-		thirdCondition.setLogicOperator(LogicOperator.AND);
-		thirdCondition.setOperator("=");
-		thirdCondition.setField("type");
-		thirdCondition.setValue("2");
-		
-		subTree.getConditions().add(secondCondition);
-		subTree.getConditions().add(thirdCondition);
-		
-		tree.getConditions().add(firstCondition);
-		tree.getConditions().add(subTree);
-		
-		query.setCondition(tree);
+		return query;
+	}
+	
+	private static SelectCustom makeSelectCustomTo() {
+		SelectCustom query = new SelectCustom();
+		query.setEntity(Entity.Objects);
 		
 		return query;
 	}

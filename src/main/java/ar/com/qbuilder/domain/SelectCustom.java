@@ -4,11 +4,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class SelectCustom {
+public class SelectCustom extends Query{
 	
 	// entity to retrieve
 	private Entity entity;
 	
-	// 	
-	private Condition condition;
+	private String condition;
+	
 }

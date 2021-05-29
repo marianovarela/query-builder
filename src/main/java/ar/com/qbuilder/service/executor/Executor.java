@@ -11,7 +11,9 @@ import ar.com.qbuilder.domain.DeleteAssociation;
 import ar.com.qbuilder.domain.DeleteObject;
 import ar.com.qbuilder.domain.InsertAssociation;
 import ar.com.qbuilder.domain.InsertObject;
+import ar.com.qbuilder.domain.Join;
 import ar.com.qbuilder.domain.Result;
+import ar.com.qbuilder.domain.ResultSet;
 import ar.com.qbuilder.domain.SelectAssociation;
 import ar.com.qbuilder.domain.SelectCustom;
 import ar.com.qbuilder.domain.SelectObject;
@@ -85,6 +87,11 @@ public class Executor {
 	public Row[] execute(SelectCustom query) {
 		Row[] result = (Row[]) selectionCustomService.execute(query); 
 		return result;
+	}
+
+	public ResultSet execute(Join join) {
+		Row[] result = (Row[]) selectionCustomService.execute(join);
+		return null;
 	}
 
 }
