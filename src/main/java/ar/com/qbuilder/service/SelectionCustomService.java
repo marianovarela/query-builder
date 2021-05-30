@@ -7,7 +7,6 @@ import javax.annotation.PostConstruct;
 import org.apache.spark.sql.Column;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
-import org.apache.spark.sql.catalyst.expressions.aggregate.First;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
@@ -20,7 +19,6 @@ import ar.com.qbuilder.domain.LogicOperator;
 import ar.com.qbuilder.domain.SelectCustom;
 import ar.com.qbuilder.helper.TaoSelector;
 import lombok.extern.slf4j.Slf4j;
-import shaded.parquet.org.apache.thrift.server.THsHaServer;
 
 @Service
 @Slf4j

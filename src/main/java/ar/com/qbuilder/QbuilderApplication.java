@@ -61,19 +61,25 @@ public class QbuilderApplication {
 //		SelectAssociation query = makeSelectAssociation();
 //		Object result = executor.execute(query);
 //		System.out.println(result);
+		Join query = makeJoin();
+		executor.execute(query); 
+	}
+	
+	private static Join makeJoin() {
 		SelectCustom from = makeSelectCustomFrom();
 		SelectCustom to = makeSelectCustomTo();
 		Join join = new Join();
 		join.setFrom(from);
 		join.setTo(to);
 		Condition condition = Condition.makeWithFirstTableAndSecondTable(LogicOperator.AND,"id", "id");
-		Condition condition2 = Condition.makeWithFirstTableAndValue(LogicOperator.AND, "id", "id");
-		Condition condition3 = Condition.makeWithSecondTableAndValue(LogicOperator.AND, "id", "id");
-		join.getJoinClause().add(condition);
+		Condition condition2 = Condition.makeWithFirstTableAndValue(LogicOperator.AND, "id", "30");
+		Condition condition3 = Condition.makeWithSecondTableAndValue(LogicOperator.AND, "id", "30");
+//		join.getJoinClause().add(condition);
+		join.getJoinClause().add(condition2);
 		join.setType(JoinType.INNER);
-		executor.execute(join); 
+		return join;
 	}
-	
+
 	private static SelectCustom makeSelectCustomFrom() {
 		SelectCustom query = new SelectCustom();
 		query.setEntity(Entity.Objects);
