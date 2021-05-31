@@ -1,12 +1,15 @@
 package ar.com.qbuilder.service;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 
 import org.apache.spark.sql.Column;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
+import org.apache.spark.sql.catalyst.plans.logical.LogicalPlan;
+import org.apache.spark.sql.catalyst.plans.logical.SubqueryAlias;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
@@ -46,9 +49,17 @@ public class SelectionCustomService {
 			Dataset<Row> resultTao = sparkService.execute(datasource, select);
 			result = result.union(resultTao);
 		}
+		result = setAlias(result, select);
 		return result;
 	}
 	
+	private Dataset<Row> setAlias(Dataset<Row> result, SelectCustom select) {
+		if(select.getAlias() != null) {
+			result = result.alias(select.getAlias());
+		}
+		return result;
+	}
+
 	public Object execute(SelectCustom select) {
 		Dataset<Row> dataset = this.getDataset(select);
 		return dataset.collect();
@@ -62,10 +73,23 @@ public class SelectionCustomService {
 	public Row[] execute(Join join) {
 		Dataset<Row> from = this.getDataset(join.getFrom());
 		Dataset<Row> to = this.getDataset(join.getTo());
-		Column condition = makeJoinCondition(from , to, join);//from.col("id").equalTo(to.col("id"));
+		Column condition = makeJoinCondition(from , to, join);
 		Dataset<Row> result = from.join(to, condition, join.getType().value);
-				
+		Optional alias = getAlias(from);
+		// falta agregar alias a las columnas para poder verificar el where
+		if(join.getWhere() != null) {
+			result = from.join(to, condition, join.getType().value).where(join.getWhere());
+		}
 		return (Row[]) result.collect();
+	}
+	
+	public static <T> Optional<String> getAlias(Dataset<T> dataset){
+	    final LogicalPlan analyzed = dataset.queryExecution().analyzed();
+	    if(analyzed instanceof SubqueryAlias) {
+	        SubqueryAlias subqueryAlias = (SubqueryAlias) analyzed;
+	        return Optional.of(subqueryAlias.alias());
+	    }
+	    return Optional.empty();
 	}
 
 	private Column makeJoinCondition(Dataset<Row> from, Dataset<Row> to, Join join) {
@@ -87,14 +111,29 @@ public class SelectionCustomService {
 	private Column makeColumn(Dataset<Row> from, Dataset<Row> to, Condition condition) {
 		Column column = null;
 		if(condition.getFirstColumn() != null) {
-			;
 			if(condition.getSecondColumn() != null) {
 				column = from.col(condition.getFirstColumn()).equalTo(to.col(condition.getSecondColumn()));
 			}else {// value != null
-				column = from.col(condition.getFirstColumn()).equalTo(condition.getValue());
+				if(condition.getNulleable() == null) {
+					column = from.col(condition.getFirstColumn()).equalTo(condition.getValue());
+				} else {
+					if(condition.getNulleable()) {
+						column = to.col(condition.getFirstColumn()).isNull();
+					}else {
+						column = to.col(condition.getFirstColumn()).isNotNull();
+					}
+				}
 			}
 		} else {
-			column = to.col(condition.getSecondColumn()).equalTo(condition.getValue());
+			if(condition.getNulleable() == null) {
+				column = to.col(condition.getSecondColumn()).equalTo(condition.getValue());
+			} else {
+				if(condition.getNulleable()) {
+					column = to.col(condition.getSecondColumn()).isNull();
+				}else {
+					column = to.col(condition.getSecondColumn()).isNotNull();
+				}
+			}
 		}
 		return column;
 	}

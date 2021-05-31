@@ -4,7 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class SelectCustom extends Query{
+public class SelectCustom {
+	
+	private String alias;
 	
 	// entity to retrieve
 	private Entity entity;

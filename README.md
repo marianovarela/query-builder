@@ -18,3 +18,12 @@ tableA.id = 30
 Condition condition2 = Condition.makeWithFirstTableAndValue(LogicOperator.AND, "id", "30");
 tableB.id = 30
 Condition condition3 = Condition.makeWithSecondTableAndValue(LogicOperator.AND, "id", "30");
+
+## Join types
+
+JoinType.INNER("inner")
+JoinType.LEFT("left"),
+JoinType.LEFT_OUTER("left_outer"),
+JoinType.RIGHT("right"),
+JoinType.RIGHT_OUTER("right_outer"),
+JoinType.OUTER("outer");

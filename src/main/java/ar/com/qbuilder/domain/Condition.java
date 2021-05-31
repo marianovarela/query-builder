@@ -16,6 +16,8 @@ public class Condition {
 	private String secondColumn;
 	
 	private String value;
+	
+	private Boolean nulleable;
 
 	public static Condition makeWithFirstTableAndSecondTable(LogicOperator logicOperator, String firstColumn, String secondColumn) {
 		Condition condition = new Condition();
@@ -33,11 +35,27 @@ public class Condition {
 		return condition;
 	}
 
+	public static Condition makeWithFirstTableIsNull(LogicOperator logicOperator, String firstColumn, boolean nulleable) {
+		Condition condition = new Condition();
+		condition.setLogicOperator(logicOperator);
+		condition.setFirstColumn(firstColumn);
+		condition.setNulleable(nulleable);
+		return condition;
+	}
+	
 	public static Condition makeWithSecondTableAndValue(LogicOperator logicOperator, String secondColumn, String value) {
 		Condition condition = new Condition();
 		condition.setLogicOperator(logicOperator);
 		condition.setSecondColumn(secondColumn);
 		condition.setValue(value);
+		return condition;
+	}
+	
+	public static Condition makeWithSecondTableIsNull(LogicOperator logicOperator, String secondColumn, boolean nulleable) {
+		Condition condition = new Condition();
+		condition.setLogicOperator(logicOperator);
+		condition.setSecondColumn(secondColumn);
+		condition.setNulleable(nulleable);
 		return condition;
 	}
 }

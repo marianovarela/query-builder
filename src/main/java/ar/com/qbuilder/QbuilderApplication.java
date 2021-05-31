@@ -74,14 +74,16 @@ public class QbuilderApplication {
 		Condition condition = Condition.makeWithFirstTableAndSecondTable(LogicOperator.AND,"id", "id");
 		Condition condition2 = Condition.makeWithFirstTableAndValue(LogicOperator.AND, "id", "30");
 		Condition condition3 = Condition.makeWithSecondTableAndValue(LogicOperator.AND, "id", "30");
-//		join.getJoinClause().add(condition);
-		join.getJoinClause().add(condition2);
+		join.getJoinClause().add(condition);
+//		join.getJoinClause().add(condition2);
+		join.setWhere("df1.id = 10");
 		join.setType(JoinType.INNER);
 		return join;
 	}
 
 	private static SelectCustom makeSelectCustomFrom() {
 		SelectCustom query = new SelectCustom();
+		query.setAlias("df1");
 		query.setEntity(Entity.Objects);
 		query.setCondition("(type = 2)");
 		
