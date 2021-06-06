@@ -22,12 +22,9 @@ import ar.com.qbuilder.domain.Condition;
 import ar.com.qbuilder.domain.Join;
 import ar.com.qbuilder.domain.LogicOperator;
 import ar.com.qbuilder.domain.SelectCustom;
-import ar.com.qbuilder.helper.ResultBuilder;
 import ar.com.qbuilder.helper.TaoSelector;
-import lombok.extern.slf4j.Slf4j;
 
 @Service
-@Slf4j
 public class SelectionCustomService {
 
 	@Autowired
@@ -63,6 +60,7 @@ public class SelectionCustomService {
 			Column[] columns = makeColumns(result, select.getSelection());
 			result = result.select(columns);
 		}
+		List<Row> rows = result.collectAsList();
 		return result;
 	}
 	

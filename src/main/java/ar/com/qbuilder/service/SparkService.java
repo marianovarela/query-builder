@@ -221,6 +221,7 @@ public class SparkService {
 		if(select.getCondition() != null) {
 			jdbcDF = jdbcDF.filter(select.getCondition());
 		}
+		List<Row> rows = jdbcDF.collectAsList();
 		return jdbcDF;
 	}
 	

@@ -2,8 +2,10 @@ package ar.com.qbuilder;
 
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.apache.spark.sql.Row;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -21,6 +23,7 @@ import ar.com.qbuilder.domain.Join;
 import ar.com.qbuilder.domain.JoinType;
 import ar.com.qbuilder.domain.LogicOperator;
 import ar.com.qbuilder.domain.Range;
+import ar.com.qbuilder.domain.ResultSet;
 import ar.com.qbuilder.domain.SelectAssociation;
 import ar.com.qbuilder.domain.SelectCustom;
 import ar.com.qbuilder.domain.SelectObject;
@@ -63,7 +66,10 @@ public class QbuilderApplication {
 //		System.out.println(result);
 //		Join query = makeJoin();
 		SelectCustom query = makeSelectCustom();
-		executor.execute(query); 
+		ResultSet result = executor.execute(query); 
+		List<Row> rows = result.get();
+		String message = result.getMessage();
+		boolean isOk = result.isStatus();
 	}
 	
 	private static SelectCustom makeSelectCustom() {
@@ -72,7 +78,7 @@ public class QbuilderApplication {
 		select.addToSelect("id", "idx");
 		select.addToSelect("type", "tipo");
 		select.setEntity(Entity.Objects);
-		select.setCondition("(type = 2)");
+		select.setCondition("type = 3");
 		
 		return select;
 	}
@@ -171,7 +177,7 @@ public class QbuilderApplication {
 
 	private static SelectAssociation makeSelectAssociation() {
 		SelectAssociation query = new SelectAssociation();
-		query.setLeftId(152L);
+		query.setLeftId(10L);
 		query.setType(10);
 		return query;
 	}

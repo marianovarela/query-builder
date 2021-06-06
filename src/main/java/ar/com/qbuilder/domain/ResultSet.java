@@ -1,5 +1,7 @@
 package ar.com.qbuilder.domain;
 
+import java.util.List;
+
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 
@@ -18,8 +20,8 @@ public class ResultSet {
 		return this.dataset.count();
 	}
 	
-	public Row[] get() {
-		return (Row[]) this.dataset.collect();
+	public List<Row> get() {
+		return  this.dataset.collectAsList();
 	}
 	
 	public boolean isStatus() {
