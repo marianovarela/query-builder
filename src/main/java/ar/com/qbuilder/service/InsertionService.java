@@ -12,7 +12,7 @@ import ar.com.qbuilder.config.domain.Datasource;
 import ar.com.qbuilder.domain.Association;
 import ar.com.qbuilder.domain.InsertAssociation;
 import ar.com.qbuilder.domain.InsertObject;
-import ar.com.qbuilder.domain.Result;
+import ar.com.qbuilder.domain.ResultSet;
 import ar.com.qbuilder.helper.AssociationKeys;
 import ar.com.qbuilder.helper.ResultBuilder;
 import ar.com.qbuilder.helper.TaoSelector;
@@ -30,7 +30,7 @@ public class InsertionService {
 	AssociationKeys associationKeys;
 
 	@InsertValidator()
-	public Result execute(InsertObject insertion) {
+	public ResultSet execute(InsertObject insertion) {
 		long indexTao = taoSelector.selectTao(insertion.getId());
 		Datasource datasource = taoSelector.getDatasource(indexTao);
 		List<ar.com.qbuilder.domain.Object> list = makeListToInsert(insertion);
@@ -50,7 +50,7 @@ public class InsertionService {
 	}
 
 	@InsertValidator()
-	public Result execute(InsertAssociation insertion) {
+	public ResultSet execute(InsertAssociation insertion) {
 		List<ar.com.qbuilder.domain.Association> list = makeListToInsert(insertion);
 		
 		this.updateAssociationKeys(insertion.getType(), insertion.getInverseType());

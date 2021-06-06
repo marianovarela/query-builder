@@ -10,6 +10,13 @@
 
 # Uso
 
+## Resultado: ResultSet
+Cada consulta retorna una instancia de la clase ResultSet. A esta se le podrá consultar:
+* estado de la consulta
+* mensaje en caso de error
+* get() para obtener el resultado
+* count() para obtener la cantidad obtenida en el resultado
+
 ## Condiciones de join
 
 tableA.id = tableB.id
@@ -27,3 +34,7 @@ JoinType.LEFT_OUTER("left_outer"),
 JoinType.RIGHT("right"),
 JoinType.RIGHT_OUTER("right_outer"),
 JoinType.OUTER("outer");
+
+## JOIN 
+
+para realizar joins las columnas tiene que ser distintas

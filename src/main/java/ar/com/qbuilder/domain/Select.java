@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter @Setter
 public class Select extends Query{
 
-	protected boolean count = false;
+//	protected boolean count = false;
 	
 	public Select(String table) {
 		super(table);
@@ -16,8 +16,8 @@ public class Select extends Query{
 		super();
 	}
 
-	public void withCount() {
-		this.count = true;
-	}
+//	public void withCount() {
+//		this.count = true;
+//	}
 	
 }

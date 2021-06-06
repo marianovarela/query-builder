@@ -61,10 +61,22 @@ public class QbuilderApplication {
 //		SelectAssociation query = makeSelectAssociation();
 //		Object result = executor.execute(query);
 //		System.out.println(result);
-		Join query = makeJoin();
+//		Join query = makeJoin();
+		SelectCustom query = makeSelectCustom();
 		executor.execute(query); 
 	}
 	
+	private static SelectCustom makeSelectCustom() {
+		SelectCustom select = new SelectCustom();
+		select.addToSelect("data", "cuerpo");
+		select.addToSelect("id", "idx");
+		select.addToSelect("type", "tipo");
+		select.setEntity(Entity.Objects);
+		select.setCondition("(type = 2)");
+		
+		return select;
+	}
+
 	private static Join makeJoin() {
 		SelectCustom from = makeSelectCustomFrom();
 		SelectCustom to = makeSelectCustomTo();
@@ -175,7 +187,6 @@ public class QbuilderApplication {
 		query.setLeftId(152L);
 		query.setRightId(153L);
 		query.setType(10);
-		query.withCount();
 		return query;
 	}
 

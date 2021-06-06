@@ -1,5 +1,6 @@
 package ar.com.qbuilder.aspect;
 
+import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -35,8 +36,9 @@ public class UpdateAssociationValidatorAspect {
     	
     	long indexTao = taoSelector.selectTao(select.getLeftId());
 		Datasource datasource = taoSelector.getDatasource(indexTao);
-		Row[] result = (Row[]) sparkService.execute(datasource, select);
-    	if(result.length == 0) {
+		Dataset<Row> result = sparkService.execute(datasource, select);
+		Row[] rows = (Row[]) result.collect();
+    	if(rows.length == 0) {
     		throw new BusinessException(MessageUtils.ASSOCIATION_DOES_NOT_EXIST);
     	}
     }

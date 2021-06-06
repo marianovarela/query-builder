@@ -3,6 +3,8 @@ package ar.com.qbuilder.domain;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.javatuples.Pair;
+
 import lombok.Getter;
 import lombok.Setter;
 

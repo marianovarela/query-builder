@@ -1,7 +1,6 @@
 package ar.com.qbuilder.service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
@@ -13,8 +12,12 @@ import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SQLContext;
 import org.apache.spark.sql.SaveMode;
 import org.apache.spark.sql.SparkSession;
+import org.apache.spark.sql.types.DataTypes;
+import org.apache.spark.sql.types.StructField;
+import org.apache.spark.sql.types.StructType;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.javatuples.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +25,7 @@ import ar.com.qbuilder.config.domain.Datasource;
 import ar.com.qbuilder.domain.Association;
 import ar.com.qbuilder.domain.DeleteAssociation;
 import ar.com.qbuilder.domain.DeleteObject;
+import ar.com.qbuilder.domain.Entity;
 import ar.com.qbuilder.domain.SelectAssociation;
 import ar.com.qbuilder.domain.SelectCustom;
 import ar.com.qbuilder.domain.SelectObject;
@@ -46,15 +50,42 @@ public class SparkService {
 		return spark;
 	}
 
-	public Dataset<Row> getEmptyDataSet() {
+	public Dataset<Row> getEmptyDataSet(Entity entity) {
 		SparkSession spark = getOrCreate();
 		SQLContext sqlContext = spark.sqlContext();
 		SparkContext sparkContext = spark.sparkContext();
 		@SuppressWarnings("resource")
 		JavaSparkContext jsc = new JavaSparkContext(sparkContext);
+		Dataset<Row> objDf = null;
+		if(entity.equals(Entity.Objects)) {
+			JavaRDD<ar.com.qbuilder.domain.Object> objRDD = jsc.parallelize(new ArrayList<ar.com.qbuilder.domain.Object>());
+			objDf = sqlContext.createDataFrame(objRDD, ar.com.qbuilder.domain.Object.class);
+		} else { //Entity.Associations
+			JavaRDD<ar.com.qbuilder.domain.Association> objRDD = jsc.parallelize(new ArrayList<ar.com.qbuilder.domain.Association>());
+			objDf = sqlContext.createDataFrame(objRDD, ar.com.qbuilder.domain.Association.class);
+		}
+		return objDf;
+	}
+	
+	public Dataset<Row> getEmptyDataSet(SelectCustom select) {
+		SparkSession spark = getOrCreate();
+		SparkContext sparkContext = spark.sparkContext();
+		@SuppressWarnings("resource")
+		JavaSparkContext jsc = new JavaSparkContext(sparkContext);
 
-		JavaRDD<ar.com.qbuilder.domain.Object> objRDD = jsc.parallelize(new ArrayList<ar.com.qbuilder.domain.Object>());
-		Dataset<Row> objDf = sqlContext.createDataFrame(objRDD, ar.com.qbuilder.domain.Object.class);
+//		JavaRDD<ar.com.qbuilder.domain.Object> objRDD = jsc.parallelize(new ArrayList<ar.com.qbuilder.domain.Object>());
+//		Dataset<Row> objDf = sqlContext.createDataFrame(objRDD, ar.com.qbuilder.domain.Object.class);
+		List<StructField> fields = new ArrayList<>();
+		for (Pair<String, String> pair : select.getSelection()) {
+		  StructField field = DataTypes.createStructField(pair.getValue1(), DataTypes.StringType, true);
+		  fields.add(field);
+		}
+		StructType schema = DataTypes.createStructType(fields);
+		// Convert records of the RDD to Rows
+		JavaRDD<Row> rowRDD = jsc.emptyRDD();
+
+		// Apply the schema to the RDD
+		Dataset<Row> objDf = spark.createDataFrame(rowRDD, schema);
 		return objDf;
 	}
 
@@ -134,28 +165,25 @@ public class SparkService {
 		session.close();
 	}
 
-	public Object execute(Datasource datasource, SelectAssociation select) {
+	public Dataset<Row> execute(Datasource datasource, SelectAssociation select) {
 		SparkSession spark = this.getOrCreate();
 		Dataset<Row> jdbcDF = getDataFrame(datasource, select.getTable(), spark);
 
 		String filter = buildFilter(select);
 
 		jdbcDF = jdbcDF.filter(filter);
-		if (select.isCount()) {
-			return jdbcDF.count();
-		}
 
 		if (select.getLimit() != null) {
 			jdbcDF = jdbcDF.limit(select.getLimit());
 		}
 
-		Row[] result = (Row[]) jdbcDF.collect();
-
-		if (select.getRange() != null) {
-			result = Arrays.copyOfRange(result, select.getRange().getPosition(),
-					select.getRange().getPosition() + select.getRange().getLimit());
-		}
-		return result;
+//		Row[] result = (Row[]) jdbcDF.collect();
+//
+//		if (select.getRange() != null) {
+//			result = Arrays.copyOfRange(result, select.getRange().getPosition(),
+//					select.getRange().getPosition() + select.getRange().getLimit());
+//		}
+		return jdbcDF;
 	}
 
 	private Dataset<Row> getDataFrame(Datasource datasource, String table, SparkSession spark) {
@@ -195,7 +223,7 @@ public class SparkService {
 		}
 		return jdbcDF;
 	}
-
+	
 	private String buildFilterById(SelectObject select) {
 		String filter = "";
 		if (select.getId() != null) {
@@ -204,18 +232,15 @@ public class SparkService {
 		return filter;
 	}
 
-	public Object execute(Datasource datasource, SelectObject select) {
+	public Dataset<Row> execute(Datasource datasource, SelectObject select) {
 		SparkSession spark = this.getOrCreate();
 		Dataset<Row> jdbcDF = getDataFrame(datasource, select.getTable(), spark);
 
 		String filter = buildFilterById(select);
 
 		jdbcDF = jdbcDF.filter(filter);
-		if (select.isCount()) {
-			return jdbcDF.count();
-		}
 
-		return jdbcDF.collect();
+		return jdbcDF;
 	}
 
 	public void delete(Datasource datasource, DeleteObject delete) {
@@ -227,7 +252,5 @@ public class SparkService {
 		session.getTransaction().commit();
 		session.close();
 	}
-
-
 
 }

@@ -12,7 +12,6 @@ import ar.com.qbuilder.domain.DeleteObject;
 import ar.com.qbuilder.domain.InsertAssociation;
 import ar.com.qbuilder.domain.InsertObject;
 import ar.com.qbuilder.domain.Join;
-import ar.com.qbuilder.domain.Result;
 import ar.com.qbuilder.domain.ResultSet;
 import ar.com.qbuilder.domain.SelectAssociation;
 import ar.com.qbuilder.domain.SelectCustom;
@@ -20,6 +19,7 @@ import ar.com.qbuilder.domain.SelectObject;
 import ar.com.qbuilder.domain.UpdateAssociation;
 import ar.com.qbuilder.domain.UpdateObject;
 import ar.com.qbuilder.helper.AssociationKeys;
+import ar.com.qbuilder.helper.ResultBuilder;
 import ar.com.qbuilder.service.DeletionService;
 import ar.com.qbuilder.service.InsertionService;
 import ar.com.qbuilder.service.SelectionCustomService;
@@ -47,36 +47,36 @@ public class Executor {
 	@Autowired
 	private AssociationKeys associationKeys;
 	
-	public Result execute(InsertObject insertion) {
+	public ResultSet execute(InsertObject insertion) {
 		return insertionService.execute(insertion);
 	}
 
-	public Result execute(InsertAssociation insertion) {
+	public ResultSet execute(InsertAssociation insertion) {
 		return insertionService.execute(insertion);
 	}
 
-	public Result execute(SelectAssociation query) {
+	public ResultSet execute(SelectAssociation query) {
 		return selectionService.execute(query);
 	}
 
-	public Result execute(DeleteAssociation query) {
+	public ResultSet execute(DeleteAssociation query) {
 		return deletionService.execute(query);
 	}
 
-	public Result execute(DeleteObject query) {
+	public ResultSet execute(DeleteObject query) {
 		return deletionService.execute(query);
 		
 	}
 
-	public Result execute(SelectObject query) {
+	public ResultSet execute(SelectObject query) {
 		return selectionService.execute(query);
 	}
 
-	public Result execute(UpdateObject query) {
+	public ResultSet execute(UpdateObject query) {
 		return updationService.execute(query);
 	}
 
-	public Result execute(UpdateAssociation query) {
+	public ResultSet execute(UpdateAssociation query) {
 		return updationService.execute(query);
 	}
 
@@ -84,14 +84,16 @@ public class Executor {
 		associationKeys.keys = keys;
 	}
 
-	public Row[] execute(SelectCustom query) {
-		Row[] result = (Row[]) selectionCustomService.execute(query); 
+	public ResultSet execute(SelectCustom query) {
+		Dataset<Row> dataset = selectionCustomService.execute(query); 
+		ResultSet result = ResultBuilder.buildSuccess(dataset);
 		return result;
 	}
 
 	public ResultSet execute(Join join) {
-		Row[] result = (Row[]) selectionCustomService.execute(join);
-		return null;
+		Dataset<Row> dataset = selectionCustomService.execute(join);
+		ResultSet result = ResultBuilder.buildSuccess(dataset);
+		return result;
 	}
 
 }

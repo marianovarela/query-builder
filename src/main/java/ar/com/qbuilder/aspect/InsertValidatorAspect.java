@@ -1,5 +1,7 @@
 package ar.com.qbuilder.aspect;
 
+
+import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -57,19 +59,21 @@ public class InsertValidatorAspect {
     }
     
     private void existAssociation(Long leftId, Long rightId, Integer type, Integer inverseType) {
-		Row[] result = this.getAssociation(leftId, rightId, type, inverseType);
-    	if(result.length > 0) {
+    	Dataset<Row> result = this.getAssociation(leftId, rightId, type, inverseType);
+    	Row[] rows = (Row[]) result.collect();
+    	if(rows.length > 0) {
     		throw new BusinessException(MessageUtils.ASSOCIATION_ALREADY_EXIST);
     	}	
     	if(inverseType != null) {
-    		Row[] inverseResult = this.getAssociation(leftId, rightId, type, inverseType);
-        	if(inverseResult.length > 0) {
+    		Dataset<Row> inverseResult = this.getAssociation(leftId, rightId, type, inverseType);
+    		Row[] inverseRows = (Row[]) inverseResult.collect();
+        	if(inverseRows.length > 0) {
         		throw new BusinessException(MessageUtils.ASSOCIATION_ALREADY_EXIST);
         	}	
     	}
 	}
      
-	private Row[] getAssociation(Long leftId, Long rightId, Integer type, Integer inverseType) {
+	private Dataset<Row> getAssociation(Long leftId, Long rightId, Integer type, Integer inverseType) {
 		SelectAssociation select = new SelectAssociation();
     	select.setLeftId(leftId);
     	select.setRightId(rightId);
@@ -77,7 +81,7 @@ public class InsertValidatorAspect {
     	
     	long indexTao = taoSelector.selectTao(select.getLeftId());
 		Datasource datasource = taoSelector.getDatasource(indexTao);
-		Row[] result = (Row[]) sparkService.execute(datasource, select);
+		Dataset<Row> result = sparkService.execute(datasource, select);
 		return result;
 	}
 

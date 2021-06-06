@@ -1,24 +1,27 @@
 package ar.com.qbuilder.helper;
 
-import ar.com.qbuilder.domain.Result;
+import org.apache.spark.sql.Dataset;
+import org.apache.spark.sql.Row;
+
+import ar.com.qbuilder.domain.ResultSet;
 
 public class ResultBuilder {
 
-	public static Result buildSuccess(Object result) {
-		Result res = new Result();
-		res.setResult(result);
+	public static ResultSet buildSuccess(Dataset<Row> result) {
+		ResultSet res = new ResultSet();
+		res.setDataset(result);
 		res.setStatus(true);
 		return res;
 	}
 	
-	public static Result buildSuccess() {
-		Result res = new Result();
+	public static ResultSet buildSuccess() {
+		ResultSet res = new ResultSet();
 		res.setStatus(true);
 		return res;
 	}
 	
-	public static Result buildError(String message) {
-		Result res = new Result();
+	public static ResultSet buildError(String message) {
+		ResultSet res = new ResultSet();
 		res.setStatus(false);
 		res.setMessage(message);
 		return res;
