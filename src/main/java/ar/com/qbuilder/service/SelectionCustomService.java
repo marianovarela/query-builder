@@ -43,11 +43,7 @@ public class SelectionCustomService {
 		int[] taos = new int[arity];
 		Arrays.setAll(taos, i -> i);
 		Dataset<Row> result = null;
-//		if(select.getSelection().isEmpty()) { // no hay selects ni alias predefinido
-			result = sparkService.getEmptyDataSet(select.getEntity());
-//		} //else {
-//			result = sparkService.getEmptyDataSet(select);
-//		}
+		result = sparkService.getEmptyDataSet(select.getEntity());
 		
 		for(int index : taos) {
 			long indexTao = taoSelector.selectTao(index);
@@ -99,9 +95,17 @@ public class SelectionCustomService {
 			result = from.join(to, condition, join.getType().value)
 					.filter(join.getFilter());
 		}
+		result = addSelect(result, join);
 		return result;
 	}
 	
+	private Dataset<Row> addSelect(Dataset<Row> result, Join join) {
+		if(join.getSelection() != null) {
+			result = result.select(join.getSelection());
+		}
+		return result;
+	}
+
 	public static <T> Optional<String> getAlias(Dataset<T> dataset){
 	    final LogicalPlan analyzed = dataset.queryExecution().analyzed();
 	    if(analyzed instanceof SubqueryAlias) {

@@ -94,6 +94,7 @@ public class QbuilderApplication {
 		join.getJoinClause().add(condition);
 //		join.getJoinClause().add(condition2);
 		join.setFilter("df1.id = 30");
+		join.setSelection("df1.id");
 		join.setType(JoinType.INNER);
 		return join;
 	}

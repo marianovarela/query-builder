@@ -13,6 +13,8 @@ public class Join {
 	
 	private SelectCustom to;
 	
+	private String selection; 
+	
 	private List<Condition> joinClause = new LinkedList<Condition>();
 
 	private String filter;
