@@ -16,7 +16,7 @@ public abstract class Query {
 		this.table = table;
 	}
 	
-	public Query withType(int type) {
+	public Query withType(Integer type) {
 		this.type = type;
 		return this;
 	}

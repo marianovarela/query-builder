@@ -7,6 +7,7 @@ import java.util.Properties;
 import org.apache.spark.SparkContext;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
+import org.apache.spark.sql.DataFrameReader;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SQLContext;
@@ -30,13 +31,18 @@ import ar.com.qbuilder.domain.SelectAssociation;
 import ar.com.qbuilder.domain.SelectCustom;
 import ar.com.qbuilder.domain.SelectObject;
 import ar.com.qbuilder.helper.FilterBuilder;
+import ar.com.qbuilder.helper.TaoSelector;
 import ar.com.qbuilder.utils.HibernateUtil;
+import lombok.Data;
 
 @Component
 public class SparkService {
 
 	@Autowired
 	private FilterBuilder filterBuilder;
+	
+	@Autowired
+	private TaoSelector taoSelector;
 
 	@Autowired
 	private HibernateUtil hibernateUtil;
@@ -52,18 +58,23 @@ public class SparkService {
 
 	public Dataset<Row> getEmptyDataSet(Entity entity) {
 		SparkSession spark = getOrCreate();
-		SQLContext sqlContext = spark.sqlContext();
-		SparkContext sparkContext = spark.sparkContext();
-		@SuppressWarnings("resource")
-		JavaSparkContext jsc = new JavaSparkContext(sparkContext);
 		Dataset<Row> objDf = null;
-		if(entity.equals(Entity.Objects)) {
-			JavaRDD<ar.com.qbuilder.domain.Object> objRDD = jsc.parallelize(new ArrayList<ar.com.qbuilder.domain.Object>());
-			objDf = sqlContext.createDataFrame(objRDD, ar.com.qbuilder.domain.Object.class);
-		} else { //Entity.Associations
-			JavaRDD<ar.com.qbuilder.domain.Association> objRDD = jsc.parallelize(new ArrayList<ar.com.qbuilder.domain.Association>());
-			objDf = sqlContext.createDataFrame(objRDD, ar.com.qbuilder.domain.Association.class);
-		}
+		objDf = getEmptyDataset(spark, entity);	
+		return objDf;
+	}
+
+	private Dataset<Row> getEmptyDataset(SparkSession spark, Entity entity) {
+		Datasource ds = taoSelector.getDatasource(0);
+		String table = entity.equals(Entity.Objects) ? "objects" : "associations";
+		Dataset<Row> objDf;
+		objDf = spark.read()
+			  .format("jdbc")
+			  .option("url", ds.getUrl())
+			  .option("driver", ds.getDriver())
+			  .option("dbtable", String.format("(SELECT * FROM %s.%s LIMIT 0) AS mytable", ds.getSchema(), table))
+			  .option("user", ds.getUser())
+			  .option("password", ds.getPassword())
+			  .load();
 		return objDf;
 	}
 	
@@ -221,7 +232,6 @@ public class SparkService {
 		if(select.getCondition() != null) {
 			jdbcDF = jdbcDF.filter(select.getCondition());
 		}
-		List<Row> rows = jdbcDF.collectAsList();
 		return jdbcDF;
 	}
 	

@@ -2,7 +2,6 @@ package ar.com.qbuilder.domain;
 
 import lombok.Getter;
 import lombok.Setter;
-import scala.annotation.meta.setter;
 
 @Getter @Setter
 public class Condition {

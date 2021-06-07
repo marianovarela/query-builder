@@ -37,4 +37,6 @@ JoinType.OUTER("outer");
 
 ## JOIN 
 
-para realizar joins las columnas tiene que ser distintas
+Para realizar joins las columnas tiene que ser distintas o llamar por el alias de las tablas de manera tal de eliminar al ambiguedad.
+Para esto por defecto al atributo *from* le agregamos el alias *df1* y al *to* el alias *df2*. De esta manera vamos a poder agregar un where donde df1.id = 30
+o df1.id = df2.id.

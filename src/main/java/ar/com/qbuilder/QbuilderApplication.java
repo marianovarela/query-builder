@@ -62,12 +62,11 @@ public class QbuilderApplication {
 //		SelectAssociation query = makeRangeAssociation();
 //		SelectObject query = makeSelectObject();
 //		SelectAssociation query = makeSelectAssociation();
-//		Object result = executor.execute(query);
-//		System.out.println(result);
-//		Join query = makeJoin();
-		SelectCustom query = makeSelectCustom();
+		Join query = makeJoin();
+//		SelectCustom query = makeSelectCustom();
 		ResultSet result = executor.execute(query); 
 		List<Row> rows = result.get();
+		long count = result.count();
 		String message = result.getMessage();
 		boolean isOk = result.isStatus();
 	}
@@ -94,16 +93,16 @@ public class QbuilderApplication {
 		Condition condition3 = Condition.makeWithSecondTableAndValue(LogicOperator.AND, "id", "30");
 		join.getJoinClause().add(condition);
 //		join.getJoinClause().add(condition2);
-		join.setWhere("df1.id = 10");
+		join.setFilter("df1.id = 30");
 		join.setType(JoinType.INNER);
 		return join;
 	}
 
 	private static SelectCustom makeSelectCustomFrom() {
 		SelectCustom query = new SelectCustom();
-		query.setAlias("df1");
+//		query.setAlias("df1");
 		query.setEntity(Entity.Objects);
-		query.setCondition("(type = 2)");
+		query.setCondition("(type = 3)");
 		
 		return query;
 	}

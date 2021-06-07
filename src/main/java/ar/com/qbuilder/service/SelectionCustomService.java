@@ -60,7 +60,7 @@ public class SelectionCustomService {
 			Column[] columns = makeColumns(result, select.getSelection());
 			result = result.select(columns);
 		}
-		List<Row> rows = result.collectAsList();
+
 		return result;
 	}
 	
@@ -90,14 +90,14 @@ public class SelectionCustomService {
 
 	public Dataset<Row> execute(Join join) {
 		Dataset<Row> from = this.getDataset(join.getFrom());
+		from = from.alias("df1");
 		Dataset<Row> to = this.getDataset(join.getTo());
+		to = to.alias("df2");
 		Column condition = makeJoinCondition(from , to, join);
 		Dataset<Row> result = from.join(to, condition, join.getType().value);
-		if(join.getWhere() != null) {
+		if(join.getFilter() != null) {
 			result = from.join(to, condition, join.getType().value)
-//					.select(from.col("id").alias("df1_id"))
-//					.select("id as df1_id")
-					.where(join.getWhere());
+					.filter(join.getFilter());
 		}
 		return result;
 	}
