@@ -62,11 +62,12 @@ public class QbuilderApplication {
 //		SelectAssociation query = makeRangeAssociation();
 //		SelectObject query = makeSelectObject();
 //		SelectAssociation query = makeSelectAssociation();
-		Join query = makeJoin();
-//		SelectCustom query = makeSelectCustom();
+//		Join query = makeJoin();
+		SelectCustom query = makeSelectCustom();
 		ResultSet result = executor.execute(query); 
 		List<Row> rows = result.get();
 		long count = result.count();
+//		long sum = result.sum("tipo");
 		String message = result.getMessage();
 		boolean isOk = result.isStatus();
 	}
@@ -184,7 +185,7 @@ public class QbuilderApplication {
 
 	private static SelectObject makeSelectObject() {
 		SelectObject select = new SelectObject();
-		select.setId(3L);
+		select.setId(1L);
 		return select;
 	}
 
