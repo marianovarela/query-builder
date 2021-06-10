@@ -1,6 +1,7 @@
 package ar.com.qbuilder;
 
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,10 +65,12 @@ public class QbuilderApplication {
 //		SelectAssociation query = makeSelectAssociation();
 //		Join query = makeJoin();
 		SelectCustom query = makeSelectCustom();
+		
 		ResultSet result = executor.execute(query); 
 		List<Row> rows = result.get();
 		long count = result.count();
-//		long sum = result.sum("tipo");
+//		BigDecimal sum = result.sum("tipo");
+		BigDecimal max = result.max("idx");
 		String message = result.getMessage();
 		boolean isOk = result.isStatus();
 	}
