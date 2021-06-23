@@ -15,10 +15,12 @@ import org.springframework.context.ApplicationContext;
 
 import ar.com.qbuilder.config.Config;
 import ar.com.qbuilder.domain.Aggregation;
+import ar.com.qbuilder.domain.AggregationColumn;
 import ar.com.qbuilder.domain.Condition;
 import ar.com.qbuilder.domain.DeleteAssociation;
 import ar.com.qbuilder.domain.DeleteObject;
 import ar.com.qbuilder.domain.Entity;
+import ar.com.qbuilder.domain.GroupBy;
 import ar.com.qbuilder.domain.InsertAssociation;
 import ar.com.qbuilder.domain.InsertObject;
 import ar.com.qbuilder.domain.Join;
@@ -65,8 +67,8 @@ public class QbuilderApplication {
 //		SelectObject query = makeSelectObject();
 //		SelectAssociation query = makeSelectAssociation();
 //		Join query = makeJoin();
-		SelectCustom query = makeSelectCustom();
-//		SelectCustom query = makeGroupByHaving();
+//		SelectCustom query = makeSelectCustom();
+		SelectCustom query = makeGroupByHaving();
 		
 		ResultSet result = executor.execute(query); 
 		if(result.isStatus()) {
@@ -80,7 +82,16 @@ public class QbuilderApplication {
 	private static SelectCustom makeGroupByHaving() {
 		SelectCustom select = new SelectCustom();
 		select.setEntity(Entity.Objects);
-		select.setGroupBy("type");
+//		select.addToSelect("type", "count", Aggregation.COUNT);
+//		select.addToSelect("id", "sum", Aggregation.SUM);
+		select.addToSelect("type", null);
+		GroupBy groupBy = GroupBy.build()
+				.setGroupBy("type")
+				.addAggregation(AggregationColumn.buildColumn("type", "count", Aggregation.COUNT));
+		
+		select.setGroupBy(groupBy);
+		
+//		select.setGroupBy("type");
 		select.setHaving("count > 2");
 		
 		return select;

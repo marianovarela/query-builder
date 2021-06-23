@@ -19,10 +19,15 @@ public class SelectCustom {
 	private String condition;
 	
 	// string with columns separated with comma
-	private String groupBy;
+	private GroupBy groupBy;
 	
 	private String having;
 
+	public void addToSelect(String from) {
+		// if  @param to is null, this have not alias
+		this.selection.add(Column.buildColumn(from, null));
+	}
+	
 	public void addToSelect(String from, String alias) {
 		// if  @param to is null, this have not alias
 		this.selection.add(Column.buildColumn(from, alias));

@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 
 import org.apache.spark.sql.Column;
 import org.apache.spark.sql.Dataset;
+import org.apache.spark.sql.RelationalGroupedDataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.functions;
 import org.apache.spark.sql.catalyst.plans.logical.LogicalPlan;
@@ -59,10 +60,17 @@ public class SelectionCustomService {
 			result = result.select(columns);
 		}
 		
-		if((!(select.getGroupBy() == null)) && !select.getGroupBy().isBlank()) {
-			//TODO: pensar como hacer para pasar la agregación y la funcion count
-			result = result.groupBy(select.getGroupBy())
-				.agg(functions.count(result.col("type")).alias("count"));
+		if((!(select.getGroupBy() == null)) && !(select.getGroupBy().getColumns() == null) && !select.getGroupBy().getColumns().isBlank()) {
+			RelationalGroupedDataset groupedDataset	= result.groupBy(select.getGroupBy().getColumns());
+			boolean isFirst = true;
+			for(AggregationColumn agg : select.getGroupBy().getAggs()) {
+				if(isFirst) {
+					result = groupedDataset.agg(makeColumn(agg, result));
+					isFirst = false;
+				} else {
+					result = result.agg(makeColumn(agg, result));
+				}
+			}
 			if(!select.getHaving().isBlank()) {
 				result = result.filter(select.getHaving());
 			}
@@ -88,14 +96,6 @@ public class SelectionCustomService {
 			}
 			index++;
 		}
-		/*for(Pair<String, String> pair : selection) {
-			if(pair.getValue1() == null) {
-				columns[index] = dataset.col(String.valueOf(pair.getValue0()));				
-			} else {
-				columns[index] = dataset.col(String.valueOf(pair.getValue0())).alias(String.valueOf(pair.getValue1()));
-			}
-			index++;
-		};*/
 		return columns;
 	}
 
@@ -110,18 +110,23 @@ public class SelectionCustomService {
 		//the column must have alias
 		return getAggregateColumn(column, dataset).alias(column.getAlias());
 	}
-
+	
 	private Column getAggregateColumn(AggregationColumn column, Dataset<Row> dataset) {
 		int function = column.getAggregation().ordinal();
+		Column tmpCol = dataset.col(String.valueOf(column.getColumn()));
+		return getAggregatedFunction(function, tmpCol);
+	}
+
+	private Column getAggregatedFunction(int function, Column tmpCol) {
 		switch(function) {
 			case 0: //count
-				return functions.count(dataset.col(String.valueOf(column.getColumn()))); 
+				return functions.count(tmpCol); 
 			case 1: //max 
-				return functions.max(dataset.col(String.valueOf(column.getColumn())));
+				return functions.max(tmpCol);
 			case 2://min
-				return functions.min(dataset.col(String.valueOf(column.getColumn())));
+				return functions.min(tmpCol);
 			case 3://sum
-				return functions.sum(dataset.col(String.valueOf(column.getColumn())));
+				return functions.sum(tmpCol);
 			default: 
 				throw new BusinessException("Function has not exist");
 		}
