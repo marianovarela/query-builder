@@ -14,6 +14,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
 import ar.com.qbuilder.config.Config;
+import ar.com.qbuilder.domain.Aggregation;
 import ar.com.qbuilder.domain.Condition;
 import ar.com.qbuilder.domain.DeleteAssociation;
 import ar.com.qbuilder.domain.DeleteObject;
@@ -65,21 +66,32 @@ public class QbuilderApplication {
 //		SelectAssociation query = makeSelectAssociation();
 //		Join query = makeJoin();
 		SelectCustom query = makeSelectCustom();
+//		SelectCustom query = makeGroupByHaving();
 		
 		ResultSet result = executor.execute(query); 
-		List<Row> rows = result.get();
-		long count = result.count();
-//		BigDecimal sum = result.sum("tipo");
-		BigDecimal max = result.max("idx");
-		String message = result.getMessage();
-		boolean isOk = result.isStatus();
+		if(result.isStatus()) {
+			List<Row> rows = result.get();
+			long count = result.count();
+		} else {
+			String message = result.getMessage();
+		}
 	}
 	
+	private static SelectCustom makeGroupByHaving() {
+		SelectCustom select = new SelectCustom();
+		select.setEntity(Entity.Objects);
+		select.setGroupBy("type");
+		select.setHaving("count > 2");
+		
+		return select;
+	}
+
 	private static SelectCustom makeSelectCustom() {
 		SelectCustom select = new SelectCustom();
-		select.addToSelect("data", "cuerpo");
-		select.addToSelect("id", "idx");
-		select.addToSelect("type", "tipo");
+//		select.addToSelect("data", "cuerpo");
+//		select.addToSelect("id", "idx");
+//		select.addToSelect("type", "tipo");
+		select.addToSelect("id", "count", Aggregation.COUNT);
 		select.setEntity(Entity.Objects);
 		select.setCondition("type = 3");
 		

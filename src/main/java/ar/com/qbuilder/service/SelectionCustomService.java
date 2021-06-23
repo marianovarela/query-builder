@@ -9,19 +9,21 @@ import javax.annotation.PostConstruct;
 import org.apache.spark.sql.Column;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
+import org.apache.spark.sql.functions;
 import org.apache.spark.sql.catalyst.plans.logical.LogicalPlan;
 import org.apache.spark.sql.catalyst.plans.logical.SubqueryAlias;
-import org.javatuples.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import ar.com.qbuilder.config.Config;
 import ar.com.qbuilder.config.domain.Datasource;
+import ar.com.qbuilder.domain.AggregationColumn;
 import ar.com.qbuilder.domain.Condition;
 import ar.com.qbuilder.domain.Join;
 import ar.com.qbuilder.domain.LogicOperator;
 import ar.com.qbuilder.domain.SelectCustom;
+import ar.com.qbuilder.exception.BusinessException;
 import ar.com.qbuilder.helper.TaoSelector;
 
 @Service
@@ -37,7 +39,7 @@ public class SelectionCustomService {
 	private ApplicationContext context;
 	
 	private Config config;
-
+	
 	public Dataset<Row> getDataset(SelectCustom select) {
 		int arity = config.getArity();
 		int[] taos = new int[arity];
@@ -56,6 +58,15 @@ public class SelectionCustomService {
 			Column[] columns = makeColumns(result, select.getSelection());
 			result = result.select(columns);
 		}
+		
+		if((!(select.getGroupBy() == null)) && !select.getGroupBy().isBlank()) {
+			//TODO: pensar como hacer para pasar la agregación y la funcion count
+			result = result.groupBy(select.getGroupBy())
+				.agg(functions.count(result.col("type")).alias("count"));
+			if(!select.getHaving().isBlank()) {
+				result = result.filter(select.getHaving());
+			}
+		}
 
 		return result;
 	}
@@ -65,18 +76,55 @@ public class SelectionCustomService {
 		return dataset;
 	}
 
-	private Column[] makeColumns(Dataset<Row> dataset, List<Pair<String, String>> selection) {
-		Column[] columns = new Column[selection.size()];
+	private Column[] makeColumns(Dataset<Row> dataset, List<ar.com.qbuilder.domain.Column> list) {
+		Column[] columns = new Column[list.size()];
 		int index = 0;
-		for(Pair<String, String> pair : selection) {
+		for(ar.com.qbuilder.domain.Column column : list) {
+			if(column instanceof ar.com.qbuilder.domain.AggregationColumn) {
+				AggregationColumn aggCol = (AggregationColumn) column;
+				columns[index] = makeColumn(aggCol, dataset);
+			} else { // ar.com.qbuilder.domain.Column
+				columns[index] = makeColumn(column, dataset);
+			}
+			index++;
+		}
+		/*for(Pair<String, String> pair : selection) {
 			if(pair.getValue1() == null) {
 				columns[index] = dataset.col(String.valueOf(pair.getValue0()));				
 			} else {
 				columns[index] = dataset.col(String.valueOf(pair.getValue0())).alias(String.valueOf(pair.getValue1()));
 			}
 			index++;
-		};
+		};*/
 		return columns;
+	}
+
+	private Column makeColumn(ar.com.qbuilder.domain.Column column, Dataset<Row> dataset) {
+		if(column.getAlias() == null) {
+			return dataset.col(String.valueOf(column.getColumn()));
+		}
+		return dataset.col(String.valueOf(column.getColumn())).alias(column.getAlias());
+	}
+	
+	private Column makeColumn(AggregationColumn column, Dataset<Row> dataset) {
+		//the column must have alias
+		return getAggregateColumn(column, dataset).alias(column.getAlias());
+	}
+
+	private Column getAggregateColumn(AggregationColumn column, Dataset<Row> dataset) {
+		int function = column.getAggregation().ordinal();
+		switch(function) {
+			case 0: //count
+				return functions.count(dataset.col(String.valueOf(column.getColumn()))); 
+			case 1: //max 
+				return functions.max(dataset.col(String.valueOf(column.getColumn())));
+			case 2://min
+				return functions.min(dataset.col(String.valueOf(column.getColumn())));
+			case 3://sum
+				return functions.sum(dataset.col(String.valueOf(column.getColumn())));
+			default: 
+				throw new BusinessException("Function has not exist");
+		}
 	}
 
 	@PostConstruct

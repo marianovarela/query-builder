@@ -7,7 +7,6 @@ import java.util.Properties;
 import org.apache.spark.SparkContext;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
-import org.apache.spark.sql.DataFrameReader;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SQLContext;
@@ -18,12 +17,12 @@ import org.apache.spark.sql.types.StructField;
 import org.apache.spark.sql.types.StructType;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.javatuples.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import ar.com.qbuilder.config.domain.Datasource;
 import ar.com.qbuilder.domain.Association;
+import ar.com.qbuilder.domain.Column;
 import ar.com.qbuilder.domain.DeleteAssociation;
 import ar.com.qbuilder.domain.DeleteObject;
 import ar.com.qbuilder.domain.Entity;
@@ -33,7 +32,6 @@ import ar.com.qbuilder.domain.SelectObject;
 import ar.com.qbuilder.helper.FilterBuilder;
 import ar.com.qbuilder.helper.TaoSelector;
 import ar.com.qbuilder.utils.HibernateUtil;
-import lombok.Data;
 
 @Component
 public class SparkService {
@@ -87,8 +85,9 @@ public class SparkService {
 //		JavaRDD<ar.com.qbuilder.domain.Object> objRDD = jsc.parallelize(new ArrayList<ar.com.qbuilder.domain.Object>());
 //		Dataset<Row> objDf = sqlContext.createDataFrame(objRDD, ar.com.qbuilder.domain.Object.class);
 		List<StructField> fields = new ArrayList<>();
-		for (Pair<String, String> pair : select.getSelection()) {
-		  StructField field = DataTypes.createStructField(pair.getValue1(), DataTypes.StringType, true);
+		//ver que pasa cuando no tiene alias
+		for (Column column : select.getSelection()) {
+		  StructField field = DataTypes.createStructField(column.getAlias(), DataTypes.StringType, true);
 		  fields.add(field);
 		}
 		StructType schema = DataTypes.createStructType(fields);
@@ -250,7 +249,6 @@ public class SparkService {
 		String filter = buildFilterById(select);
 
 		jdbcDF = jdbcDF.filter(filter);
-
 		return jdbcDF;
 	}
 
