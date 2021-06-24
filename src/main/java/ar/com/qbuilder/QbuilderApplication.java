@@ -26,6 +26,9 @@ import ar.com.qbuilder.domain.InsertObject;
 import ar.com.qbuilder.domain.Join;
 import ar.com.qbuilder.domain.JoinType;
 import ar.com.qbuilder.domain.LogicOperator;
+import ar.com.qbuilder.domain.Order;
+import ar.com.qbuilder.domain.OrderBy;
+import ar.com.qbuilder.domain.OrderedColumn;
 import ar.com.qbuilder.domain.Range;
 import ar.com.qbuilder.domain.ResultSet;
 import ar.com.qbuilder.domain.SelectAssociation;
@@ -68,7 +71,8 @@ public class QbuilderApplication {
 //		SelectAssociation query = makeSelectAssociation();
 //		Join query = makeJoin();
 //		SelectCustom query = makeSelectCustom();
-		SelectCustom query = makeGroupByHaving();
+//		SelectCustom query = makeGroupByHaving();
+		SelectCustom query = makeOrderBy();
 		
 		ResultSet result = executor.execute(query); 
 		if(result.isStatus()) {
@@ -79,6 +83,19 @@ public class QbuilderApplication {
 		}
 	}
 	
+	private static SelectCustom makeOrderBy() {
+		SelectCustom select = new SelectCustom();
+		select.setEntity(Entity.Objects);
+		select.addToSelect("type", null);
+		select.addToSelect("id", null);
+		OrderBy orderBy = OrderBy.build()
+				.addColumn(OrderedColumn.buildColumn("type", Order.DESC))
+				.addColumn(OrderedColumn.buildColumn("id", Order.ASC));
+		
+		select.setOrderBy(orderBy);
+		return select;
+	}
+
 	private static SelectCustom makeGroupByHaving() {
 		SelectCustom select = new SelectCustom();
 		select.setEntity(Entity.Objects);

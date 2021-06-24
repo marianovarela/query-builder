@@ -23,6 +23,8 @@ import ar.com.qbuilder.domain.AggregationColumn;
 import ar.com.qbuilder.domain.Condition;
 import ar.com.qbuilder.domain.Join;
 import ar.com.qbuilder.domain.LogicOperator;
+import ar.com.qbuilder.domain.Order;
+import ar.com.qbuilder.domain.OrderedColumn;
 import ar.com.qbuilder.domain.SelectCustom;
 import ar.com.qbuilder.exception.BusinessException;
 import ar.com.qbuilder.helper.TaoSelector;
@@ -75,10 +77,34 @@ public class SelectionCustomService {
 				result = result.filter(select.getHaving());
 			}
 		}
+		
+		if((!(select.getOrderBy() == null)) && !select.getOrderBy().isEmpty()) {
+			result = orderBy(result, select);
+		}
 
 		return result;
 	}
 	
+	private Dataset<Row> orderBy(Dataset<Row> result, SelectCustom select) {
+			Column[] columns = makeOrderedColumns(result, select.getOrderBy().getColumns());
+			result = result.orderBy(columns);
+		return result;
+	}
+
+	private Column[] makeOrderedColumns(Dataset<Row> result, List<OrderedColumn> list) {
+		Column[] columns = new Column[list.size()];
+		int index = 0;
+		for(ar.com.qbuilder.domain.OrderedColumn column : list) {
+			if(column.getOrder().equals(Order.ASC)) {
+				columns[index] = result.col(column.getColumn()).asc();
+			} else { // ORDER.DESC
+				columns[index] = result.col(column.getColumn()).desc();
+			}
+			index++;
+		}
+		return columns;
+	}
+
 	public Dataset<Row> execute(SelectCustom select) {
 		Dataset<Row> dataset = this.getDataset(select);
 		return dataset;

@@ -21,6 +21,8 @@ public class SelectCustom {
 	// string with columns separated with comma
 	private GroupBy groupBy;
 	
+	private OrderBy orderBy;
+	
 	private String having;
 
 	public void addToSelect(String from) {
