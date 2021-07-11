@@ -26,6 +26,7 @@ import ar.com.qbuilder.domain.LogicOperator;
 import ar.com.qbuilder.domain.Order;
 import ar.com.qbuilder.domain.OrderedColumn;
 import ar.com.qbuilder.domain.SelectCustom;
+import ar.com.qbuilder.domain.Subquery;
 import ar.com.qbuilder.exception.BusinessException;
 import ar.com.qbuilder.helper.TaoSelector;
 
@@ -42,6 +43,14 @@ public class SelectionCustomService {
 	private ApplicationContext context;
 	
 	private Config config;
+	
+	public Dataset<Row> getDataset(Subquery subquery) {
+		if(subquery.getSelect() == null) {
+			return subquery.getResultSet().getDataset();
+		} else {
+			return this.getDataset(subquery.getSelect());
+		}
+	}
 	
 	public Dataset<Row> getDataset(SelectCustom select) {
 		int arity = config.getArity();

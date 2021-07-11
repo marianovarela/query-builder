@@ -20,6 +20,10 @@ public class ResultSet {
 
 	private String message;
 	
+	public Dataset<Row> getDataset(){
+		return this.dataset;
+	}
+	
 	public long count() {
 		return this.dataset.count();
 	}

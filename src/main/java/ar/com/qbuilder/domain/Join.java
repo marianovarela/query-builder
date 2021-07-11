@@ -9,9 +9,9 @@ import lombok.Setter;
 @Getter @Setter
 public class Join {
 
-	private SelectCustom from;
+	private Subquery from;
 	
-	private SelectCustom to;
+	private Subquery to;
 	
 	private String selection; 
 	
@@ -21,4 +21,36 @@ public class Join {
 	
 	private JoinType type;
 	
+	public Join build() {
+		Join join = new Join();
+		return join;
+	}
+	
+	public Join withFrom(SelectCustom select) {
+		Subquery subquery = Subquery.build()
+				.setSelect(select);
+		this.setFrom(subquery);
+		return this;
+	}
+	
+	public Join withFrom(ResultSet resultSet) {
+		Subquery subquery = Subquery.build()
+				.setResultSet(resultSet);
+		this.setFrom(subquery);
+		return this;
+	}
+	
+	public Join withTo(SelectCustom select) {
+		Subquery subquery = Subquery.build()
+				.setSelect(select);
+		this.setTo(subquery);
+		return this;
+	}
+	
+	public Join withTo(ResultSet resultSet) {
+		Subquery subquery = Subquery.build()
+				.setResultSet(resultSet);
+		this.setTo(subquery);
+		return this;
+	}
 }

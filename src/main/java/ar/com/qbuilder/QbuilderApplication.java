@@ -69,10 +69,10 @@ public class QbuilderApplication {
 //		SelectAssociation query = makeRangeAssociation();
 //		SelectObject query = makeSelectObject();
 //		SelectAssociation query = makeSelectAssociation();
-//		Join query = makeJoin();
+		Join query = makeJoin();
 //		SelectCustom query = makeSelectCustom();
 //		SelectCustom query = makeGroupByHaving();
-		SelectCustom query = makeOrderBy();
+//		SelectCustom query = makeOrderBy();
 		
 		ResultSet result = executor.execute(query); 
 		if(result.isStatus()) {
@@ -130,8 +130,8 @@ public class QbuilderApplication {
 		SelectCustom from = makeSelectCustomFrom();
 		SelectCustom to = makeSelectCustomTo();
 		Join join = new Join();
-		join.setFrom(from);
-		join.setTo(to);
+		join.withFrom(from);
+		join.withTo(to);
 		Condition condition = Condition.makeWithFirstTableAndSecondTable(LogicOperator.AND,"id", "id");
 		Condition condition2 = Condition.makeWithFirstTableAndValue(LogicOperator.AND, "id", "30");
 		Condition condition3 = Condition.makeWithSecondTableAndValue(LogicOperator.AND, "id", "30");
