@@ -187,12 +187,9 @@ public class SparkService {
 			jdbcDF = jdbcDF.limit(select.getLimit());
 		}
 
-//		Row[] result = (Row[]) jdbcDF.collect();
-//
-//		if (select.getRange() != null) {
-//			result = Arrays.copyOfRange(result, select.getRange().getPosition(),
-//					select.getRange().getPosition() + select.getRange().getLimit());
-//		}
+		if (select.getRange() != null) {
+			jdbcDF = jdbcDF.limit(select.getRange().getLimit());
+		}
 		return jdbcDF;
 	}
 

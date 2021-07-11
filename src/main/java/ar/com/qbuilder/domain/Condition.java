@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter @Setter
 public class Condition {
 
-	private LogicOperator logicOperator;
+	private LogicOperator logicOperator; 
 	
 	//column of table a
 	private String firstColumn;
