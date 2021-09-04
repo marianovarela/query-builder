@@ -27,6 +27,7 @@ import ar.com.qbuilder.domain.Order;
 import ar.com.qbuilder.domain.OrderedColumn;
 import ar.com.qbuilder.domain.SelectCustom;
 import ar.com.qbuilder.domain.Subquery;
+import ar.com.qbuilder.domain.Union;
 import ar.com.qbuilder.exception.BusinessException;
 import ar.com.qbuilder.helper.TaoSelector;
 
@@ -247,6 +248,28 @@ public class SelectionCustomService {
 			}
 		}
 		return column;
+	}
+
+	public Dataset<Row> execute(Union union) {
+		Dataset<Row> first = this.getDataset(union.getFirst());
+		first = first.alias("df1");
+		Dataset<Row> second = this.getDataset(union.getSecond());
+		second = second.alias("df2");
+//		Dataset<Row> result = from.join(to, condition, join.getType().value);
+		Dataset<Row> result = first.union(second);
+		if(union.getFilter() != null) {
+			result = first.union(second)
+					.filter(union.getFilter());
+		}
+		result = addSelect(result, union);
+		return result;
+	}
+
+	private Dataset<Row> addSelect(Dataset<Row> result, Union union) {
+		if(union.getSelection() != null) {
+			result = result.select(union.getSelection());
+		}
+		return result;
 	}
 
 }

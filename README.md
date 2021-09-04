@@ -1,4 +1,4 @@
-# <img src="src\main\resources\termita.svg" width="80" height="80"> Termita Query Builder
+# Query Builder
 
 # Descripci�n
 

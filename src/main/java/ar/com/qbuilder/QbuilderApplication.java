@@ -35,6 +35,7 @@ import ar.com.qbuilder.domain.SelectAssociation;
 import ar.com.qbuilder.domain.SelectCustom;
 import ar.com.qbuilder.domain.SelectObject;
 import ar.com.qbuilder.domain.TimeRange;
+import ar.com.qbuilder.domain.Union;
 import ar.com.qbuilder.domain.UpdateAssociation;
 import ar.com.qbuilder.domain.UpdateObject;
 import ar.com.qbuilder.service.TestService;
@@ -69,7 +70,8 @@ public class QbuilderApplication {
 //		SelectAssociation query = makeRangeAssociation();
 //		SelectObject query = makeSelectObject();
 //		SelectAssociation query = makeSelectAssociation();
-		Join query = makeJoin();
+//		Join query = makeJoin();
+		Join query = makeUnion();
 //		SelectCustom query = makeSelectCustom();
 //		SelectCustom query = makeGroupByHaving();
 //		SelectCustom query = makeOrderBy();
@@ -82,7 +84,7 @@ public class QbuilderApplication {
 			String message = result.getMessage();
 		}
 	}
-	
+
 	private static SelectCustom makeOrderBy() {
 		SelectCustom select = new SelectCustom();
 		select.setEntity(Entity.Objects);
@@ -141,6 +143,16 @@ public class QbuilderApplication {
 		join.setSelection("df1.id");
 		join.setType(JoinType.INNER);
 		return join;
+	}
+	
+	private static Union makeUnion() {
+		SelectCustom first = makeSelectCustomFrom();
+		SelectCustom second = makeSelectCustomFrom();
+		Union union = new Union();
+		union.withFirst(first).withSecond(second);
+		union.setFilter("df1.id = 30");
+		union.setSelection("df1.id");
+		return union;
 	}
 
 	private static SelectCustom makeSelectCustomFrom() {

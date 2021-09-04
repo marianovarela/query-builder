@@ -16,6 +16,7 @@ import ar.com.qbuilder.domain.ResultSet;
 import ar.com.qbuilder.domain.SelectAssociation;
 import ar.com.qbuilder.domain.SelectCustom;
 import ar.com.qbuilder.domain.SelectObject;
+import ar.com.qbuilder.domain.Union;
 import ar.com.qbuilder.domain.UpdateAssociation;
 import ar.com.qbuilder.domain.UpdateObject;
 import ar.com.qbuilder.helper.AssociationKeys;
@@ -94,6 +95,12 @@ public class Executor {
 		Dataset<Row> dataset = selectionCustomService.execute(join);
 		ResultSet result = ResultBuilder.buildSuccess(dataset);
 		return result;
+	}
+
+	public ResultSet execute(Union query) {
+		Dataset<Row> dataset = selectionCustomService.execute(query);
+		ResultSet result = ResultBuilder.buildSuccess(dataset);
+		return null;
 	}
 
 }
