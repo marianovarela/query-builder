@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class Union {
+public class Union extends SelectAbstract {
 
 	private Subquery first;
 	
@@ -12,7 +12,7 @@ public class Union {
 	
 	private String selection; 
 	
-	private String filter;
+	private String filter;		
 	
 	public Union build() {
 		Union join = new Union();

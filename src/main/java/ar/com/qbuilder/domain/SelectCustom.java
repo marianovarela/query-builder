@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class SelectCustom {
+public class SelectCustom extends SelectAbstract {
 	
 	private List<Column> selection = new LinkedList<Column>();
 	
@@ -18,13 +18,6 @@ public class SelectCustom {
 	
 	private String condition;
 	
-	// string with columns separated with comma
-	private GroupBy groupBy;
-	
-	private OrderBy orderBy;
-	
-	private String having;
-
 	public void addToSelect(String from) {
 		// if  @param to is null, this have not alias
 		this.selection.add(Column.buildColumn(from, null));

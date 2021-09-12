@@ -100,6 +100,18 @@ public class SelectionCustomService {
 			result = result.orderBy(columns);
 		return result;
 	}
+	
+	private Dataset<Row> orderBy(Dataset<Row> result, Union union) {
+		Column[] columns = makeOrderedColumns(result, union.getOrderBy().getColumns());
+		result = result.orderBy(columns);
+	return result;
+}
+	
+	private Dataset<Row> orderBy(Dataset<Row> result, Join join) {
+		Column[] columns = makeOrderedColumns(result, join.getOrderBy().getColumns());
+		result = result.orderBy(columns);
+	return result;
+}
 
 	private Column[] makeOrderedColumns(Dataset<Row> result, List<OrderedColumn> list) {
 		Column[] columns = new Column[list.size()];
@@ -185,6 +197,27 @@ public class SelectionCustomService {
 					.filter(join.getFilter());
 		}
 		result = addSelect(result, join);
+		
+		if((!(join.getGroupBy() == null)) && !(join.getGroupBy().getColumns() == null) && !join.getGroupBy().getColumns().isBlank()) {
+			RelationalGroupedDataset groupedDataset	= result.groupBy(join.getGroupBy().getColumns());
+			boolean isFirst = true;
+			for(AggregationColumn agg : join.getGroupBy().getAggs()) {
+				if(isFirst) {
+					result = groupedDataset.agg(makeColumn(agg, result));
+					isFirst = false;
+				} else {
+					result = result.agg(makeColumn(agg, result));
+				}
+			}
+			if(!join.getHaving().isBlank()) {
+				result = result.filter(join.getHaving());
+			}
+		}
+		
+		if((!(join.getOrderBy() == null)) && !join.getOrderBy().isEmpty()) {
+			result = orderBy(result, join);
+		}
+		
 		return result;
 	}
 	
@@ -262,6 +295,27 @@ public class SelectionCustomService {
 					.filter(union.getFilter());
 		}
 		result = addSelect(result, union);
+		
+		if((!(union.getGroupBy() == null)) && !(union.getGroupBy().getColumns() == null) && !union.getGroupBy().getColumns().isBlank()) {
+			RelationalGroupedDataset groupedDataset	= result.groupBy(union.getGroupBy().getColumns());
+			boolean isFirst = true;
+			for(AggregationColumn agg : union.getGroupBy().getAggs()) {
+				if(isFirst) {
+					result = groupedDataset.agg(makeColumn(agg, result));
+					isFirst = false;
+				} else {
+					result = result.agg(makeColumn(agg, result));
+				}
+			}
+			if(!union.getHaving().isBlank()) {
+				result = result.filter(union.getHaving());
+			}
+		}
+		
+		if((!(union.getOrderBy() == null)) && !union.getOrderBy().isEmpty()) {
+			result = orderBy(result, union);
+		}
+		
 		return result;
 	}
 
