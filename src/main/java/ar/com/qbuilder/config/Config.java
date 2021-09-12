@@ -18,10 +18,8 @@ public class Config {
 	@Autowired
 	private Environment env;
 	
-	private int arity;
-	
 	public Datasource getDatasource(long idTao) throws Exception {
-		if(idTao > this.arity) {
+		if(idTao > this.getArity()) {
 			throw new Exception("El tao ingresado no corresponde");
 		}else {
 			return new Datasource(
@@ -34,6 +32,20 @@ public class Config {
 		}
 	}
 	
+	public int getArity() {
+		int current = 0;
+		boolean exist = true;
+		while(exist) {
+			String url = env.getProperty("tao" + current + ".url");
+			if(url != null) {
+				current += 1;				
+			} else {
+				exist = false;
+			}
+		}
+		return current;
+	}
+
 	public String getURL(int nTao) {
 		return env.getProperty("tao" + nTao + ".url");
 	}
