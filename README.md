@@ -2,11 +2,25 @@
 
 # Descripci�n
 
-# Instalaci�n
+# Requisitos
 - Instalar Hadoop
 - Instalar Apache Spark
 - Instalar Java 8
 - Instalar Maven
+
+# Instalaci�n
+
+
+El proyecto fue probado en la mayoría de su desarrollo en ambientes Linux, aunque no tiene limitación alguna para ejecutar en ambientes Windows siempre y cuando tengan los compiladores adecuados.
+
+Cuando se posean las dependencias mencionadas anteriormente el primer paso es clonar el proyecto: 
+
+$ git clone https://github.com/marianovarela/query-builder.git
+
+$ mvn clean package
+
+Luego incluir el .jar en la solución deseada.
+
 
 # Uso
 
