@@ -100,7 +100,7 @@ public class Executor {
 	public ResultSet execute(Union query) {
 		Dataset<Row> dataset = selectionCustomService.execute(query);
 		ResultSet result = ResultBuilder.buildSuccess(dataset);
-		return null;
+		return result;
 	}
 
 }

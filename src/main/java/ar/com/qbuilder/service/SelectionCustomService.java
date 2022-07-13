@@ -83,7 +83,7 @@ public class SelectionCustomService {
 					result = result.agg(makeColumn(agg, result));
 				}
 			}
-			if(!select.getHaving().isBlank()) {
+			if(select.getHaving() != null && !select.getHaving().isBlank()) {
 				result = result.filter(select.getHaving());
 			}
 		}

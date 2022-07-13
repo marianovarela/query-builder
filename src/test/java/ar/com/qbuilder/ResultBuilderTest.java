@@ -14,20 +14,20 @@ class ResultBuilderTest {
 	@Test
 	void buildSuccessShouldReturnStatusTrueWithoutParameter() {
 		ResultSet origin = ResultBuilder.buildSuccess();
-		assertTrue(origin.isStatus());
+		assertFalse(origin.isError());
 	}
 	
 	@Test
 	void buildSuccessShouldReturnStatusTrueWithParameter() {
 		ResultSet origin = ResultBuilder.buildSuccess(null);
-		assertTrue(origin.isStatus());
+		assertFalse(origin.isError());
 	}
 	
 	@Test
 	void buildErrorShouldReturnStatusFalse() {
 		String message = "error";
 		ResultSet origin = ResultBuilder.buildError(message);
-		assertFalse(origin.isStatus());
+		assertTrue(origin.isError());
 		assertEquals(origin.getMessage(), message);
 	}
 

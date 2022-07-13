@@ -10,19 +10,19 @@ public class ResultBuilder {
 	public static ResultSet buildSuccess(Dataset<Row> result) {
 		ResultSet res = new ResultSet();
 		res.setDataset(result);
-		res.setStatus(true);
+		res.setError(false);
 		return res;
 	}
 	
 	public static ResultSet buildSuccess() {
 		ResultSet res = new ResultSet();
-		res.setStatus(true);
+		res.setError(false);
 		return res;
 	}
 	
 	public static ResultSet buildError(String message) {
 		ResultSet res = new ResultSet();
-		res.setStatus(false);
+		res.setError(true);
 		res.setMessage(message);
 		return res;
 	}

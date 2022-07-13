@@ -16,7 +16,7 @@ public class ResultSet {
 	
 	private Dataset<Row> dataset; 
 	
-	private boolean status;
+	private boolean error;
 
 	private String message;
 	
@@ -30,10 +30,6 @@ public class ResultSet {
 	
 	public List<Row> get() {
 		return  this.dataset.collectAsList();
-	}
-	
-	public boolean isStatus() {
-		return this.status;
 	}
 	
 	public String getMessage() {
@@ -83,6 +79,10 @@ public class ResultSet {
 			e.printStackTrace();
 			throw new BusinessException(e.getMessage());
 		}
+	}
+
+	public boolean isError() {
+		return error;
 	}
 	
 }
