@@ -12,7 +12,7 @@ public class Union extends SelectAbstract {
 	
 	private String selection; 
 	
-	private String filter;		
+	//private String filter;		
 	
 	public Union build() {
 		Union join = new Union();

@@ -192,9 +192,9 @@ public class SelectionCustomService {
 		to = to.alias("df2");
 		Column condition = makeJoinCondition(from , to, join);
 		Dataset<Row> result = from.join(to, condition, join.getType().value);
-		if(join.getFilter() != null) {
+		if(join.getWhere() != null && join.getWhere().getFilter() != null) {
 			result = from.join(to, condition, join.getType().value)
-					.filter(join.getFilter());
+					.filter(join.getWhere().getFilter());
 		}
 		result = addSelect(result, join);
 		
@@ -290,9 +290,9 @@ public class SelectionCustomService {
 		second = second.alias("df2");
 //		Dataset<Row> result = from.join(to, condition, join.getType().value);
 		Dataset<Row> result = first.union(second);
-		if(union.getFilter() != null) {
+		if(union.getWhere() != null & union.getWhere().getFilter() != null) {
 			result = first.union(second)
-					.filter(union.getFilter());
+					.filter(union.getWhere().getFilter());
 		}
 		result = addSelect(result, union);
 		

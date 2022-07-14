@@ -12,5 +12,7 @@ public abstract class SelectAbstract {
 		private OrderBy orderBy;
 		
 		private String having;
+		
+		private Where where;
 	
 }

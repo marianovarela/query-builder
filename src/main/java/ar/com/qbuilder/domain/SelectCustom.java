@@ -16,7 +16,7 @@ public class SelectCustom extends SelectAbstract {
 	// entity to retrieve
 	private Entity entity;
 	
-	private String condition;
+	//private String condition;
 	
 	public void addToSelect(String from) {
 		// if  @param to is null, this have not alias

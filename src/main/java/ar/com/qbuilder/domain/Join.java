@@ -17,7 +17,7 @@ public class Join extends SelectAbstract {
 	
 	private List<Condition> joinClause = new LinkedList<Condition>();
 
-	private String filter;
+	//private String filter;
 	
 	private JoinType type;
 	
