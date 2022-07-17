@@ -6,8 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-import ar.com.qbuilder.domain.ResultSet;
-import ar.com.qbuilder.helper.ResultBuilder;
+import io.github.marianovarela.qbuilder.domain.ResultSet;
+import io.github.marianovarela.qbuilder.helper.ResultBuilder;
 
 class ResultBuilderTest {
 
