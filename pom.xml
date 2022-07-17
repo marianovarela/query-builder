@@ -9,11 +9,42 @@
 		<version>2.4.4</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>ar.com</groupId>
+	<groupId>io.github.marianovarela</groupId>
 	<artifactId>qbuilder</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>qbuilder</name>
-	<description>Demo project for Spring Boot</description>
+	<name>${project.groupId}:${project.artifactId}</name>
+	<description>Query builder to TAO database</description>
+	<url>https://github.com/marianovarela/query-builder</url>
+	<licenses>
+		<license>
+			<name>MIT License</name>
+			<url>http://www.opensource.org/licenses/mit-license.php</url>
+		</license>
+	</licenses>
+	<developers>
+		<developer>
+			<name>Mariano Varela</name>
+			<email>marianogvarela@gmail.com</email>
+			<organization>Sonatype</organization>
+			<organizationUrl>http://www.sonatype.com</organizationUrl>
+		</developer>
+	</developers>
+	<scm>
+		<connection>scm:git:git://github.com/marianovarela/query-builder.git</connection>
+		<developerConnection>scm:git:ssh://github.com:marianovarela/query-builder.git</developerConnection>
+		<url>http://github.com/marianovarela/query-builder/tree/master</url>
+	</scm>
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
+
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
@@ -41,7 +72,17 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-
+		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-crypto -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-crypto</artifactId>
+			<version>5.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-oauth2-authorization-server</artifactId>
+			<version>0.2.0</version>
+		</dependency>
 		<dependency>
 			<groupId>org.codehaus.janino</groupId>
 			<artifactId>janino</artifactId>
@@ -137,6 +178,56 @@
 					</dependency>
 				</dependencies>
 			</plugin>
+			<plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>sign-artifacts</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>nexus-staging-maven-plugin</artifactId>
+        <version>1.6.7</version>
+        <extensions>true</extensions>
+        <configuration>
+          <serverId>ossrh</serverId>
+          <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+          <autoReleaseAfterClose>true</autoReleaseAfterClose>
+        </configuration>
+      </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>2.2.1</version>
+          <executions>
+            <execution>
+              <id>attach-sources</id>
+              <goals>
+                <goal>jar-no-fork</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>2.9.1</version>
+          <executions>
+            <execution>
+              <id>attach-javadocs</id>
+              <goals>
+                <goal>jar</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
 		</plugins>
 	</build>
 
