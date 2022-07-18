@@ -72,7 +72,7 @@ public class SelectionCustomService {
 			result = result.select(columns);
 		}
 		
-		if((!(select.getGroupBy() == null)) && !(select.getGroupBy().getColumns() == null) && !select.getGroupBy().getColumns().isBlank()) {
+		if((!(select.getGroupBy() == null)) && !(select.getGroupBy().getColumns() == null) && !(select.getGroupBy().getColumns() == null || select.getGroupBy().getColumns().trim().length() == 0)) {
 			RelationalGroupedDataset groupedDataset	= result.groupBy(select.getGroupBy().getColumns());
 			boolean isFirst = true;
 			for(AggregationColumn agg : select.getGroupBy().getAggs()) {
@@ -83,7 +83,7 @@ public class SelectionCustomService {
 					result = result.agg(makeColumn(agg, result));
 				}
 			}
-			if(select.getHaving() != null && !select.getHaving().isBlank()) {
+			if(select.getHaving() != null && !(select.getHaving() == null || select.getHaving().trim().length() == 0)) {
 				result = result.filter(select.getHaving());
 			}
 		}
@@ -198,7 +198,7 @@ public class SelectionCustomService {
 		}
 		result = addSelect(result, join);
 		
-		if((!(join.getGroupBy() == null)) && !(join.getGroupBy().getColumns() == null) && !join.getGroupBy().getColumns().isBlank()) {
+		if((!(join.getGroupBy() == null)) && !(join.getGroupBy().getColumns() == null) && !(join.getGroupBy().getColumns() == null || join.getGroupBy().getColumns().trim().length() == 0)) {
 			RelationalGroupedDataset groupedDataset	= result.groupBy(join.getGroupBy().getColumns());
 			boolean isFirst = true;
 			for(AggregationColumn agg : join.getGroupBy().getAggs()) {
@@ -209,7 +209,7 @@ public class SelectionCustomService {
 					result = result.agg(makeColumn(agg, result));
 				}
 			}
-			if(!join.getHaving().isBlank()) {
+			if(!(join.getHaving() == null || join.getHaving().trim().length() == 0)) {
 				result = result.filter(join.getHaving());
 			}
 		}
@@ -296,7 +296,7 @@ public class SelectionCustomService {
 		}
 		result = addSelect(result, union);
 		
-		if((!(union.getGroupBy() == null)) && !(union.getGroupBy().getColumns() == null) && !union.getGroupBy().getColumns().isBlank()) {
+		if((!(union.getGroupBy() == null)) && !(union.getGroupBy().getColumns() == null) && !(union.getGroupBy().getColumns() == null || union.getGroupBy().getColumns().trim().length() == 0)) {
 			RelationalGroupedDataset groupedDataset	= result.groupBy(union.getGroupBy().getColumns());
 			boolean isFirst = true;
 			for(AggregationColumn agg : union.getGroupBy().getAggs()) {
@@ -307,7 +307,7 @@ public class SelectionCustomService {
 					result = result.agg(makeColumn(agg, result));
 				}
 			}
-			if(!union.getHaving().isBlank()) {
+			if(!(union.getHaving() == null || union.getHaving().trim().length() == 0)) {
 				result = result.filter(union.getHaving());
 			}
 		}

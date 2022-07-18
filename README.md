@@ -11,16 +11,15 @@
 # Instalaci�n
 
 
-El proyecto fue probado en la mayoría de su desarrollo en ambientes Linux, aunque no tiene limitación alguna para ejecutar en ambientes Windows siempre y cuando tengan los compiladores adecuados.
+Cuando se posean las dependencias mencionadas anteriormente el primer paso es agregar la dependencia a archivo pom.xml
 
-Cuando se posean las dependencias mencionadas anteriormente el primer paso es clonar el proyecto: 
-
-$ git clone https://github.com/marianovarela/query-builder.git
-
-$ mvn clean package
-
-Luego incluir el .jar en la solución deseada.
-
+```
+<dependency>
+  <groupId>io.github.marianovarela</groupId>
+  <artifactId>qbuilder</artifactId>
+  <version>0.0.3</version>
+</dependency>
+```
 
 # Uso
 
@@ -33,21 +32,21 @@ Cada consulta retorna una instancia de la clase ResultSet. A esta se le podrá c
 
 ## Condiciones de join
 
-tableA.id = tableB.id
-Condition condition = Condition.makeWithFirstTableAndSecondTable(LogicOperator.AND,"id", "id");
-tableA.id = 30
-Condition condition2 = Condition.makeWithFirstTableAndValue(LogicOperator.AND, "id", "30");
-tableB.id = 30
-Condition condition3 = Condition.makeWithSecondTableAndValue(LogicOperator.AND, "id", "30");
+### tableA.id = tableB.id
+* Condition condition = Condition.makeWithFirstTableAndSecondTable(LogicOperator.AND,"id", "id");
+### tableA.id = 30
+* Condition condition2 = Condition.makeWithFirstTableAndValue(LogicOperator.AND, "id", "30");
+### tableB.id = 30
+* Condition condition3 = Condition.makeWithSecondTableAndValue(LogicOperator.AND, "id", "30");
 
 ## Join types
 
-JoinType.INNER("inner")
-JoinType.LEFT("left"),
-JoinType.LEFT_OUTER("left_outer"),
-JoinType.RIGHT("right"),
-JoinType.RIGHT_OUTER("right_outer"),
-JoinType.OUTER("outer");
+* JoinType.INNER("inner")
+* JoinType.LEFT("left"),
+* JoinType.LEFT_OUTER("left_outer"),
+* JoinType.RIGHT("right"),
+* JoinType.RIGHT_OUTER("right_outer"),
+* JoinType.OUTER("outer");
 
 ## JOIN 
 
