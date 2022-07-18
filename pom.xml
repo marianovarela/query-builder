@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>io.github.marianovarela</groupId>
 	<artifactId>qbuilder</artifactId>
-	<version>0.0.4</version>
+	<version>0.0.4-SNAPSHOT</version>
 	<name>${project.groupId}:${project.artifactId}</name>
 	<description>Query builder to TAO database</description>
 	<url>https://github.com/marianovarela/query-builder</url>
@@ -30,7 +30,7 @@
 	<scm>
 		<connection>scm:git:git://github.com/marianovarela/query-builder.git</connection>
 		<developerConnection>scm:git:ssh://github.com:marianovarela/query-builder.git</developerConnection>
-		<url>http://github.com/marianovarela/query-builder/tree/master</url>
+		<url>https://github.com/marianovarela/query-builder/tree/master</url>
 	  <tag>qbuilder-0.0.4</tag>
   </scm>
 	<distributionManagement>
