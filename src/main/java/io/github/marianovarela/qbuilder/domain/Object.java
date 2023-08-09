@@ -11,7 +11,7 @@ public class Object implements Serializable{
 	private static final long serialVersionUID = -7425917524951922564L;
 
 	private long id;
-	private int type;
+	private long type;
 	private String data;
 	
 }
