@@ -75,7 +75,7 @@ public class SelectionCustomService {
 		if((!(select.getGroupBy() == null)) && !(select.getGroupBy().getColumns() == null) && !(select.getGroupBy().getColumns() == null || select.getGroupBy().getColumns().trim().length() == 0)) {
 			RelationalGroupedDataset groupedDataset	= result.groupBy(select.getGroupBy().getColumns());
 			boolean isFirst = true;
-			for(AggregationColumn agg : select.getGroupBy().getAggs()) {
+			for(AggregationColumn agg : select.getGroupBy().getAggregations()) {
 				if(isFirst) {
 					result = groupedDataset.agg(makeColumn(agg, result));
 					isFirst = false;
@@ -201,7 +201,7 @@ public class SelectionCustomService {
 		if((!(join.getGroupBy() == null)) && !(join.getGroupBy().getColumns() == null) && !(join.getGroupBy().getColumns() == null || join.getGroupBy().getColumns().trim().length() == 0)) {
 			RelationalGroupedDataset groupedDataset	= result.groupBy(join.getGroupBy().getColumns());
 			boolean isFirst = true;
-			for(AggregationColumn agg : join.getGroupBy().getAggs()) {
+			for(AggregationColumn agg : join.getGroupBy().getAggregations()) {
 				if(isFirst) {
 					result = groupedDataset.agg(makeColumn(agg, result));
 					isFirst = false;
@@ -299,7 +299,7 @@ public class SelectionCustomService {
 		if((!(union.getGroupBy() == null)) && !(union.getGroupBy().getColumns() == null) && !(union.getGroupBy().getColumns() == null || union.getGroupBy().getColumns().trim().length() == 0)) {
 			RelationalGroupedDataset groupedDataset	= result.groupBy(union.getGroupBy().getColumns());
 			boolean isFirst = true;
-			for(AggregationColumn agg : union.getGroupBy().getAggs()) {
+			for(AggregationColumn agg : union.getGroupBy().getAggregations()) {
 				if(isFirst) {
 					result = groupedDataset.agg(makeColumn(agg, result));
 					isFirst = false;

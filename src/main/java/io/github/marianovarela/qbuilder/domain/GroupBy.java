@@ -12,7 +12,7 @@ public class GroupBy {
 	
 	private String columns;
 	
-	private List<AggregationColumn> aggs = new LinkedList<AggregationColumn>();
+	private List<AggregationColumn> aggregations = new LinkedList<AggregationColumn>();
 	
 	private GroupBy() {	}
 	
@@ -27,7 +27,7 @@ public class GroupBy {
 	}
 	
 	public GroupBy addAggregation(AggregationColumn agg) {
-		this.aggs.add(agg);
+		this.aggregations.add(agg);
 		return this;
 	}
 }
