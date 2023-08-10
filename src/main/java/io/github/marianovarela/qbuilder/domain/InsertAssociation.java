@@ -17,14 +17,9 @@ public class InsertAssociation extends Query{
 	
 	private static String table = "associations";
 	
-	public InsertAssociation withLeftId(Long leftId) {
+	public InsertAssociation(Long leftId, Long rightId) {
 		this.leftId = leftId;
-		return this;
-	}
-	
-	public InsertAssociation withRightId(Long rightId) {
 		this.rightId = rightId;
-		return this;
 	}
 	
 	public InsertAssociation withInverseType(Long inverseType) {

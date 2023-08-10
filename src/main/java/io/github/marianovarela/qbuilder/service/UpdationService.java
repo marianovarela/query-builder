@@ -64,13 +64,10 @@ public class UpdationService {
 	}
 
 	private UpdateAssociation getInverse(UpdateAssociation updation) {
-		UpdateAssociation inverse = new UpdateAssociation();
+		UpdateAssociation inverse = new UpdateAssociation(updation.getRightId(), updation.getLeftId(), associationKeys.getInverse(updation.getType()));
 		inverse.setData(updation.getData());
-		inverse.setLeftId(updation.getRightId());
-		inverse.setRightId(updation.getLeftId());
 		inverse.setTable(updation.getTable());
 		inverse.setTime(updation.getTime());
-		inverse.setType(associationKeys.getInverse(updation.getType()));
 		return inverse;
 	}
 

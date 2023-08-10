@@ -235,7 +235,7 @@ public class QbuilderApplication {
 	}
 
 	private static UpdateAssociation makeUpdateAssociationWithInverse() {
-		UpdateAssociation association = new UpdateAssociation();
+		UpdateAssociation association = new UpdateAssociation(152L, 164L, 22L);
 		association.setLeftId(152L);
 		association.setRightId(164L);
 		association.setType(22L);
@@ -245,7 +245,7 @@ public class QbuilderApplication {
 	}
 
 	private static UpdateAssociation makeUpdateAssociationWithoutInverse() {
-		UpdateAssociation association = new UpdateAssociation();
+		UpdateAssociation association = new UpdateAssociation(152L, 164L, 22L);
 		association.setLeftId(152L);
 		association.setRightId(164L);
 		association.setType(22L);
@@ -266,8 +266,7 @@ public class QbuilderApplication {
 	}
 
 	private static SelectObject makeSelectObject() {
-		SelectObject select = new SelectObject();
-		select.setId(1L);
+		SelectObject select = new SelectObject(1L);
 		return select;
 	}
 
@@ -294,9 +293,7 @@ public class QbuilderApplication {
 	}
 
 	private static InsertAssociation makeInsertAssociationWithInverse() {
-		InsertAssociation association = new InsertAssociation();
-		association.withLeftId(152L);
-		association.setRightId(203L);
+		InsertAssociation association = new InsertAssociation(152L, 203L);
 		association.setType(10L);
 		association.setInverseType(20L);
 		association.setData("{}");
@@ -305,9 +302,7 @@ public class QbuilderApplication {
 	}
 	
 	private static InsertAssociation makeInsertAssociationWithoutInverse() {
-		InsertAssociation association = new InsertAssociation();
-		association.withLeftId(312L);
-		association.setRightId(203L);
+		InsertAssociation association = new InsertAssociation(312L, 203L);
 		association.setType(10L);
 		association.setData("{}");
 		return association;
