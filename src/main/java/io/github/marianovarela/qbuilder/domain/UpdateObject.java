@@ -13,9 +13,9 @@ public class UpdateObject extends Query {
 	
 	private static String table = "objects";
 	
-	public UpdateObject withObject(String object) {
-		this.data = object;
-		return this;
+	public UpdateObject(Long id, String data) {
+		this.id = id;
+		this.data = data;
 	}
 	
 	public UpdateObject withId(long id) {

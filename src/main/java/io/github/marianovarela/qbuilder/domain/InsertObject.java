@@ -11,16 +11,10 @@ public class InsertObject extends Query {
 	
 	private String data;
 	
-	public InsertObject withObject(String object) {
-		this.data = object;
-		return this;
-	}
-	
-	public InsertObject withId(long id) {
+	public InsertObject(Long id, Long type) {
 		this.id = id;
-		return this;
+		this.type = type;
 	}
-	
 	
 	public String getTable() {
 		return "objects";

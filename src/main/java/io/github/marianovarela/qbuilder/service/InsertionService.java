@@ -65,7 +65,7 @@ public class InsertionService {
 		return ResultBuilder.buildSuccess();
 	}
 	
-	private void updateAssociationKeys(Integer type, Integer inverseType) {
+	private void updateAssociationKeys(Long type, Long inverseType) {
 		this.associationKeys.keys.put(type, inverseType);
 		if(inverseType != null) {
 			this.associationKeys.keys.put(inverseType, type);

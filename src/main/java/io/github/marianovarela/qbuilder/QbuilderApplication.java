@@ -59,7 +59,7 @@ public class QbuilderApplication {
 				
 		Executor executor = context.getBean(Executor.class);
 		
-		Map<Integer, Integer> keys = makeInitialKeys();
+		Map<Long, Long> keys = makeInitialKeys();
 		executor.setKeys(keys);
 //		InsertObject query = makeInsertObject();
 		UpdateObject query = makeUpdateObject();
@@ -201,12 +201,12 @@ public class QbuilderApplication {
 		return query;
 	}
 
-	private static Map<Integer, Integer> makeInitialKeys() {
-		Map<Integer, Integer> keys = new HashMap<Integer, Integer>();
-		keys.put(1, 2);
-		keys.put(2, 1);
-		keys.put(4, 5);
-		keys.put(5, 4);
+	private static Map<Long, Long> makeInitialKeys() {
+		Map<Long, Long> keys = new HashMap<Long, Long>();
+		keys.put(1L, 2L);
+		keys.put(2L, 1L);
+		keys.put(4L, 5L);
+		keys.put(5L, 4L);
 		
 		return keys;
 	}
@@ -214,7 +214,7 @@ public class QbuilderApplication {
 	private static SelectAssociation makeTimeRangeAssociation() {
 		SelectAssociation query = new SelectAssociation();
 		query.setLeftId(152L);
-		query.setType(23);
+		query.setType(23L);
 		query.setLimit(1);
 		TimeRange range = new TimeRange();
 		range.setLow(10L);
@@ -226,7 +226,7 @@ public class QbuilderApplication {
 	private static SelectAssociation makeRangeAssociation() {
 		SelectAssociation query = new SelectAssociation();
 		query.setLeftId(152L);
-		query.setType(23);
+		query.setType(23L);
 		Range range = new Range();
 		range.setPosition(2);
 		range.setLimit(4);
@@ -238,7 +238,7 @@ public class QbuilderApplication {
 		UpdateAssociation association = new UpdateAssociation();
 		association.setLeftId(152L);
 		association.setRightId(164L);
-		association.setType(22);
+		association.setType(22L);
 		association.setTime(1L);
 		association.setData("{field: 1}");
 		return association;
@@ -248,16 +248,13 @@ public class QbuilderApplication {
 		UpdateAssociation association = new UpdateAssociation();
 		association.setLeftId(152L);
 		association.setRightId(164L);
-		association.setType(22);
+		association.setType(22L);
 		association.setData("{field: 1}");
 		return association;
 	}
 	
 	private static UpdateObject makeUpdateObject() {
-		UpdateObject updation = new UpdateObject();
-		updation.setId(100203L);
-		updation.setType(10);
-		updation.setData("'{'id': 'algun id'}'");
+		UpdateObject updation = new UpdateObject(100203L, "'{'id': 'algun id'}'");
 		return updation;
 	}
 
@@ -278,7 +275,7 @@ public class QbuilderApplication {
 		SelectAssociation query = new SelectAssociation();
 		query.setLeftId(152L);
 		query.setRightId(153L);
-		query.setType(10);
+		query.setType(10L);
 		return query;
 	}
 
@@ -292,7 +289,7 @@ public class QbuilderApplication {
 		DeleteAssociation query = new DeleteAssociation();
 		query.setLeftId(302L);
 		query.setRightId(203L);
-		query.setType(10);
+		query.setType(10L);
 		return query;
 	}
 
@@ -300,8 +297,8 @@ public class QbuilderApplication {
 		InsertAssociation association = new InsertAssociation();
 		association.withLeftId(152L);
 		association.setRightId(203L);
-		association.setType(10);
-		association.setInverseType(20);
+		association.setType(10L);
+		association.setInverseType(20L);
 		association.setData("{}");
 		association.setTable("associations");
 		return association;
@@ -311,15 +308,13 @@ public class QbuilderApplication {
 		InsertAssociation association = new InsertAssociation();
 		association.withLeftId(312L);
 		association.setRightId(203L);
-		association.setType(10);
+		association.setType(10L);
 		association.setData("{}");
 		return association;
 	}
 
 	private static InsertObject makeInsertObject() {
-		InsertObject insertion = new InsertObject();
-		insertion.setId(100203L);
-		insertion.setType(10);
+		InsertObject insertion = new InsertObject(100203L, 10L);
 		insertion.setData("'{}'");
 		return insertion;
 	}

@@ -11,7 +11,7 @@ public class InsertAssociation extends Query{
 	
 	private Long rightId;
 	
-	private Integer inverseType;
+	private Long inverseType;
 	
 	private String data;
 	
@@ -27,7 +27,7 @@ public class InsertAssociation extends Query{
 		return this;
 	}
 	
-	public InsertAssociation withInverseType(Integer inverseType) {
+	public InsertAssociation withInverseType(Long inverseType) {
 		this.inverseType = inverseType;
 		return this;
 	}

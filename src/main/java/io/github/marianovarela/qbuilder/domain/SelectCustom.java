@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import io.github.marianovarela.qbuilder.exception.BusinessException;
+import io.github.marianovarela.qbuilder.utils.MessageUtils;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -36,7 +37,7 @@ public class SelectCustom extends SelectAbstract {
 	
 	@SuppressWarnings("unused")
 	private SelectCustom() {
-		throw new BusinessException("Cannot instantiate this class without arguments");
+		throw new BusinessException(MessageUtils.CANNOT_INSTANTIATE);
 	}
 	
 	public SelectCustom(Entity entity) {

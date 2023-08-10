@@ -81,7 +81,7 @@ public class Executor {
 		return updationService.execute(query);
 	}
 
-	public void setKeys(Map<Integer, Integer> keys) {
+	public void setKeys(Map<Long, Long> keys) {
 		associationKeys.keys = keys;
 	}
 

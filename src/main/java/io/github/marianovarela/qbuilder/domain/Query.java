@@ -1,5 +1,7 @@
 package io.github.marianovarela.qbuilder.domain;
 
+import io.github.marianovarela.qbuilder.exception.BusinessException;
+import io.github.marianovarela.qbuilder.utils.MessageUtils;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,22 +10,12 @@ public abstract class Query {
 	
 	protected String table;
 	
-	protected Integer type;
+	protected Long type;
 
-	public Query() { }
+	public Query() { throw new BusinessException(MessageUtils.CANNOT_INSTANTIATE); }
 	
 	public Query(String table) {
 		this.table = table;
-	}
-	
-	public Query withType(Integer type) {
-		this.type = type;
-		return this;
-	}
-
-	public Query withTable(String table) {
-		this.table = table;
-		return this;
 	}
 	
 }

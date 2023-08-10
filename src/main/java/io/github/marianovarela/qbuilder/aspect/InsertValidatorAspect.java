@@ -58,7 +58,7 @@ public class InsertValidatorAspect {
     	}
     }
     
-    private void existAssociation(Long leftId, Long rightId, Integer type, Integer inverseType) {
+    private void existAssociation(Long leftId, Long rightId, Long type, Long inverseType) {
     	Dataset<Row> result = this.getAssociation(leftId, rightId, type, inverseType);
     	Row[] rows = (Row[]) result.collect();
     	if(rows.length > 0) {
@@ -73,7 +73,7 @@ public class InsertValidatorAspect {
     	}
 	}
      
-	private Dataset<Row> getAssociation(Long leftId, Long rightId, Integer type, Integer inverseType) {
+	private Dataset<Row> getAssociation(Long leftId, Long rightId, Long type, Long inverseType) {
 		SelectAssociation select = new SelectAssociation();
     	select.setLeftId(leftId);
     	select.setRightId(rightId);
@@ -86,9 +86,9 @@ public class InsertValidatorAspect {
 	}
 
 	//valid if the association exists and if it exists valid if it is the same, if it is not the same it will throw exception.
-  	private void validAssociationKey(Integer type, Integer inverseType) {
+  	private void validAssociationKey(Long type, Long inverseType) {
   		if(this.associationKeys.keys.containsKey(type)) {
-  			Integer retrievedInverseType = this.associationKeys.keys.get(type);
+  			Long retrievedInverseType = this.associationKeys.keys.get(type);
   			if(!inverseType.equals(retrievedInverseType)) {
   				throw new BusinessException(MessageUtils.INVERSE_TYPE_ALREADY_EXISTS_AND_ITS_DIFFERENT);
   			}

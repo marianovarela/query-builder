@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 public class AssociationKeys {
 
 	// here are saved the types and their inverses if they exist
-	public Map<Integer, Integer> keys = new HashMap<Integer, Integer>();
+	public Map<Long, Long> keys = new HashMap<Long, Long>();
 	
-	public Integer getInverse(Integer type) {
+	public Long getInverse(Long type) {
 		return this.keys.get(type);
 	}
 	

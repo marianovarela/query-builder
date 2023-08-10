@@ -1,5 +1,7 @@
 package io.github.marianovarela.qbuilder.domain;
 
+import io.github.marianovarela.qbuilder.exception.BusinessException;
+import io.github.marianovarela.qbuilder.utils.MessageUtils;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,13 +11,13 @@ public class SelectObject extends Select{
 	private Long id;
 	
 	private String table = "objects";
-	
-	public SelectObject(String table) {
-		super(table);
-	}
 
 	public SelectObject() {
-		super();
+		throw new BusinessException(MessageUtils.CANNOT_INSTANTIATE);
+	}
+	
+	public SelectObject(Long id) {
+		this.id = id;
 	}
 
 }
