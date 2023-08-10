@@ -12,10 +12,6 @@ public class SelectObject extends Select{
 	
 	private String table = "objects";
 
-	public SelectObject() {
-		throw new BusinessException(MessageUtils.CANNOT_INSTANTIATE);
-	}
-	
 	public SelectObject(Long id) {
 		this.id = id;
 	}

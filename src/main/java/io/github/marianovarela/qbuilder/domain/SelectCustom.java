@@ -35,11 +35,6 @@ public class SelectCustom extends SelectAbstract {
 		this.selection.add(AggregationColumn.buildColumn(from, alias, agg));
 	}
 	
-	@SuppressWarnings("unused")
-	private SelectCustom() {
-		throw new BusinessException(MessageUtils.CANNOT_INSTANTIATE);
-	}
-	
 	public SelectCustom(Entity entity) {
 		this.entity = entity;
 	}
