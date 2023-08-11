@@ -2,6 +2,7 @@ package io.github.marianovarela.qbuilder.domain;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +14,7 @@ public class Join extends SelectAbstract {
 	
 	private Subquery to;
 	
-	private String selection; 
+	private Optional<String> selection; 
 	
 	private List<Condition> joinClause = new LinkedList<Condition>();
 
@@ -21,36 +22,44 @@ public class Join extends SelectAbstract {
 	
 	private JoinType type;
 	
-	public Join build() {
-		Join join = new Join();
-		return join;
+	public Join(SelectCustom from, SelectCustom to, JoinType type) {
+		Subquery fromSubquery = Subquery.build()
+				.setSelect(from);
+		Subquery toSubquery = Subquery.build()
+				.setSelect(to);
+		this.from = fromSubquery;
+		this.to = toSubquery;
+		this.type = type;
 	}
 	
-	public Join withFrom(SelectCustom select) {
-		Subquery subquery = Subquery.build()
-				.setSelect(select);
-		this.setFrom(subquery);
-		return this;
+	public Join(SelectCustom from, ResultSet to, JoinType type) {
+		Subquery fromSubquery = Subquery.build()
+				.setSelect(from);
+		Subquery toSubquery = Subquery.build()
+				.setResultSet(to);
+		this.from = fromSubquery;
+		this.to = toSubquery;
+		this.type = type;
 	}
 	
-	public Join withFrom(ResultSet resultSet) {
-		Subquery subquery = Subquery.build()
-				.setResultSet(resultSet);
-		this.setFrom(subquery);
-		return this;
+	public Join(ResultSet from, SelectCustom to, JoinType type) {
+		Subquery fromSubquery = Subquery.build()
+				.setResultSet(from);
+		Subquery toSubquery = Subquery.build()
+				.setSelect(to);
+		this.from = fromSubquery;
+		this.to = toSubquery;
+		this.type = type;
 	}
 	
-	public Join withTo(SelectCustom select) {
-		Subquery subquery = Subquery.build()
-				.setSelect(select);
-		this.setTo(subquery);
-		return this;
+	public Join(ResultSet from, ResultSet to, JoinType type) {
+		Subquery fromSubquery = Subquery.build()
+				.setResultSet(from);
+		Subquery toSubquery = Subquery.build()
+				.setResultSet(to);
+		this.from = fromSubquery;
+		this.to = toSubquery;
+		this.type = type;
 	}
 	
-	public Join withTo(ResultSet resultSet) {
-		Subquery subquery = Subquery.build()
-				.setResultSet(resultSet);
-		this.setTo(subquery);
-		return this;
-	}
 }

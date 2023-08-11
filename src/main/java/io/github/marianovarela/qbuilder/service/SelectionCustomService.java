@@ -222,8 +222,8 @@ public class SelectionCustomService {
 	}
 	
 	private Dataset<Row> addSelect(Dataset<Row> result, Join join) {
-		if(join.getSelection() != null) {
-			result = result.select(join.getSelection());
+		if(join.getSelection().isPresent()) {
+			result = result.select(join.getSelection().get());
 		}
 		return result;
 	}
@@ -320,8 +320,8 @@ public class SelectionCustomService {
 	}
 
 	private Dataset<Row> addSelect(Dataset<Row> result, Union union) {
-		if(union.getSelection() != null) {
-			result = result.select(union.getSelection());
+		if(union.getSelection().isPresent()) {
+			result = result.select(union.getSelection().get());
 		}
 		return result;
 	}

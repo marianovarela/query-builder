@@ -1,5 +1,7 @@
 package io.github.marianovarela.qbuilder.domain;
 
+import java.util.Optional;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,40 +12,44 @@ public class Union extends SelectAbstract {
 	
 	private Subquery second;
 	
-	private String selection; 
+	private Optional<String> selection; 
 	
 	//private String filter;		
 	
-	public Union build() {
-		Union join = new Union();
-		return join;
+	public Union(SelectCustom first, SelectCustom second) {
+		Subquery firstSubquery = Subquery.build()
+				.setSelect(first);
+		Subquery secondSubquery = Subquery.build()
+				.setSelect(second);
+		this.first = firstSubquery;
+		this.second = secondSubquery;
 	}
 	
-	public Union withFirst(SelectCustom select) {
-		Subquery subquery = Subquery.build()
-				.setSelect(select);
-		this.setFirst(subquery);
-		return this;
+	public Union(SelectCustom first, ResultSet second) {
+		Subquery firstSubquery = Subquery.build()
+				.setSelect(first);
+		Subquery secondSubquery = Subquery.build()
+				.setResultSet(second);
+		this.first = firstSubquery;
+		this.second = secondSubquery;
 	}
 	
-	public Union withFirst(ResultSet resultSet) {
-		Subquery subquery = Subquery.build()
-				.setResultSet(resultSet);
-		this.setFirst(subquery);
-		return this;
+	public Union(ResultSet first, SelectCustom second) {
+		Subquery firstSubquery = Subquery.build()
+				.setResultSet(first);
+		Subquery secondSubquery = Subquery.build()
+				.setSelect(second);
+		this.first = firstSubquery;
+		this.second = secondSubquery;
 	}
 	
-	public Union withSecond(SelectCustom select) {
-		Subquery subquery = Subquery.build()
-				.setSelect(select);
-		this.setSecond(subquery);
-		return this;
+	public Union(ResultSet first, ResultSet second) {
+		Subquery firstSubquery = Subquery.build()
+				.setResultSet(first);
+		Subquery secondSubquery = Subquery.build()
+				.setResultSet(second);
+		this.first = firstSubquery;
+		this.second = secondSubquery;
 	}
 	
-	public Union withSecond(ResultSet resultSet) {
-		Subquery subquery = Subquery.build()
-				.setResultSet(resultSet);
-		this.setSecond(subquery);
-		return this;
-	}
 }

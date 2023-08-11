@@ -160,16 +160,13 @@ public class QbuilderApplication {
 		Where where2 = new Where("type = -2001");
 		to.setWhere(Optional.of(where2));
 		//to.setCondition("(type = -2001)");
-		Join join = new Join();
-		join.withFrom(from);
-		join.withTo(to);
+		Join join = new Join(from, to, JoinType.INNER);
 		Condition condition2 = Condition.makeWithFirstTableAndValue(LogicOperator.AND, "left_id", "30");
 		Condition condition3 = Condition.makeWithSecondTableAndValue(LogicOperator.AND, "left_id", "30");
 		join.getJoinClause().add(condition2);
 		join.getJoinClause().add(condition3);
 //		join.setFilter("df1.id = 30");
 //		join.setSelection("df1.id");
-		join.setType(JoinType.INNER);
 		return join;
 	}
 	
@@ -184,8 +181,7 @@ public class QbuilderApplication {
 //		second.setCondition("(type = -4001)");
 		Where where2 = new Where("type = -4001");
 		second.setWhere(Optional.of(where2));
-		Union union = new Union();
-		union.withFirst(first).withSecond(second);
+		Union union = new Union(first, second);
 //		union.setFilter("df1.id = 30");
 //		union.setSelection("df1.id");
 		return union;
