@@ -72,10 +72,10 @@ public class SelectionCustomService {
 			result = result.select(columns);
 		}
 		
-		if((!(select.getGroupBy() == null)) && !(select.getGroupBy().getColumns() == null) && !(select.getGroupBy().getColumns() == null || select.getGroupBy().getColumns().trim().length() == 0)) {
-			RelationalGroupedDataset groupedDataset	= result.groupBy(select.getGroupBy().getColumns());
+		if((!(select.getGroupBy().isEmpty())) && !(select.getGroupBy().get().getColumns() == null) && !(select.getGroupBy().get().getColumns() == null || select.getGroupBy().get().getColumns().trim().length() == 0)) {
+			RelationalGroupedDataset groupedDataset	= result.groupBy(select.getGroupBy().get().getColumns());
 			boolean isFirst = true;
-			for(AggregationColumn agg : select.getGroupBy().getAggregations()) {
+			for(AggregationColumn agg : select.getGroupBy().get().getAggregations()) {
 				if(isFirst) {
 					result = groupedDataset.agg(makeColumn(agg, result));
 					isFirst = false;
@@ -83,12 +83,12 @@ public class SelectionCustomService {
 					result = result.agg(makeColumn(agg, result));
 				}
 			}
-			if(select.getHaving() != null && !(select.getHaving() == null || select.getHaving().trim().length() == 0)) {
-				result = result.filter(select.getHaving());
+			if(select.getHaving().isPresent() && !(select.getHaving().isEmpty() || select.getHaving().get().trim().length() == 0)) {
+				result = result.filter(select.getHaving().get());
 			}
 		}
 		
-		if((!(select.getOrderBy() == null)) && !select.getOrderBy().isEmpty()) {
+		if((!(select.getOrderBy().isEmpty())) && !select.getOrderBy().get().isEmpty()) {
 			result = orderBy(result, select);
 		}
 
@@ -96,19 +96,19 @@ public class SelectionCustomService {
 	}
 	
 	private Dataset<Row> orderBy(Dataset<Row> result, SelectCustom select) {
-			Column[] columns = makeOrderedColumns(result, select.getOrderBy().getColumns());
+			Column[] columns = makeOrderedColumns(result, select.getOrderBy().get().getColumns());
 			result = result.orderBy(columns);
 		return result;
 	}
 	
 	private Dataset<Row> orderBy(Dataset<Row> result, Union union) {
-		Column[] columns = makeOrderedColumns(result, union.getOrderBy().getColumns());
+		Column[] columns = makeOrderedColumns(result, union.getOrderBy().get().getColumns());
 		result = result.orderBy(columns);
 	return result;
 }
 	
 	private Dataset<Row> orderBy(Dataset<Row> result, Join join) {
-		Column[] columns = makeOrderedColumns(result, join.getOrderBy().getColumns());
+		Column[] columns = makeOrderedColumns(result, join.getOrderBy().get().getColumns());
 		result = result.orderBy(columns);
 	return result;
 }
@@ -192,16 +192,16 @@ public class SelectionCustomService {
 		to = to.alias("df2");
 		Column condition = makeJoinCondition(from , to, join);
 		Dataset<Row> result = from.join(to, condition, join.getType().value);
-		if(join.getWhere() != null && join.getWhere().getFilter() != null) {
+		if(join.getWhere().isPresent() && join.getWhere().get().getFilter() != null) {
 			result = from.join(to, condition, join.getType().value)
-					.filter(join.getWhere().getFilter());
+					.filter(join.getWhere().get().getFilter());
 		}
 		result = addSelect(result, join);
 		
-		if((!(join.getGroupBy() == null)) && !(join.getGroupBy().getColumns() == null) && !(join.getGroupBy().getColumns() == null || join.getGroupBy().getColumns().trim().length() == 0)) {
-			RelationalGroupedDataset groupedDataset	= result.groupBy(join.getGroupBy().getColumns());
+		if((!(join.getGroupBy().isEmpty())) && !(join.getGroupBy().get().getColumns() == null) && !(join.getGroupBy().get().getColumns() == null || join.getGroupBy().get().getColumns().trim().length() == 0)) {
+			RelationalGroupedDataset groupedDataset	= result.groupBy(join.getGroupBy().get().getColumns());
 			boolean isFirst = true;
-			for(AggregationColumn agg : join.getGroupBy().getAggregations()) {
+			for(AggregationColumn agg : join.getGroupBy().get().getAggregations()) {
 				if(isFirst) {
 					result = groupedDataset.agg(makeColumn(agg, result));
 					isFirst = false;
@@ -209,12 +209,12 @@ public class SelectionCustomService {
 					result = result.agg(makeColumn(agg, result));
 				}
 			}
-			if(!(join.getHaving() == null || join.getHaving().trim().length() == 0)) {
-				result = result.filter(join.getHaving());
+			if(!(join.getHaving().isEmpty() || join.getHaving().get().trim().length() == 0)) {
+				result = result.filter(join.getHaving().get());
 			}
 		}
 		
-		if((!(join.getOrderBy() == null)) && !join.getOrderBy().isEmpty()) {
+		if((!(join.getOrderBy().isEmpty())) && !join.getOrderBy().get().isEmpty()) {
 			result = orderBy(result, join);
 		}
 		
@@ -290,16 +290,16 @@ public class SelectionCustomService {
 		second = second.alias("df2");
 //		Dataset<Row> result = from.join(to, condition, join.getType().value);
 		Dataset<Row> result = first.union(second);
-		if(union.getWhere() != null & union.getWhere().getFilter() != null) {
+		if(union.getWhere().isPresent() & union.getWhere().get().getFilter() != null) {
 			result = first.union(second)
-					.filter(union.getWhere().getFilter());
+					.filter(union.getWhere().get().getFilter());
 		}
 		result = addSelect(result, union);
 		
-		if((!(union.getGroupBy() == null)) && !(union.getGroupBy().getColumns() == null) && !(union.getGroupBy().getColumns() == null || union.getGroupBy().getColumns().trim().length() == 0)) {
-			RelationalGroupedDataset groupedDataset	= result.groupBy(union.getGroupBy().getColumns());
+		if((!(union.getGroupBy().isEmpty())) && !(union.getGroupBy().get().getColumns() == null) && !(union.getGroupBy().get().getColumns() == null || union.getGroupBy().get().getColumns().trim().length() == 0)) {
+			RelationalGroupedDataset groupedDataset	= result.groupBy(union.getGroupBy().get().getColumns());
 			boolean isFirst = true;
-			for(AggregationColumn agg : union.getGroupBy().getAggregations()) {
+			for(AggregationColumn agg : union.getGroupBy().get().getAggregations()) {
 				if(isFirst) {
 					result = groupedDataset.agg(makeColumn(agg, result));
 					isFirst = false;
@@ -307,12 +307,12 @@ public class SelectionCustomService {
 					result = result.agg(makeColumn(agg, result));
 				}
 			}
-			if(!(union.getHaving() == null || union.getHaving().trim().length() == 0)) {
-				result = result.filter(union.getHaving());
+			if(!(union.getHaving().isEmpty() || union.getHaving().get().trim().length() == 0)) {
+				result = result.filter(union.getHaving().get());
 			}
 		}
 		
-		if((!(union.getOrderBy() == null)) && !union.getOrderBy().isEmpty()) {
+		if((!(union.getOrderBy().isEmpty())) && !union.getOrderBy().get().isEmpty()) {
 			result = orderBy(result, union);
 		}
 		

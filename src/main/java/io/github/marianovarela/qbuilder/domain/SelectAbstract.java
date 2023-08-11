@@ -1,5 +1,7 @@
 package io.github.marianovarela.qbuilder.domain;
 
+import java.util.Optional;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,12 +9,19 @@ import lombok.Setter;
 public abstract class SelectAbstract {
 
 	// string with columns separated with comma
-		private GroupBy groupBy;
+		private Optional<GroupBy> groupBy;
 		
-		private OrderBy orderBy;
+		private Optional<OrderBy> orderBy;
 		
-		private String having;
+		private Optional<String> having;
 		
-		private Where where;
-	
+		private Optional<Where> where;
+		
+		protected SelectAbstract() {
+			this.groupBy = Optional.empty();
+			this.orderBy = Optional.empty();
+			this.having = Optional.empty();
+			this.where = Optional.empty();
+		}
+
 }
