@@ -18,9 +18,4 @@ public class UpdateObject extends Query {
 		this.data = data;
 	}
 	
-	public UpdateObject withId(long id) {
-		this.id = id;
-		return this;
-	}
-	
 }
