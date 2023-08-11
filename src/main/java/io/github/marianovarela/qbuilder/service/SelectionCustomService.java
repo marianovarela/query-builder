@@ -58,7 +58,7 @@ public class SelectionCustomService {
 		int[] taos = new int[arity];
 		Arrays.setAll(taos, i -> i);
 		Dataset<Row> result = null;
-		result = sparkService.getEmptyDataSet(select.getEntity());
+		result = sparkService.getEmptyDataSet(select.getEntity().get());
 		
 		for(int index : taos) {
 			long indexTao = taoSelector.selectTao(index);

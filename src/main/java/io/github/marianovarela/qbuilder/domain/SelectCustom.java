@@ -2,9 +2,8 @@ package io.github.marianovarela.qbuilder.domain;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
-import io.github.marianovarela.qbuilder.exception.BusinessException;
-import io.github.marianovarela.qbuilder.utils.MessageUtils;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,10 +12,7 @@ public class SelectCustom extends SelectAbstract {
 	
 	private List<Column> selection = new LinkedList<Column>();
 	
-	private String alias;
-	
-	// entity to retrieve
-	private Entity entity;
+	private Optional<Entity> entity;
 	
 	//private String condition;
 	
@@ -35,7 +31,7 @@ public class SelectCustom extends SelectAbstract {
 		this.selection.add(AggregationColumn.buildColumn(from, alias, agg));
 	}
 	
-	public SelectCustom(Entity entity) {
+	public SelectCustom(Optional<Entity> entity) {
 		this.entity = entity;
 	}
 	
