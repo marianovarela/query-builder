@@ -12,7 +12,7 @@ public class SelectCustom extends SelectAbstract {
 	
 	private List<Column> selection = new LinkedList<Column>();
 	
-	private Optional<Entity> entity;
+	private Entity entity;
 	
 	//private String condition;
 	
@@ -31,7 +31,7 @@ public class SelectCustom extends SelectAbstract {
 		this.selection.add(AggregationColumn.buildColumn(from, alias, agg));
 	}
 	
-	public SelectCustom(Optional<Entity> entity) {
+	public SelectCustom(Entity entity) {
 		this.entity = entity;
 	}
 	

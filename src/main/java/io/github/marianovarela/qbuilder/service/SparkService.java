@@ -224,7 +224,7 @@ public class SparkService {
 
 	public Dataset<Row> execute(Datasource datasource, SelectCustom select) {
 		SparkSession spark = this.getOrCreate();
-		Dataset<Row> jdbcDF = getDataFrame(datasource, select.getEntity().get().value, spark);
+		Dataset<Row> jdbcDF = getDataFrame(datasource, select.getEntity().value, spark);
 //		if(select.getCondition() != null) {
 		if(select.getWhere().isPresent() && select.getWhere().get().getFilter() != null) {
 			jdbcDF = jdbcDF.filter(select.getWhere().get().getFilter());
