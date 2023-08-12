@@ -1,5 +1,8 @@
 package io.github.marianovarela.qbuilder.domain;
 
+
+import java.util.Optional;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,11 +12,11 @@ public class AggregationColumn extends Column{
 
 	private Aggregation aggregation;
 	
-	public static AggregationColumn buildColumn(String colName, String alias, Aggregation agg) {
+	public static AggregationColumn buildColumn(String colName, Optional<String> alias, Aggregation aggregation) {
 		AggregationColumn column = new AggregationColumn();
 		column.setColumn(colName);
 		column.setAlias(alias);
-		column.setAggregation(agg);
+		column.setAggregation(aggregation);
 		
 		return column;
 	}

@@ -87,7 +87,12 @@ public class SparkService {
 		List<StructField> fields = new ArrayList<>();
 		//ver que pasa cuando no tiene alias
 		for (Column column : select.getSelection()) {
-		  StructField field = DataTypes.createStructField(column.getAlias(), DataTypes.StringType, true);
+		  String alias = null;
+		  if(column.getAlias().isPresent()){
+			  alias = column.getAlias().get();
+		  }
+		  
+		  StructField field = DataTypes.createStructField(alias, DataTypes.StringType, true);
 		  fields.add(field);
 		}
 		StructType schema = DataTypes.createStructType(fields);

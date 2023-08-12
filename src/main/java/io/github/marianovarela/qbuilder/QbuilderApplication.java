@@ -126,7 +126,7 @@ public class QbuilderApplication {
 //		select.addToSelect("type", "count", Aggregation.COUNT);
 		GroupBy groupBy = GroupBy.build()
 				.setGroupBy("type")
-				.addAggregation(AggregationColumn.buildColumn("type", "count", Aggregation.COUNT));
+				.addAggregation(AggregationColumn.buildColumn("type", Optional.of("count"), Aggregation.COUNT));
 		
 		select.setGroupBy(Optional.of(groupBy));
 		

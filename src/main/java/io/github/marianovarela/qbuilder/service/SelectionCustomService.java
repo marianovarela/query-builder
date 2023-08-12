@@ -148,15 +148,15 @@ public class SelectionCustomService {
 	}
 
 	private Column makeColumn(io.github.marianovarela.qbuilder.domain.Column column, Dataset<Row> dataset) {
-		if(column.getAlias() == null) {
+		if(column.getAlias().isEmpty()) {
 			return dataset.col(String.valueOf(column.getColumn()));
 		}
-		return dataset.col(String.valueOf(column.getColumn())).alias(column.getAlias());
+		return dataset.col(String.valueOf(column.getColumn())).alias(column.getAlias().get());
 	}
 	
 	private Column makeColumn(AggregationColumn column, Dataset<Row> dataset) {
 		//the column must have alias
-		return getAggregateColumn(column, dataset).alias(column.getAlias());
+		return getAggregateColumn(column, dataset).alias(column.getAlias().get());
 	}
 	
 	private Column getAggregateColumn(AggregationColumn column, Dataset<Row> dataset) {
