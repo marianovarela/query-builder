@@ -7,7 +7,7 @@ import java.util.Optional;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter @Setter
+@Getter
 public class Join extends SelectAbstract {
 
 	private Subquery from;
@@ -60,6 +60,11 @@ public class Join extends SelectAbstract {
 		this.from = fromSubquery;
 		this.to = toSubquery;
 		this.type = type;
+	}
+	
+	public void setSelection(String selection) {
+		Optional<String> optSelection = Optional.ofNullable(selection);
+		this.selection = optSelection;
 	}
 	
 }

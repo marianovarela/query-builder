@@ -111,10 +111,10 @@ public class QbuilderApplication {
 				.addColumn(OrderedColumn.buildColumn("type", Order.DESC))
 				.addColumn(OrderedColumn.buildColumn("left_id", Order.ASC));
 		
-		select.setOrderBy(Optional.of(orderBy));
+		select.setOrderBy(orderBy);
 		//select.setCondition("type = -2001");
 		Where where = new Where("type = -2001");
-		select.setWhere(Optional.of(where));
+		select.setWhere(where);
 		return select;
 	}
 
@@ -126,12 +126,12 @@ public class QbuilderApplication {
 //		select.addToSelect("type", "count", Aggregation.COUNT);
 		GroupBy groupBy = GroupBy.build()
 				.setGroupBy("type")
-				.addAggregation(AggregationColumn.buildColumn("type", Optional.of("count"), Aggregation.COUNT));
+				.addAggregation(AggregationColumn.buildColumn("type", "count", Aggregation.COUNT));
 		
-		select.setGroupBy(Optional.of(groupBy));
+		select.setGroupBy(groupBy);
 		
 //		select.setGroupBy("type");
-		select.setHaving(Optional.of("count > 20"));
+		select.setHaving("count > 20");
 		
 		return select;
 	}
@@ -144,7 +144,7 @@ public class QbuilderApplication {
 //		select.addToSelect("id", "count", Aggregation.COUNT);
 //		select.setEntity(Entity.Objects);
 		Where where = new Where("type = -2001");
-		select.setWhere(Optional.of(where));
+		select.setWhere(where);
 		
 		return select;
 	}
@@ -153,12 +153,12 @@ public class QbuilderApplication {
 		SelectCustom from =  new SelectCustom(Entity.Associations);
 //		query.setAlias("df1");
 		Where where = new Where("type = -2001");
-		from.setWhere(Optional.of(where));
+		from.setWhere(where);
 		//from.setCondition("(type = -2001)");
 		SelectCustom to = new SelectCustom(Entity.Associations);
 //		query.setAlias("df1");
 		Where where2 = new Where("type = -2001");
-		to.setWhere(Optional.of(where2));
+		to.setWhere(where2);
 		//to.setCondition("(type = -2001)");
 		Join join = new Join(from, to, JoinType.INNER);
 		Condition condition2 = Condition.makeWithFirstTableAndValue(LogicOperator.AND, "left_id", "30");
@@ -174,13 +174,13 @@ public class QbuilderApplication {
 		SelectCustom first =  new SelectCustom(Entity.Associations);
 //		query.setAlias("df1");
 		Where where = new Where("type = -2001");
-		first.setWhere(Optional.of(where));
+		first.setWhere(where);
 //		first.setCondition("(type = -2001)");
 		SelectCustom second = new SelectCustom(Entity.Objects);
 //		query.setAlias("df1");
 //		second.setCondition("(type = -4001)");
 		Where where2 = new Where("type = -4001");
-		second.setWhere(Optional.of(where2));
+		second.setWhere(where2);
 		Union union = new Union(first, second);
 //		union.setFilter("df1.id = 30");
 //		union.setSelection("df1.id");
@@ -190,9 +190,8 @@ public class QbuilderApplication {
 	private static SelectCustom makeSelectCustomFrom() {
 		SelectCustom query = new SelectCustom(Entity.Objects);
 //		query.setAlias("df1");
-		query.setEntity(Entity.Objects);
 		Where where = new Where("type = -2001");
-		query.setWhere(Optional.of(where));
+		query.setWhere(where);
 //		query.setCondition("(type = 3)");
 		
 		return query;

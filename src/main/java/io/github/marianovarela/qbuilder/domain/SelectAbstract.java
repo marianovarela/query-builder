@@ -5,7 +5,7 @@ import java.util.Optional;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter @Setter
+@Getter 
 public abstract class SelectAbstract {
 
 	// string with columns separated with comma
@@ -23,5 +23,27 @@ public abstract class SelectAbstract {
 			this.having = Optional.empty();
 			this.where = Optional.empty();
 		}
+
+		public void setGroupBy(GroupBy groupBy) {
+			Optional<GroupBy> optGroupBy = Optional.ofNullable(groupBy);
+			this.groupBy = optGroupBy;
+		}
+
+		public void setOrderBy(OrderBy orderBy) {
+			Optional<OrderBy> optOrderBy = Optional.ofNullable(orderBy);
+			this.orderBy = optOrderBy;
+		}
+
+		public void setHaving(String having) {
+			Optional<String> optHaving = Optional.ofNullable(having);
+			this.having = optHaving;
+		}
+
+		public void setWhere(Where where) {
+			Optional<Where> optWhere = Optional.ofNullable(where);
+			this.where = optWhere;
+		}
+		
+		
 
 }

@@ -12,10 +12,11 @@ public class AggregationColumn extends Column{
 
 	private Aggregation aggregation;
 	
-	public static AggregationColumn buildColumn(String colName, Optional<String> alias, Aggregation aggregation) {
+	public static AggregationColumn buildColumn(String colName, String alias, Aggregation aggregation) {
 		AggregationColumn column = new AggregationColumn();
 		column.setColumn(colName);
-		column.setAlias(alias);
+		Optional<String> optAlias = Optional.ofNullable(alias);
+		column.setAlias(optAlias);
 		column.setAggregation(aggregation);
 		
 		return column;

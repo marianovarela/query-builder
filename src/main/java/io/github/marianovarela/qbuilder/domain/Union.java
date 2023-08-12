@@ -3,9 +3,8 @@ package io.github.marianovarela.qbuilder.domain;
 import java.util.Optional;
 
 import lombok.Getter;
-import lombok.Setter;
 
-@Getter @Setter
+@Getter
 public class Union extends SelectAbstract {
 
 	private Subquery first;
@@ -50,6 +49,11 @@ public class Union extends SelectAbstract {
 				.setResultSet(second);
 		this.first = firstSubquery;
 		this.second = secondSubquery;
+	}
+
+	public void setSelection(String selection) {
+		Optional<String> optSelection = Optional.ofNullable(selection);
+		this.selection = optSelection;
 	}
 	
 }

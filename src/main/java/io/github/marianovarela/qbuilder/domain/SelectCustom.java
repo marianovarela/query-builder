@@ -21,12 +21,13 @@ public class SelectCustom extends SelectAbstract {
 		this.selection.add(Column.buildColumn(from, Optional.empty()));
 	}
 	
-	public void addToSelect(String from, Optional<String> alias) {
+	public void addToSelect(String from, String alias) {
 		// if  @param to is null, this have not alias
-		this.selection.add(Column.buildColumn(from, alias));
+		Optional<String> optAlias = Optional.ofNullable(alias);
+		this.selection.add(Column.buildColumn(from, optAlias));
 	}
 	
-	public void addToSelect(String from, Optional<String> alias, Aggregation agg) {
+	public void addToSelect(String from, String alias, Aggregation agg) {
 		// if  @param to is null, this have not alias
 		this.selection.add(AggregationColumn.buildColumn(from, alias, agg));
 	}
