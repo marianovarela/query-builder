@@ -193,6 +193,7 @@ public class SparkService {
 		}
 
 		if (select.getRange() != null) {
+			jdbcDF = jdbcDF.orderBy(jdbcDF.col("time").desc());
 			jdbcDF = jdbcDF.limit(select.getRange().getLimit());
 		}
 		return jdbcDF;
