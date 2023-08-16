@@ -287,10 +287,7 @@ public class QbuilderApplication {
 	}
 	
 	private static DeleteAssociation makeDeleteAssociation() {
-		DeleteAssociation query = new DeleteAssociation();
-		query.setLeftId(302L);
-		query.setRightId(203L);
-		query.setType(10L);
+		DeleteAssociation query = new DeleteAssociation(302L, 203L, 10L);
 		return query;
 	}
 

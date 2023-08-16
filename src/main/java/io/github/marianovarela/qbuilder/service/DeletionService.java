@@ -37,11 +37,8 @@ public class DeletionService {
 	}
 
 	private DeleteAssociation getInverse(DeleteAssociation delete) {
-		DeleteAssociation inverse = new DeleteAssociation();
-		inverse.setLeftId(delete.getRightId());
+		DeleteAssociation inverse = new DeleteAssociation(delete.getRightId(), delete.getLeftId(), associationKeys.getInverse(delete.getType()));
 		inverse.setTable(delete.getTable());
-		inverse.setRightId(delete.getLeftId());
-		inverse.setType(associationKeys.getInverse(delete.getType()));
 		return inverse;
 	}
 

@@ -12,6 +12,12 @@ public class DeleteAssociation extends Delete{
 	
 	private Long rightId;
 	
+	public DeleteAssociation(long leftId, long rightId, long type) {
+		this.leftId = leftId;
+		this.rightId = rightId;
+		this.type = this.type;
+	}
+
 	@PostConstruct
 	public void init() {
 		this.table = "associations";
