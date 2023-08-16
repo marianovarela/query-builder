@@ -214,8 +214,7 @@ public class QbuilderApplication {
 	}
 
 	private static SelectAssociation makeTimeRangeAssociation() {
-		SelectAssociation query = new SelectAssociation();
-		query.setLeftId(152L);
+		SelectAssociation query = new SelectAssociation(152L);
 		query.setType(23L);
 		query.setLimit(1);
 		TimeRange range = new TimeRange();
@@ -226,8 +225,7 @@ public class QbuilderApplication {
 	}
 	
 	private static SelectAssociation makeRangeAssociation() {
-		SelectAssociation query = new SelectAssociation();
-		query.setLeftId(152L);
+		SelectAssociation query = new SelectAssociation(152L);
 		query.setType(23L);
 		Range range = new Range();
 		range.setPosition(2);
@@ -261,8 +259,7 @@ public class QbuilderApplication {
 	}
 
 	private static SelectAssociation makeSelectAssociation() {
-		SelectAssociation query = new SelectAssociation();
-		query.setLeftId(152L);
+		SelectAssociation query = new SelectAssociation(152L);
 //		query.setType(10);
 		return query;
 	}
@@ -273,8 +270,7 @@ public class QbuilderApplication {
 	}
 
 	private static SelectAssociation makeCountAssociation() {
-		SelectAssociation query = new SelectAssociation();
-		query.setLeftId(152L);
+		SelectAssociation query = new SelectAssociation(152L);
 		query.setRightId(153L);
 		query.setType(10L);
 		return query;

@@ -74,8 +74,7 @@ public class InsertValidatorAspect {
 	}
      
 	private Dataset<Row> getAssociation(Long leftId, Long rightId, Long type, Long inverseType) {
-		SelectAssociation select = new SelectAssociation();
-    	select.setLeftId(leftId);
+		SelectAssociation select = new SelectAssociation(leftId);
     	select.setRightId(rightId);
     	select.setType(type);
     	

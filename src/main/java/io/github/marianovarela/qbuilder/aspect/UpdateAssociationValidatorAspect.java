@@ -29,8 +29,7 @@ public class UpdateAssociationValidatorAspect {
     @Before(value = "@annotation(ar.com.qbuilder.aspect.UpdateAssociationValidator)")
     public void getInsertionParameters(JoinPoint joinPoint) { 
     	UpdateAssociation update = (UpdateAssociation) joinPoint.getArgs()[0];
-    	SelectAssociation select = new SelectAssociation();
-    	select.setLeftId(update.getLeftId());
+    	SelectAssociation select = new SelectAssociation(update.getLeftId());
     	select.setRightId(update.getRightId());
     	select.setType(update.getType());
     	

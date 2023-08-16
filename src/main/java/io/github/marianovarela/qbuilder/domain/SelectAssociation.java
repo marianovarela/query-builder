@@ -18,12 +18,8 @@ public class SelectAssociation extends Select{
 	
 	private Range range;
 	
-	public SelectAssociation(String table) {
-		super(table);
-	}
-
-	public SelectAssociation() {
-		super();
+	public SelectAssociation(Long leftId) {
+		this.leftId = leftId;
 	}
 
 }
