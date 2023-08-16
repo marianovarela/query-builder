@@ -8,4 +8,8 @@ public class DeleteObject extends Delete{
 
 	private long id;
 	
+	public DeleteObject(long id) {
+		this.id = id;
+	}
+	
 }

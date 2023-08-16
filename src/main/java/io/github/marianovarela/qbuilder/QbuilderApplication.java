@@ -281,7 +281,7 @@ public class QbuilderApplication {
 	}
 
 	private static DeleteObject makeDeleteObject() {
-		DeleteObject delete = new DeleteObject();
+		DeleteObject delete = new DeleteObject(100233L);
 		delete.setId(100233);
 		return delete;
 	}
