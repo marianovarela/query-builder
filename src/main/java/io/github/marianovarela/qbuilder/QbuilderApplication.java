@@ -288,8 +288,7 @@ public class QbuilderApplication {
 	}
 
 	private static InsertAssociation makeInsertAssociationWithInverse() {
-		InsertAssociation association = new InsertAssociation(152L, 203L);
-		association.setType(10L);
+		InsertAssociation association = new InsertAssociation(152L, 203L, 10L);
 		association.setInverseType(20L);
 		association.setData("{}");
 		association.setTable("associations");
@@ -297,8 +296,7 @@ public class QbuilderApplication {
 	}
 	
 	private static InsertAssociation makeInsertAssociationWithoutInverse() {
-		InsertAssociation association = new InsertAssociation(312L, 203L);
-		association.setType(10L);
+		InsertAssociation association = new InsertAssociation(312L, 203L, 10L);
 		association.setData("{}");
 		return association;
 	}
