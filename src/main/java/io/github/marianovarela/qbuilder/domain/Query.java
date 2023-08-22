@@ -14,8 +14,8 @@ public abstract class Query {
 		
 	}
 	
-	public Query(String table) {
-		this.table = table;
-	}
+//	public query(string table) {
+//		this.table = table;
+//	}
 	
 }

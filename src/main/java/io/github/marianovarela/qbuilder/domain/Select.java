@@ -8,10 +8,6 @@ public class Select extends Query{
 
 //	protected boolean count = false;
 	
-	public Select(String table) {
-		super(table);
-	}
-
 	public Select() {
 		super();
 	}
