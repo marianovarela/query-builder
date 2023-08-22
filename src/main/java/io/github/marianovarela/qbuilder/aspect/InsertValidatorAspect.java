@@ -33,7 +33,7 @@ public class InsertValidatorAspect {
 	@Autowired
 	private TaoSelector taoSelector;
 
-    @Before(value = "@annotation(ar.com.qbuilder.aspect.InsertValidator)")
+    @Before(value = "@annotation(io.github.marianovarela.qbuilder.aspect.InsertValidator)")
     public void getInsertionParameters(JoinPoint joinPoint) { 
     	Query obj = (Query) joinPoint.getArgs()[0];
     	if(obj.getTable() == null) {

@@ -26,7 +26,7 @@ public class UpdateAssociationValidatorAspect {
 	@Autowired
 	private TaoSelector taoSelector;
 	
-    @Before(value = "@annotation(ar.com.qbuilder.aspect.UpdateAssociationValidator)")
+    @Before(value = "@annotation(io.github.marianovarela.qbuilder.aspect.UpdateAssociationValidator)")
     public void getInsertionParameters(JoinPoint joinPoint) { 
     	UpdateAssociation update = (UpdateAssociation) joinPoint.getArgs()[0];
     	SelectAssociation select = new SelectAssociation(update.getLeftId());
