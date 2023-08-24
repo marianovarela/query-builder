@@ -14,6 +14,7 @@ import io.github.marianovarela.qbuilder.domain.InsertAssociation;
 import io.github.marianovarela.qbuilder.domain.InsertObject;
 import io.github.marianovarela.qbuilder.domain.Query;
 import io.github.marianovarela.qbuilder.domain.SelectAssociation;
+import io.github.marianovarela.qbuilder.domain.SelectObject;
 import io.github.marianovarela.qbuilder.exception.BusinessException;
 import io.github.marianovarela.qbuilder.helper.AssociationKeys;
 import io.github.marianovarela.qbuilder.helper.TaoSelector;
@@ -48,6 +49,7 @@ public class InsertValidatorAspect {
     		if(insertion.getId() == null && insertion.getData() == null) {
             	throw new BusinessException(MessageUtils.INSERT_PARAMETERS_ARE_INCORRECT);
             }
+    		this.existObject(insertion.getId());
     	}else if(obj instanceof InsertAssociation){
     		InsertAssociation insertion = (InsertAssociation) joinPoint.getArgs()[0];
     		if(insertion.getLeftId() == null && insertion.getRightId() == null) {
@@ -58,7 +60,25 @@ public class InsertValidatorAspect {
     	}
     }
     
-    private void existAssociation(Long leftId, Long rightId, Long type, Long inverseType) {
+    private void existObject(Long id) {
+    	Dataset<Row> result = this.getobject(id);
+    	Row[] rows = (Row[]) result.collect();
+    	if(rows.length > 0) {
+    		throw new BusinessException(MessageUtils.OBJECT_ALREADY_EXIST);
+    	}	
+	}
+
+	private Dataset<Row> getobject(Long id) {
+		SelectObject select = new SelectObject(id);
+    	select.setId(id);
+    	
+    	long indexTao = taoSelector.selectTao(id);
+		Datasource datasource = taoSelector.getDatasource(indexTao);
+		Dataset<Row> result = sparkService.execute(datasource, select);
+		return result;
+	}
+
+	private void existAssociation(Long leftId, Long rightId, Long type, Long inverseType) {
     	Dataset<Row> result = this.getAssociation(leftId, rightId, type, inverseType);
     	Row[] rows = (Row[]) result.collect();
     	if(rows.length > 0) {
