@@ -80,6 +80,7 @@ public class InsertionService {
 		association.setLeft_id(insertion.getLeftId());
 		association.setRight_id(insertion.getRightId());
 		association.setType(insertion.getType());
+		association.setTime(insertion.getTime());
 		list.add(association);
 
 		//inverse
@@ -88,6 +89,7 @@ public class InsertionService {
 			associationInverse.setLeft_id(insertion.getRightId());
 			associationInverse.setRight_id(insertion.getLeftId());
 			associationInverse.setType(insertion.getInverseType());
+			associationInverse.setTime(insertion.getTime());
 			list.add(associationInverse);
 		}
 

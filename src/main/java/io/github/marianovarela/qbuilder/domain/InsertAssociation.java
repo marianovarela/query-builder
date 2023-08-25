@@ -15,6 +15,8 @@ public class InsertAssociation extends Query{
 	
 	private String data;
 	
+	private Long time;
+	
 	private String table = "associations";
 	
 	public InsertAssociation(Long leftId, Long rightId, Long type) {

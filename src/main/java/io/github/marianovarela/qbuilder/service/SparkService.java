@@ -192,9 +192,19 @@ public class SparkService {
 			jdbcDF = jdbcDF.limit(select.getLimit());
 		}
 
+		if (select.getTimeRange() != null) {
+			jdbcDF = jdbcDF.orderBy(jdbcDF.col("time").desc());
+			jdbcDF = jdbcDF.limit(select.getLimit());
+		}
+		
 		if (select.getRange() != null) {
 			jdbcDF = jdbcDF.orderBy(jdbcDF.col("time").desc());
-			jdbcDF = jdbcDF.limit(select.getRange().getLimit());
+			Dataset<Row> jdbcDF1 = jdbcDF.limit(select.getRange().getPosition());
+			jdbcDF1 = jdbcDF1.orderBy(jdbcDF.col("time").desc());
+			Dataset<Row> jdbcDF2 = jdbcDF.except(jdbcDF1);
+			jdbcDF2 = jdbcDF2.orderBy(jdbcDF.col("time").desc());
+			jdbcDF2 = jdbcDF2.limit(select.getRange().getLimit());
+			return jdbcDF2;
 		}
 		return jdbcDF;
 	}
