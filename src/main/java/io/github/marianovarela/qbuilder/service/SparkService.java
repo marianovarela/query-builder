@@ -193,7 +193,7 @@ public class SparkService {
 		}
 
 		if (select.getTimeRange() != null) {
-			jdbcDF = jdbcDF.orderBy(jdbcDF.col("time").desc());
+			jdbcDF = jdbcDF.where(String.format("time <= %s and time >= %s", select.getTimeRange().getHigh().toString(), select.getTimeRange().getLow()));
 			jdbcDF = jdbcDF.limit(select.getLimit());
 		}
 		
