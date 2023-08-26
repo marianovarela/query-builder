@@ -19,6 +19,7 @@ import io.github.marianovarela.qbuilder.domain.SelectObject;
 import io.github.marianovarela.qbuilder.domain.Union;
 import io.github.marianovarela.qbuilder.domain.UpdateAssociation;
 import io.github.marianovarela.qbuilder.domain.UpdateObject;
+import io.github.marianovarela.qbuilder.exception.BusinessException;
 import io.github.marianovarela.qbuilder.helper.AssociationKeys;
 import io.github.marianovarela.qbuilder.helper.ResultBuilder;
 import io.github.marianovarela.qbuilder.service.DeletionService;
@@ -49,11 +50,23 @@ public class Executor {
 	private AssociationKeys associationKeys;
 	
 	public ResultSet execute(InsertObject insertion) {
-		return insertionService.execute(insertion);
+		try {
+			return insertionService.execute(insertion);
+		} catch (BusinessException e) {
+			return ResultBuilder.buildError(e.getMessage());
+		} catch (Exception e) {
+			return ResultBuilder.buildError(e.getMessage());
+		}
 	}
 
 	public ResultSet execute(InsertAssociation insertion) {
-		return insertionService.execute(insertion);
+		try {
+			return insertionService.execute(insertion);
+		} catch (BusinessException e) {
+			return ResultBuilder.buildError(e.getMessage());
+		} catch (Exception e) {
+			return ResultBuilder.buildError(e.getMessage());
+		}
 	}
 
 	public ResultSet execute(SelectAssociation query) {
@@ -74,11 +87,23 @@ public class Executor {
 	}
 
 	public ResultSet execute(UpdateObject query) {
-		return updationService.execute(query);
+		try {
+			return updationService.execute(query);
+		} catch (BusinessException e) {
+			return ResultBuilder.buildError(e.getMessage());
+		} catch (Exception e) {
+			return ResultBuilder.buildError(e.getMessage());
+		}
 	}
 
 	public ResultSet execute(UpdateAssociation query) {
-		return updationService.execute(query);
+		try {
+			return updationService.execute(query);
+		} catch (BusinessException e) {
+			return ResultBuilder.buildError(e.getMessage());
+		} catch (Exception e) {
+			return ResultBuilder.buildError(e.getMessage());
+		}
 	}
 
 	public void setKeys(Map<Long, Long> keys) {
