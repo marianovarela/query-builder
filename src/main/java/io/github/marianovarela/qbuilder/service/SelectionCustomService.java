@@ -290,7 +290,7 @@ public class SelectionCustomService {
 		second = second.alias("df2");
 //		Dataset<Row> result = from.join(to, condition, join.getType().value);
 		Dataset<Row> result = first.union(second);
-		if(union.getWhere().isPresent() & union.getWhere().get().getFilter() != null) {
+		if(union.getWhere().isPresent() && union.getWhere().get().getFilter() != null) {
 			result = first.union(second)
 					.filter(union.getWhere().get().getFilter());
 		}

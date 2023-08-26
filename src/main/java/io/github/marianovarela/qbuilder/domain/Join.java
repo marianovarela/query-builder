@@ -14,7 +14,7 @@ public class Join extends SelectAbstract {
 	
 	private Subquery to;
 	
-	private Optional<String> selection; 
+	private Optional<String> selection = Optional.empty(); 
 	
 	private List<Condition> joinClause = new LinkedList<Condition>();
 

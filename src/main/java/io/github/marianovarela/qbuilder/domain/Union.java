@@ -11,7 +11,7 @@ public class Union extends SelectAbstract {
 	
 	private Subquery second;
 	
-	private Optional<String> selection; 
+	private Optional<String> selection = Optional.empty(); 
 	
 	//private String filter;		
 	
